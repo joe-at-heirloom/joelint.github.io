@@ -2352,14 +2352,17 @@
             }
 
 
-            /* --- TRAVEL: globe static, no touch interaction --- */
+            /* --- TRAVEL: static globe on mobile --- */
             .globe-container {
-                height: 280px;
+                height: 300px;
                 margin: 0 auto;
                 overflow: hidden;
                 pointer-events: none;
-                position: relative;
-                z-index: 1;
+                touch-action: pan-y;
+            }
+            .globe-container canvas {
+                pointer-events: none;
+                touch-action: none;
             }
 
             /* --- TRAVEL: photo gallery single column, no lightbox --- */
@@ -4009,15 +4012,11 @@
         globe.controls().enableZoom = false;
 
         if (isMobile) {
-            // Fully disable all interaction on mobile — static globe
-            globe.controls().enabled = false;
-            globe.controls().autoRotate = false;
-            // Kill touch events on the canvas directly
-            const canvas = container.querySelector('canvas');
-            if (canvas) {
-                canvas.style.pointerEvents = 'none';
-                canvas.style.touchAction = 'none';
-            }
+            // Fully disable and dispose controls on mobile — static globe
+            const ctrl = globe.controls();
+            ctrl.enabled = false;
+            ctrl.autoRotate = false;
+            ctrl.dispose();
         } else {
             globe.controls().autoRotate = true;
             globe.controls().autoRotateSpeed = 0.5;
