@@ -2381,7 +2381,10 @@
             }
             .photo-gallery .photo.tall {
                 grid-row: span 1;
-                aspect-ratio: 16 / 10;
+                aspect-ratio: 3 / 4;
+            }
+            .photo-gallery .photo.wide {
+                aspect-ratio: 16 / 9;
             }
             .photo-gallery .photo:nth-child(1),
             .photo-gallery .photo:nth-child(2),
@@ -2390,6 +2393,43 @@
             .photo-gallery .photo:nth-child(5) {
                 grid-column: 1;
                 grid-row: auto;
+            }
+
+            /* --- TRAVEL: stamps centered on mobile --- */
+            .passport-stamp {
+                position: relative;
+                right: auto;
+                margin-right: 0;
+                display: block;
+                margin: 1.5rem auto;
+                width: 120px;
+            }
+            .passport-stamp-left {
+                transform: scale(1) rotate(6deg);
+            }
+            .passport-stamp-right {
+                transform: scale(1) rotate(-6deg);
+            }
+            .passport-stamp-left.stamped {
+                animation: stamp-hit-left-mobile 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            }
+            .passport-stamp-right.stamped {
+                animation: stamp-hit-right-mobile 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            }
+
+            @keyframes stamp-hit-right-mobile {
+                0%   { opacity: 0; transform: scale(3) rotate(-18deg); }
+                35%  { opacity: 1; transform: scale(0.97) rotate(-4deg); }
+                55%  { opacity: 1; transform: scale(1.03) rotate(-7deg); }
+                75%  { opacity: 1; transform: scale(0.99) rotate(-5.5deg); }
+                100% { opacity: 1; transform: scale(1) rotate(-6deg); }
+            }
+            @keyframes stamp-hit-left-mobile {
+                0%   { opacity: 0; transform: scale(3) rotate(12deg); }
+                35%  { opacity: 1; transform: scale(0.97) rotate(5deg); }
+                55%  { opacity: 1; transform: scale(1.03) rotate(3deg); }
+                75%  { opacity: 1; transform: scale(0.99) rotate(4.5deg); }
+                100% { opacity: 1; transform: scale(1) rotate(4deg); }
             }
 
             /* --- DUAL PILGRIM: stack vertically --- */
