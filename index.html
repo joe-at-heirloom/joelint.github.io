@@ -82,66 +82,6 @@
             overflow-x: hidden;
         }
 
-        /* ============ FLOATING SHAPES ============ */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .shape {
-            position: absolute;
-            border: 1px solid rgba(37, 99, 235, 0.08);
-            border-radius: 50%;
-            will-change: transform;
-            transition: transform 0.1s linear;
-        }
-
-        .shape:nth-child(1) {
-            width: 400px; height: 400px;
-            top: 10%; left: -10%;
-        }
-        .shape:nth-child(2) {
-            width: 250px; height: 250px;
-            top: 60%; right: -5%;
-        }
-        .shape:nth-child(3) {
-            width: 600px; height: 600px;
-            top: 30%; left: 50%;
-            border-color: rgba(37, 99, 235, 0.06);
-        }
-        .shape:nth-child(4) {
-            width: 150px; height: 150px;
-            top: 80%; left: 20%;
-        }
-        .shape:nth-child(5) {
-            width: 300px; height: 300px;
-            top: -5%; right: 20%;
-            border-color: rgba(37, 99, 235, 0.06);
-        }
-        .shape:nth-child(6) {
-            width: 180px; height: 180px;
-            top: 40%; left: 8%;
-        }
-        .shape:nth-child(7) {
-            width: 500px; height: 500px;
-            top: -15%; left: 35%;
-            border-color: rgba(37, 99, 235, 0.04);
-        }
-        .shape:nth-child(8) {
-            width: 120px; height: 120px;
-            top: 25%; right: 8%;
-        }
-        .shape:nth-child(9) {
-            width: 350px; height: 350px;
-            top: 70%; right: 30%;
-            border-color: rgba(37, 99, 235, 0.05);
-        }
 
         /* ============ SCROLL ANIMATIONS ============ */
         .reveal {
@@ -201,6 +141,8 @@
         .parallax-bg {
             position: relative;
         }
+
+        .mobile-br { display: none; }
 
         .section-divider {
             width: 100%;
@@ -1329,16 +1271,19 @@
             }
 
             .dumo-gallery-objects {
-                display: none;
+                transform: scale(0.7);
+                transform-origin: left top;
             }
 
             .proactive-matrix-objects {
-                display: none;
+                transform: scale(0.7);
+                transform-origin: left top;
             }
 
             .clark-water-line,
             #clark-rain-container {
-                display: none;
+                transform: scale(0.7);
+                transform-origin: left bottom;
             }
 
             .job-proactive::before {
@@ -2157,13 +2102,10 @@
                 padding: 4rem 1.5rem;
             }
 
-            .hero {
-                min-height: 90vh;
-            }
-
             .hero .contact-row {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
                 gap: 1rem;
             }
 
@@ -2204,43 +2146,12 @@
                 transform: scale(1) translateX(-50%);
             }
 
-            .photo-gallery {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: auto;
-            }
-
-            .photo-gallery .photo.tall {
-                grid-row: span 1;
-            }
-
-            .photo-gallery .photo:nth-child(1),
-            .photo-gallery .photo:nth-child(2),
-            .photo-gallery .photo:nth-child(3),
-            .photo-gallery .photo:nth-child(4),
-            .photo-gallery .photo:nth-child(5) {
-                grid-column: auto;
-                grid-row: auto;
-            }
-
             .travel-grid {
                 grid-template-columns: 1fr;
             }
 
             .travel-stats {
-                gap: 2rem;
-            }
-
-            .globe-container {
-                height: 350px;
-            }
-
-            .scroll-indicator {
-                display: none;
-            }
-
-            .shape:nth-child(3),
-            .shape:nth-child(5) {
-                display: none;
+                gap: 1.5rem;
             }
         }
 
@@ -2383,22 +2294,128 @@
                 width: 95%;
             }
         }
+
+        /* ============ MOBILE-ONLY FIXES ============ */
+        @media (max-width: 640px) {
+
+            /* --- HERO --- */
+            .hero {
+                padding-top: 80px;
+                min-height: 100vh;
+                padding-bottom: 4rem;
+            }
+
+            /* Remove resume button styling, make it match other links */
+            .hero .contact-row .resume-btn {
+                background: transparent;
+                color: var(--text-muted);
+                padding: 0;
+                border-radius: 0;
+                font-weight: 400;
+            }
+            .hero .contact-row .resume-btn:hover {
+                background: transparent;
+                color: var(--accent);
+                transform: none;
+            }
+            .hero .contact-row .resume-btn svg {
+                stroke: currentColor;
+            }
+
+            /* Show scroll indicator on mobile */
+            .scroll-indicator {
+                display: flex;
+            }
+
+            /* Hide divider after hero on mobile */
+            .hero + .section-divider {
+                display: none;
+            }
+
+            /* --- STORY: speech bubble overlap fix --- */
+            .headshot-container {
+                margin-top: 1.5rem;
+            }
+
+            /* --- WORK: stat frames narrower on mobile --- */
+            .job .job-highlights {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+            }
+            .job .job-highlight {
+                padding: 0.75rem 0.9rem;
+            }
+            .job .job-highlight .number {
+                font-size: 1.25rem;
+            }
+            .job .job-highlight .label {
+                font-size: 0.7rem;
+            }
+
+            /* Show left-side animations on mobile (override the hide) */
+            .dumo-gallery-objects,
+            .proactive-matrix-objects {
+                display: block;
+            }
+
+            /* --- TRAVEL: globe static, no touch interaction --- */
+            .globe-container {
+                height: 280px;
+                margin: 0 auto;
+                overflow: hidden;
+                pointer-events: none;
+                position: relative;
+                z-index: 1;
+            }
+
+            /* --- TRAVEL: photo gallery single column, no lightbox --- */
+            .photo-gallery {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 0.75rem;
+            }
+            .photo-gallery .photo {
+                aspect-ratio: 16 / 10;
+                cursor: default;
+                pointer-events: none;
+            }
+            .photo-gallery .photo.tall {
+                grid-row: span 1;
+                aspect-ratio: 16 / 10;
+            }
+            .photo-gallery .photo:nth-child(1),
+            .photo-gallery .photo:nth-child(2),
+            .photo-gallery .photo:nth-child(3),
+            .photo-gallery .photo:nth-child(4),
+            .photo-gallery .photo:nth-child(5) {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            /* --- DUAL PILGRIM: stack vertically --- */
+            .dual-pilgrim-card {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            /* --- COUNTRIES & TERRITORIES: line break --- */
+            .mobile-br { display: inline; }
+
+            /* --- PROJECTS: cards less than full width --- */
+            .projects-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            /* --- BOTTOM BUTTONS: center align --- */
+            .now-section > .reveal:last-child {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <!-- FLOATING SHAPES -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
 
     <!-- NAV -->
     <nav>
@@ -2876,7 +2893,7 @@
         <div class="travel-stats reveal">
             <div class="travel-stat">
                 <div class="number"><span class="count-up" data-target="30">0</span></div>
-                <div class="label">Countries & Territories</div>
+                <div class="label">Countries &<br class="mobile-br"> Territories</div>
             </div>
             <div class="travel-stat">
                 <div class="number"><span class="count-up" data-target="8">0</span></div>
@@ -3311,22 +3328,8 @@
     (function enhancedParallax() {
         const photos = document.querySelectorAll('.photo-gallery .photo');
         const sections = document.querySelectorAll('section');
-        const shapes = document.querySelectorAll('.shape');
         const heroSection = document.querySelector('.hero');
         const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
-
-        // Each shape gets a unique scroll speed and direction
-        const shapeConfigs = [
-            { speedX: -0.08, speedY: -0.12, scale: 0.0001 },
-            { speedX: 0.10, speedY: -0.06, scale: -0.00008 },
-            { speedX: -0.05, speedY: 0.09, scale: 0.00006 },
-            { speedX: 0.07, speedY: 0.11, scale: -0.0001 },
-            { speedX: -0.12, speedY: -0.08, scale: 0.00007 },
-            { speedX: 0.06, speedY: -0.10, scale: -0.00006 },
-            { speedX: -0.04, speedY: 0.05, scale: 0.00009 },
-            { speedX: 0.14, speedY: 0.07, scale: -0.00012 },
-            { speedX: -0.09, speedY: -0.05, scale: 0.00005 },
-        ];
 
         let parallaxTicking = false;
         const cachedHeadshot = document.querySelector('.headshot');
@@ -3336,17 +3339,6 @@
                 requestAnimationFrame(() => {
                     const scrollY = window.scrollY;
                     const vh = window.innerHeight;
-
-                    // Floating shapes parallax — strong in hero, subtle outside
-                    const heroProgress = Math.min(scrollY / heroHeight, 1);
-                    const intensity = 1 - heroProgress * 0.85;
-                    shapes.forEach((shape, i) => {
-                        const cfg = shapeConfigs[i] || shapeConfigs[0];
-                        const x = scrollY * cfg.speedX * intensity;
-                        const y = scrollY * cfg.speedY * intensity;
-                        const s = 1 + scrollY * cfg.scale * intensity;
-                        shape.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
-                    });
 
                     // Photo parallax
                     photos.forEach((photo, i) => {
@@ -3915,13 +3907,6 @@
             .arcDashGap(0.2)
             .arcDashAnimateTime(4000)
             .arcAltitudeAutoScale(0.3)
-            // Points only (no city labels for performance)
-            .pointsData(allPoints)
-            .pointLat('lat')
-            .pointLng('lng')
-            .pointColor(() => 'rgba(37, 99, 235, 0.8)')
-            .pointRadius(0.3)
-            .pointAltitude(0.01)
             // Width
             .width(container.clientWidth)
             .height(container.clientHeight)
@@ -3989,6 +3974,12 @@
         globe.controls().autoRotate = true;
         globe.controls().autoRotateSpeed = 0.5;
         globe.controls().enableZoom = false;
+
+        // Disable touch interaction on mobile so scrolling works
+        if (window.innerWidth <= 640) {
+            globe.controls().enableRotate = false;
+            globe.controls().enablePan = false;
+        }
 
         // Initial view: looking at Asia
         globe.pointOfView({ lat: 25, lng: 100, altitude: 2.2 }, 0);
@@ -4324,7 +4315,9 @@
         }
 
         photos.forEach((img, i) => {
-            img.closest('.photo').addEventListener('click', () => open(i));
+            img.closest('.photo').addEventListener('click', () => {
+                if (window.innerWidth > 640) open(i);
+            });
         });
     })();
     </script>
