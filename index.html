@@ -3970,15 +3970,23 @@
                     });
             });
 
-        // Auto-rotate
-        globe.controls().autoRotate = true;
-        globe.controls().autoRotateSpeed = 0.5;
+        // Controls
+        const isMobile = window.innerWidth <= 640;
         globe.controls().enableZoom = false;
 
-        // Disable touch interaction on mobile so scrolling works
-        if (window.innerWidth <= 640) {
-            globe.controls().enableRotate = false;
-            globe.controls().enablePan = false;
+        if (isMobile) {
+            // Fully disable all interaction on mobile — static globe
+            globe.controls().enabled = false;
+            globe.controls().autoRotate = false;
+            // Kill touch events on the canvas directly
+            const canvas = container.querySelector('canvas');
+            if (canvas) {
+                canvas.style.pointerEvents = 'none';
+                canvas.style.touchAction = 'none';
+            }
+        } else {
+            globe.controls().autoRotate = true;
+            globe.controls().autoRotateSpeed = 0.5;
         }
 
         // Initial view: looking at Asia
