@@ -1604,6 +1604,17 @@
             display: none;
         }
 
+        .globe-mobile {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .globe-mobile svg {
+            width: 260px;
+            height: 260px;
+            margin: 0 auto;
+        }
+
         .globe-label {
             position: absolute;
             bottom: 1rem;
@@ -2352,17 +2363,12 @@
             }
 
 
-            /* --- TRAVEL: static globe on mobile --- */
+            /* --- TRAVEL: hide 3D globe, show SVG on mobile --- */
             .globe-container {
-                height: 300px;
-                margin: 0 auto;
-                overflow: hidden;
-                pointer-events: none;
-                touch-action: pan-y;
+                display: none;
             }
-            .globe-container canvas {
-                pointer-events: none;
-                touch-action: none;
+            .globe-mobile {
+                display: block;
             }
 
             /* --- TRAVEL: photo gallery single column, no lightbox --- */
@@ -2883,6 +2889,68 @@
         <div class="globe-container" id="globe">
             <div class="globe-loader"><div class="spinner"></div>Loading globe...</div>
             <div class="globe-label">30 countries & territories visited</div>
+        </div>
+
+        <!-- MOBILE GLOBE SVG -->
+        <div class="globe-mobile reveal">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ocean -->
+                <circle cx="200" cy="200" r="190" fill="#e8ecf2" stroke="#c8d0dc" stroke-width="0.5"/>
+                <!-- Grid lines -->
+                <ellipse cx="200" cy="200" rx="190" ry="60" fill="none" stroke="#d0d8e4" stroke-width="0.3"/>
+                <ellipse cx="200" cy="200" rx="190" ry="120" fill="none" stroke="#d0d8e4" stroke-width="0.3"/>
+                <ellipse cx="200" cy="200" rx="190" ry="170" fill="none" stroke="#d0d8e4" stroke-width="0.3"/>
+                <ellipse cx="200" cy="200" rx="60" ry="190" fill="none" stroke="#d0d8e4" stroke-width="0.3" transform="rotate(-15 200 200)"/>
+                <ellipse cx="200" cy="200" rx="120" ry="190" fill="none" stroke="#d0d8e4" stroke-width="0.3" transform="rotate(-15 200 200)"/>
+                <ellipse cx="200" cy="200" rx="170" ry="190" fill="none" stroke="#d0d8e4" stroke-width="0.3" transform="rotate(-15 200 200)"/>
+                <!-- Simplified continents — Europe/Africa/Asia view -->
+                <!-- Europe -->
+                <path d="M145,95 L155,90 L170,88 L178,82 L190,80 L198,85 L205,82 L210,88 L215,95 L218,102 L220,108 L215,115 L210,118 L205,122 L195,125 L188,130 L180,128 L172,132 L168,128 L160,125 L155,118 L148,112 L142,105 Z" fill="#b4becd" stroke="#a0aab8" stroke-width="0.5"/>
+                <!-- Visited European countries overlay -->
+                <path d="M150,98 L158,94 L168,92 L175,86 L188,84 L195,88 L202,85 L208,90 L212,98 L215,105 L212,112 L208,115 L200,120 L192,123 L185,128 L178,126 L170,130 L165,125 L158,120 L152,112 L148,105 Z" fill="rgba(37, 99, 235, 0.35)" stroke="none"/>
+                <!-- UK -->
+                <path d="M138,88 L142,82 L146,80 L148,85 L146,92 L140,95 Z" fill="rgba(37, 99, 235, 0.35)" stroke="#a0aab8" stroke-width="0.5"/>
+                <!-- Iberian Peninsula (Spain/Portugal) -->
+                <path d="M128,118 L138,112 L150,110 L158,115 L155,125 L148,132 L140,136 L130,135 L125,128 Z" fill="rgba(37, 99, 235, 0.35)" stroke="#a0aab8" stroke-width="0.5"/>
+                <!-- Africa -->
+                <path d="M130,145 L155,138 L175,135 L195,138 L210,145 L220,155 L225,170 L228,190 L225,210 L222,230 L218,250 L210,265 L200,278 L190,288 L180,292 L170,288 L162,278 L158,265 L155,248 L150,230 L145,210 L138,190 L132,170 L128,155 Z" fill="#b4becd" stroke="#a0aab8" stroke-width="0.5"/>
+                <!-- Asia -->
+                <path d="M220,70 L240,65 L260,60 L280,58 L300,62 L318,68 L330,78 L340,90 L345,105 L348,120 L345,135 L340,148 L332,158 L320,165 L308,170 L295,172 L285,178 L278,188 L272,198 L268,185 L260,175 L250,168 L245,158 L240,148 L235,138 L228,128 L222,118 L218,108 L215,98 L218,85 Z" fill="#b4becd" stroke="#a0aab8" stroke-width="0.5"/>
+                <!-- Visited Asian countries overlay -->
+                <!-- China -->
+                <path d="M270,85 L290,80 L305,78 L318,82 L325,92 L328,105 L325,118 L318,128 L308,135 L295,138 L282,135 L272,128 L265,118 L260,105 L262,92 Z" fill="rgba(37, 99, 235, 0.35)" stroke="none"/>
+                <!-- Southeast Asia -->
+                <path d="M290,145 L300,148 L308,155 L312,165 L308,172 L298,175 L288,178 L280,182 L275,175 L278,165 L282,155 Z" fill="rgba(37, 99, 235, 0.35)" stroke="none"/>
+                <!-- Japan -->
+                <path d="M340,95 L345,88 L350,92 L352,100 L348,108 L342,112 L338,105 Z" fill="rgba(37, 99, 235, 0.35)" stroke="#a0aab8" stroke-width="0.5"/>
+                <!-- India/Nepal region -->
+                <path d="M258,138 L268,135 L275,142 L278,155 L275,168 L268,175 L258,172 L252,162 L250,150 Z" fill="#b4becd" stroke="#a0aab8" stroke-width="0.5"/>
+                <circle cx="262" cy="148" r="3" fill="rgba(37, 99, 235, 0.35)"/>
+                <!-- Visited city dots -->
+                <!-- Europe -->
+                <circle cx="142" cy="86" r="2.5" fill="#2563eb"/><!-- London -->
+                <circle cx="160" cy="98" r="2.5" fill="#2563eb"/><!-- Paris -->
+                <circle cx="178" cy="96" r="2.5" fill="#2563eb"/><!-- Berlin -->
+                <circle cx="172" cy="102" r="2" fill="#2563eb"/><!-- Amsterdam -->
+                <circle cx="188" cy="100" r="2" fill="#2563eb"/><!-- Prague -->
+                <circle cx="195" cy="105" r="2" fill="#2563eb"/><!-- Vienna -->
+                <circle cx="185" cy="115" r="2" fill="#2563eb"/><!-- Rome -->
+                <circle cx="135" cy="125" r="2.5" fill="#2563eb"/><!-- Santiago -->
+                <circle cx="148" cy="118" r="2" fill="#2563eb"/><!-- Madrid -->
+                <circle cx="200" cy="115" r="2" fill="#2563eb"/><!-- Dubrovnik -->
+                <!-- Asia -->
+                <circle cx="290" cy="95" r="2.5" fill="#2563eb"/><!-- Beijing -->
+                <circle cx="278" cy="108" r="2" fill="#2563eb"/><!-- Chengdu -->
+                <circle cx="262" cy="148" r="2" fill="#2563eb"/><!-- Kathmandu -->
+                <circle cx="295" cy="158" r="2.5" fill="#2563eb"/><!-- Bangkok -->
+                <circle cx="305" cy="162" r="2" fill="#2563eb"/><!-- Siem Reap -->
+                <circle cx="300" cy="170" r="2" fill="#2563eb"/><!-- Ho Chi Minh -->
+                <circle cx="345" cy="100" r="2" fill="#2563eb"/><!-- Tokyo -->
+                <circle cx="340" cy="105" r="2" fill="#2563eb"/><!-- Osaka -->
+                <!-- Atmosphere glow -->
+                <circle cx="200" cy="200" r="195" fill="none" stroke="rgba(37, 99, 235, 0.12)" stroke-width="8"/>
+                <circle cx="200" cy="200" r="200" fill="none" stroke="rgba(37, 99, 235, 0.06)" stroke-width="6"/>
+            </svg>
         </div>
 
         <!-- CAMINO PHOTOS -->
@@ -3751,6 +3819,12 @@
         const container = document.getElementById('globe');
         if (!container) return;
 
+        // Don't load 3D globe on mobile — SVG fallback shown via CSS
+        if (window.innerWidth <= 640) {
+            container.style.display = 'none';
+            return;
+        }
+
         let globeLoaded = false;
 
         function loadGlobeScripts() {
@@ -4008,19 +4082,9 @@
             });
 
         // Controls
-        const isMobile = window.innerWidth <= 640;
+        globe.controls().autoRotate = true;
+        globe.controls().autoRotateSpeed = 0.5;
         globe.controls().enableZoom = false;
-
-        if (isMobile) {
-            // Fully disable and dispose controls on mobile — static globe
-            const ctrl = globe.controls();
-            ctrl.enabled = false;
-            ctrl.autoRotate = false;
-            ctrl.dispose();
-        } else {
-            globe.controls().autoRotate = true;
-            globe.controls().autoRotateSpeed = 0.5;
-        }
 
         // Initial view: looking at Asia
         globe.pointOfView({ lat: 25, lng: 100, altitude: 2.2 }, 0);
