@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joe Lint — Detroit, MI</title>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8RKE8VQ4W6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8RKE8VQ4W6');
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +39,8 @@
 
     <!-- SEO -->
     <meta name="description" content="Joe Lint — Systems thinker and self-taught technologist from Detroit. Software, product management, marketing, and operations.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://joelint.com">
 
     <!-- Google Analytics (replace with your tracking code) -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -332,6 +343,28 @@
             color: var(--text);
         }
 
+        .availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #16a34a;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.25rem;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #16a34a;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0); }
+        }
+
         .hero .contact-row {
             display: flex;
             flex-wrap: wrap;
@@ -430,23 +463,6 @@
 
         .headshot img {
             border-radius: 8px;
-        }
-
-        /* Mouth overlay */
-        .headshot-mouth {
-            position: absolute;
-            width: 39px;
-            height: 23px;
-            top: 102px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            opacity: 0;
-            transition: opacity 0.15s;
-            overflow: visible;
-        }
-        .headshot-mouth.talking {
-            opacity: 1;
         }
 
         /* Speech bubble */
@@ -1503,7 +1519,7 @@
         }
         .lightbox-img {
             max-width: 90vw;
-            max-height: 85vh;
+            max-height: 78vh;
             object-fit: contain;
             border-radius: 4px;
             transition: opacity 0.25s ease;
@@ -1551,6 +1567,16 @@
             font-size: 0.8rem;
             font-family: var(--font-mono);
             letter-spacing: 0.1em;
+        }
+        .lightbox-caption {
+            position: absolute;
+            bottom: 3.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .photo-gallery .photo .placeholder {
@@ -1607,6 +1633,33 @@
             height: 100%;
         }
 
+        .globe-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .globe-loader .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: globe-spin 0.8s linear infinite;
+            margin: 0 auto 0.75rem;
+        }
+        @keyframes globe-spin {
+            to { transform: rotate(360deg); }
+        }
+        .globe-container.loaded .globe-loader {
+            display: none;
+        }
+
         .globe-label {
             position: absolute;
             bottom: 1rem;
@@ -1658,31 +1711,51 @@
             text-decoration: none;
             color: inherit;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            text-align: center;
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(37, 99, 235, 0.05) 100%);
-            border-color: rgba(37, 99, 235, 0.2);
+            text-align: left;
+            gap: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            transition: border-color 0.3s;
         }
 
         .dual-pilgrim-card:hover {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(37, 99, 235, 0.08) 100%);
+            border-color: var(--accent-dim);
         }
 
         .dual-pilgrim-card .dp-logo {
             width: 64px;
             height: 64px;
             object-fit: contain;
-            margin-bottom: 1rem;
+            flex-shrink: 0;
         }
 
         .dual-pilgrim-card h3 {
-            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+            color: var(--text);
         }
 
         .dual-pilgrim-card p {
             font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .dual-pilgrim-card .distance {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: block;
         }
 
         .travel-card .distance {
@@ -1915,6 +1988,7 @@
             overflow: hidden;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+            max-width: 700px;
         }
 
         .skills-terminal-bar {
@@ -2103,12 +2177,6 @@
                 width: 120px;
                 height: 150px;
                 min-width: 120px;
-            }
-
-            .headshot-mouth {
-                bottom: 46px;
-                width: 14px;
-                height: 3px;
             }
 
             .speech-bubble {
@@ -2355,6 +2423,9 @@
         <p class="tagline reveal reveal-delay-2">
             Part technologist, part marketer, part whatever-you-need.<br><span class="highlight">Self-taught and still learning.</span>
         </p>
+        <div class="availability-badge reveal reveal-delay-3">
+            <span class="status-dot"></span> Open to opportunities
+        </div>
         <div class="contact-row reveal reveal-delay-3">
             <a href="#" id="contact-trigger">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
@@ -2364,7 +2435,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                 LinkedIn
             </a>
-            <a href="https://github.com/joe-lint" target="_blank" rel="noopener">
+            <a href="https://github.com/joe-at-heirloom" target="_blank" rel="noopener">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 GitHub
             </a>
@@ -2389,24 +2460,21 @@
         <div class="headshot-container reveal">
             <div class="headshot">
                 <img src="Joseph_Lint_Headshot.jpg" alt="Joe Lint">
-                <svg class="headshot-mouth" viewBox="0 0 30 18" xmlns="http://www.w3.org/2000/svg">
-                    <path class="mouth-path" d="M 1,2 Q 15,4 29,2 Q 15,14 1,2 Z" fill="#1a1a1a"/>
-                </svg>
                 <div class="speech-bubble"><span class="typed-text"></span></div>
             </div>
             <div>
                 <p>
-                    I'm a self-taught systems thinker from Detroit. No degree. No pedigree. Just a decade of figuring things out by doing them—starting with WordPress at 13, then IT infrastructure, then product management, then marketing, then whatever else needed doing.
+                    I'm a self-taught systems thinker from Detroit. No degree. Just hard work and passion and figuring things out by doing them - starting with WordPress at 13, then IT infrastructure, then product management, then marketing, then whatever else needed doing. And I consistently pushed the envelope.
                 </p>
             </div>
         </div>
 
         <p class="reveal">
-            At <strong>DuMouchelles</strong>, a 97-year-old auction house, I was the technology and marketing department. I owned a custom ERP, rebuilt their website, introduced AI-assisted cataloging, and once identified a misattributed Chinese bronze that everyone else thought was worth $2,000. It sold for <em>$930,000</em>.
+            At DuMouchelles, a 97-year-old auction house, I was the technology and marketing department. I owned a custom ERP, refreshed their brand and rebuilt their website, introduced AI-assisted cataloging, and led research and marketing on a Chinese bronze that was estimated at $1,500-$3,000. It <a href="https://www.dumoart.com/rare-chinese-luohan-statue-discovered-in-michigan-garage-sells-for-930000-at-dumouchelles-auction/" target="_blank" rel="noopener">sold for $930,000</a>.
         </p>
 
         <p class="reveal">
-            When I left, those responsibilities were distributed across multiple teams and external partners.
+            When I left, those responsibilities were distributed across three companies and multiple colleagues.
         </p>
 
         <p class="pull-quote reveal-slide-left">
@@ -2414,7 +2482,7 @@
         </p>
 
         <p class="reveal">
-            In 2025, I spent eight months traveling alone through Asia and Europe. I walked 500 miles across Spain on the Camino de Santiago. I trekked to Everest Base Camp. I ate a suspicious burger in Chiang Mai and paid for it. I became a different person somewhere along the way.
+            In 2025, I spent eight months traveling alone through Asia and Europe. I walked 500 miles across Spain on the Camino de Santiago. I learned the hard way that street food roulette is real. I became a different person somewhere along the way.
         </p>
 
         <p class="reveal">
@@ -2559,7 +2627,7 @@
                 </div>
             </div>
             <p class="job-story">
-                Fine art auction house, founded 1927. I was hired to modernize their technology. I ended up owning technology, marketing, operations, and product development. I built their custom ERP, rebuilt their website, managed their marketing budget, introduced AI cataloging, and became the person connecting all of it. When I left, the owner told me it was the most comprehensive handoff she'd ever seen.
+                Fine art auction house, founded 1927. I spent four years leading their digital transformation as Technology and Marketing Manager. I launched a brand refresh and website rebuild that delivered a 300% increase in bidder registrations and doubled our web traffic. I also set photography standards, refurbished their iconic antique neon street sign, acted as product owner for our custom ERP system, shipping over 15 major features including AI-assisted cataloging.
             </p>
             <div class="job-highlights">
                 <div class="job-highlight reveal reveal-delay-1">
@@ -2571,12 +2639,12 @@
                     <div class="label">Increase in web traffic</div>
                 </div>
                 <div class="job-highlight reveal reveal-delay-3">
-                    <div class="number"><span class="count-up" data-target="930" data-prefix="$" data-suffix="K">$0K</span></div>
-                    <div class="label">Buddha I identified</div>
+                    <div class="number"><span class="count-up" data-target="15" data-suffix="+">0+</span></div>
+                    <div class="label">Major feature releases</div>
                 </div>
                 <div class="job-highlight reveal reveal-delay-4">
-                    <div class="number"><span class="count-up" data-target="800" data-suffix="+">0+</span></div>
-                    <div class="label">Lots cataloged monthly</div>
+                    <div class="number"><span class="count-up" data-target="3">0</span></div>
+                    <div class="label">Direct reports</div>
                 </div>
             </div>
 
@@ -2587,18 +2655,16 @@
                     <div class="before-after-item">
                         <p class="ba-label">Before</p>
                         <div class="ba-screenshot">
-                            <!-- Replace with: <img src="dumo-before.jpg" alt="DuMouchelles old website"> -->
-                            <span class="placeholder">Screenshot: old site</span>
+                            <img src="dumoart.com_old.png" alt="DuMouchelles old website">
                         </div>
-                        <p class="ba-desc">Static, outdated design. No live bidding. Minimal mobile support. Catalog uploaded as image PDFs.</p>
+                        <p class="ba-desc">Custom-coded, outdated design. Live bidding segmented. Minimal customer adoption. Unprofessional photography.</p>
                     </div>
                     <div class="before-after-item">
                         <p class="ba-label after">After</p>
                         <div class="ba-screenshot">
-                            <!-- Replace with: <img src="dumo-after.jpg" alt="DuMouchelles new website"> -->
-                            <span class="placeholder">Screenshot: new site</span>
+                            <img src="dumoart.com_new.png" alt="DuMouchelles new website">
                         </div>
-                        <p class="ba-desc">Modern responsive design. Integrated live online bidding. Searchable catalog with AI-assisted descriptions. 100% traffic increase.</p>
+                        <p class="ba-desc">Modern responsive design. Integrated live bidding and text alerts. Enhanced descriptions and accurate metadata. Clean, clear, and professional photographs.</p>
                     </div>
                 </div>
             </div>
@@ -2606,19 +2672,19 @@
             <!-- COLLAPSIBLE: LotMaker ERP -->
             <button class="collapsible-toggle reveal" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open');">
                 <span class="toggle-icon">&#9654;</span>
-                LotMaker — The Custom ERP I Built & Managed
+                LotMaker — The Custom ERP I Managed
                 <span class="toggle-label">Details</span>
             </button>
             <div class="collapsible-content">
                 <div class="collapsible-inner">
                     <p>
-                        LotMaker was DuMouchelles' custom-built ERP system — the operational backbone of the auction house. It handled everything from consignment intake and lot cataloging to invoicing, shipping logistics, and seller settlements. I inherited the system, became its primary administrator, and worked directly with the developer to scope and ship features.
+                        LotMaker was DuMouchelles' custom-built ERP - the operational backbone handling lot cataloging, photography workflow, invoicing, consignor settlement, CRM, and order fulfillment. I became the product owner, working directly with our developer in Argentina for four years to scope, prioritize, and ship features.
                     </p>
                     <p>
-                        I managed the full lifecycle: writing requirements, prioritizing the backlog, QA testing, coordinating deployments, and training staff. I also led the migration from on-premise infrastructure to Azure cloud hosting, improving uptime and enabling remote access for the team.
+                        I wrote requirements, managed the backlog, ran QA, coordinated deployments, and trained staff. I introduced AI-assisted cataloging within months of ChatGPT's release and led the migration from on-premise servers to Azure - 90% complete when I left.
                     </p>
                     <p>
-                        At peak, LotMaker processed 800+ lots per monthly auction cycle across cataloging, photography, condition reporting, and financial settlement — all flowing through a system I helped shape into something that actually worked for the people using it.
+                        I removed friction wherever I found it - simplifying workflows, improving cross-department communication, and making the system actually work for the people using it.
                     </p>
                     <div class="tech-list">
                         <span>.NET / C#</span>
@@ -2659,16 +2725,16 @@
                 </div>
             </div>
             <p class="job-story">
-                Managed service provider. I started as a technician and was promoted to Team Lead, managing five people and serving as primary tech for 25–30 client organizations—law firms, medical practices, schools, manufacturers. I learned patterns across industries, became the top performer in consultative sales, and eventually burned out from being the single point of failure for too many people. That's when DuMouchelles offered me something different.
+                Managed service provider covering Detroit's east side and the Grosse Pointes. I started as a mobile technician and climbed the ranks to Team Lead, managing five people and serving as primary tech for 25-30 client organizations - law firms, medical practices, schools, manufacturers. I led M365 migrations, Windows Server upgrades, new-office network builds, and a company-wide credential management migration to PassPortal/ITGlue. I also scoped and sold upgrade packages directly to clients. Four years of seeing how different organizations work, what breaks, and what actually fixes it.
             </p>
 
             <div class="job-highlights">
                 <div class="job-highlight reveal reveal-delay-1">
-                    <div class="number"><span class="count-up" data-target="35" data-suffix="+">0+</span></div>
+                    <div class="number"><span class="count-up" data-target="25" data-suffix="+">0+</span></div>
                     <div class="label">Clients as primary tech</div>
                 </div>
                 <div class="job-highlight reveal reveal-delay-2">
-                    <div class="number"><span class="count-up" data-target="4">0</span></div>
+                    <div class="number"><span class="count-up" data-target="5">0</span></div>
                     <div class="label">Engineers on my team</div>
                 </div>
                 <div class="job-highlight reveal reveal-delay-3">
@@ -2677,7 +2743,7 @@
                 </div>
                 <div class="job-highlight reveal reveal-delay-4">
                     <div class="number"><span class="count-up" data-target="100" data-suffix="+">0+</span></div>
-                    <div class="label">Times it was the power button</div>
+                    <div class="label">Incidents resolved with the power button</div>
                 </div>
             </div>
 
@@ -2690,10 +2756,10 @@
             <div class="collapsible-content">
                 <div class="collapsible-inner">
                     <p>
-                        The AGC was a neglected client when I inherited the account — minimal documentation, aging hardware, and an on-premise Exchange server that was years behind on updates. I turned it into one of our top accounts through consistent service and a series of modernization projects.
+                        The AGC was a sort of "dormant" client when I inherited the account - minimal interaction, aging hardware, and an on-premise Exchange server that needed to be migrated to the cloud. I turned it into one of our top accounts through consistent service and a series of modernization projects.
                     </p>
                     <p>
-                        I led a full <strong>Office 365 migration</strong> from their on-premise Exchange environment, upgraded every workstation with SSDs and Windows 10, and coordinated a custom software development project that synced attorney disciplinary status from the State Bar of Michigan directly into their <strong>TimeMatters</strong> legal case management system — eliminating hours of manual lookup work for their staff.
+                        I led a full <strong>Microsoft 365 migration</strong> from their on-premise Exchange environment, upgraded every workstation with SSDs and Windows 10, and coordinated a custom software development project that synced attorney disciplinary status from the State Bar of Michigan directly into their <strong>TimeMatters</strong> legal case management system - an integration that was abandoned and undocumented by a third-party developer.
                     </p>
                     <p>
                         What started as a neglected account became a case study in what happens when someone actually pays attention.
@@ -2728,7 +2794,7 @@
                 </div>
             </div>
             <p class="job-story">
-                Family business I've been managing the digital side of on an ongoing basis. I built and maintain their website, run their paid advertising campaigns, and design and coordinate direct mail marketing. It's the kind of work where you wear every hat and see exactly what moves the needle.
+                A family business I've been managing the digital side of on an ongoing basis. I built and maintain their website, run their paid advertising campaigns, and design and coordinate direct mail marketing. We've got an exciting new look for 2026!
             </p>
             <div class="job-highlights">
                 <div class="job-highlight reveal reveal-delay-1">
@@ -2756,11 +2822,12 @@
 
         <img src="stamp-arrival-to-thailand.svg" alt="Arrival to Thailand passport stamp" class="passport-stamp passport-stamp-left">
         <p class="travel-intro reveal">
-            In February 2025, I quit my job, ended my lease, and bought a one-way ticket to Bangkok. I spent eight months traveling through Asia and Europe with a single carry-on backpack. I saw the most beautiful sunset of my life in Fisterra, Spain. I dreamed of Coney Island hot dogs in Kathmandu. I learned that travel is an escape, but eventually you have to come home and face what you left.
+            In February 2025, I left my job, packed a single carry-on backpack, and bought a one-way ticket to Bangkok. I'd spent four years building systems for other people - I wanted to see what I'd learn building nothing but my own days for a while. Eight months through Asia and Europe — Thailand, Vietnam, Cambodia, China, Tibet, Nepal, Japan, then across Spain, Portugal, France, Italy, and a dozen more. I turned 30 at the Potala Palace in Tibet. I walked 500 miles across Spain. I became a Dual Pilgrim. I saw the most beautiful sunset of my life in Fisterra, Spain. Learned the hard way that street food roulette is real. Dreamed of National Coney Island Hanis in Kathmandu.
         </p>
 
         <!-- GLOBE -->
         <div class="globe-container" id="globe">
+            <div class="globe-loader"><div class="spinner"></div>Loading globe...</div>
             <div class="globe-label">30 countries & territories visited</div>
         </div>
 
@@ -2776,7 +2843,7 @@
                 <img src="travel/kumano_kodo.jpeg" alt="Kumano Kodo pilgrimage trail in Japan">
             </div>
             <div class="photo tall reveal reveal-delay-2">
-                <img src="travel/tibet_yak.jpeg" alt="Yak in Tibet on the way to Everest">
+                <img src="travel/tibet_yak.jpeg" alt="Yak in Tibet">
             </div>
             <div class="photo wide reveal reveal-delay-3">
                 <img src="travel/fisterra_sunset.jpeg" alt="Sunset at Fisterra, Spain" style="object-position: center 35%;">
@@ -2786,26 +2853,24 @@
         <div class="travel-grid">
             <div class="travel-card reveal reveal-delay-1">
                 <h3>Camino de Santiago</h3>
-                <p>The French Way across Spain—from Saint-Jean-Pied-de-Port to Santiago de Compostela. Thirty-three days of walking, thinking, and talking to strangers who became friends.</p>
+                <p>The French Way across Spain - Saint-Jean-Pied-de-Port to Santiago de Compostela. Thirty-three days of walking, thinking, and strangers who became friends.</p>
                 <p class="distance">500+ miles on foot</p>
             </div>
             <div class="travel-card reveal reveal-delay-2">
                 <h3>Kumano Kodo</h3>
                 <p>Japan's ancient pilgrimage through the mountains of the Kii Peninsula. One of only two UNESCO-designated pilgrimage routes in the world.</p>
-                <p class="distance">4 days through sacred forests</p>
-            </div>
-            <a href="https://dual-pilgrim.spiritual-pilgrimages.com/joseph-lint/" target="_blank" rel="noopener" class="travel-card dual-pilgrim-card reveal reveal-delay-3">
-                <img src="dual_pilgrim.svg" alt="Dual Pilgrim Badge" class="dp-logo">
-                <h3>Dual Pilgrim</h3>
-                <p>One of few to complete both the Camino de Santiago and the Kumano Kodo — the only two UNESCO-designated pilgrimage routes in the world.</p>
-                <span class="distance">Verified Dual Pilgrim</span>
-            </a>
-            <div class="travel-card reveal reveal-delay-4">
-                <h3>Everest Base Camp</h3>
-                <p>17,598 feet in Nepal's Khumbu region. Sherpa villages, Himalayan passes, and my 30th birthday at the foot of the tallest mountain on Earth.</p>
-                <p class="distance">Tibet &rarr; Nepal overland</p>
+                <p class="distance">5 days through sacred forests</p>
             </div>
         </div>
+
+        <a href="https://dual-pilgrim.spiritual-pilgrimages.com/joseph-lint/" target="_blank" rel="noopener" class="dual-pilgrim-card reveal">
+            <img src="dual_pilgrim.svg" alt="Dual Pilgrim Badge" class="dp-logo">
+            <div>
+                <h3>Dual Pilgrim</h3>
+                <p>Grateful to have been able to complete both UNESCO-designated pilgrimage routes - the Camino de Santiago in Spain and the Kumano Kodo in Japan.</p>
+                <span class="distance">See my Dual Pilgrim listing</span>
+            </div>
+        </a>
 
         <img src="stamp-return-to-usa.svg" alt="Return to USA passport stamp" class="passport-stamp passport-stamp-right">
         <div class="travel-stats reveal">
@@ -2830,10 +2895,10 @@
     <!-- PROJECTS -->
     <section id="projects">
         <p class="section-label reveal">Projects</p>
-        <h2 class="reveal">Things I've Built</h2>
+        <h2 class="reveal">Things I'm Building</h2>
 
         <p class="projects-intro reveal">
-            I build things because I want them to exist. Sometimes they're useful. Sometimes they're just interesting problems to solve.
+            Side projects, tools, and experiments — mostly born out of curiosity or scratching my own itch.
         </p>
 
         <div class="projects-grid">
@@ -2905,56 +2970,64 @@
             </div>
             <div class="skills-terminal-body">
                 <div class="skill-line" data-delay="0">
-                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--development</span></div>
+                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--infrastructure</span></div>
                     <div class="output">
-                        <span>Swift / SwiftUI</span>
-                        <span>HTML / CSS / JS</span>
-                        <span>SQL</span>
-                        <span>REST APIs</span>
-                        <span>.NET / C#</span>
-                        <span>Python</span>
-                        <span>Git</span>
+                        <span>Microsoft Azure</span>
+                        <span>Microsoft 365</span>
+                        <span>Active Directory</span>
+                        <span>Windows Server</span>
+                        <span>Networking</span>
+                        <span>Vendor Management</span>
+                        <span>Stripe</span>
                     </div>
                 </div>
                 <div class="skill-line" data-delay="1">
-                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--infrastructure</span></div>
-                    <div class="output">
-                        <span>Azure</span>
-                        <span>Office 365</span>
-                        <span>Active Directory</span>
-                        <span>Exchange</span>
-                        <span>Windows Server</span>
-                        <span>Networking</span>
-                        <span>Firebase</span>
-                    </div>
-                </div>
-                <div class="skill-line" data-delay="2">
                     <div class="prompt"><span class="cmd">ls</span> <span class="flag">--marketing</span></div>
                     <div class="output">
                         <span>Google Ads</span>
                         <span>Google Analytics</span>
                         <span>SEO</span>
+                        <span>MailChimp</span>
                         <span>Direct Mail</span>
-                        <span>Email Marketing</span>
-                        <span>Social Media</span>
                         <span>WordPress</span>
+                        <span>E-Commerce</span>
                     </div>
                 </div>
-                <div class="skill-line" data-delay="3">
+                <div class="skill-line" data-delay="2">
                     <div class="prompt"><span class="cmd">ls</span> <span class="flag">--product-ops</span></div>
                     <div class="output">
                         <span>Product Management</span>
-                        <span>Project Scoping</span>
-                        <span>QA Testing</span>
                         <span>ERP Systems</span>
+                        <span>Digital Transformation</span>
                         <span>AI Integration</span>
+                        <span>Agile</span>
+                        <span>ClickUp</span>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="3">
+                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--creative</span></div>
+                    <div class="output">
                         <span>Adobe Creative Suite</span>
                         <span>Figma</span>
+                        <span>Photography</span>
+                        <span>Video Production</span>
                     </div>
                 </div>
                 <div class="skill-line" data-delay="4" style="margin-bottom: 0;">
                     <div class="prompt" style="margin-bottom: 0;"><span class="cmd">_</span><span class="skills-cursor"></span></div>
                 </div>
+            </div>
+        </div>
+
+        <div class="skills-terminal reveal" style="overflow: hidden; margin-top: 2.5rem;">
+            <div class="skills-terminal-bar">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <div class="title">joe@detroit ~ /music</div>
+            </div>
+            <div style="padding: 0;">
+                <iframe style="border-radius: 0; display: block;" src="https://open.spotify.com/embed/playlist/7bswn451RNhogOFqebkuZu?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
         </div>
     </section>
@@ -2967,19 +3040,19 @@
         <h2 class="reveal">What I'm Looking For</h2>
 
         <p class="reveal">
-            I'm looking for a role where systems thinking matters. Product, operations, marketing technology—something where I can see the whole picture and make it work better. I'm good at connecting dots that other people don't see, and I'm looking for a company that values that.
+            I'm looking for a role where systems thinking matters. Product, design, marketing technology — something where I can see the whole picture and make it work better. I'm good at connecting the dots, and I'm looking for a company that values that.
         </p>
 
         <p class="reveal">
-            I don't have a degree. I have seven years of building things that work, a track record of results, and references who can tell you I leave things better than I found them.
+            I don't have a degree. I have eight years of building things that work, a track record of results, and references who can tell you I leave things better than I found them.
         </p>
 
         <p class="reveal">
-            If that sounds useful to you, let's talk.
+            If any of this resonates with you, email me.
         </p>
 
         <div class="reveal" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
-            <a href="mailto:me@joelint.com" class="cta">Get in Touch</a>
+            <a href="#" class="cta" id="contact-trigger-bottom">Get in Touch</a>
             <a href="resume.pdf" target="_blank" class="cta" style="border-color: var(--border); color: var(--text-muted);">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:0.4rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>Resume
             </a>
@@ -2988,16 +3061,14 @@
 
     <!-- FOOTER -->
     <footer>
-        <p class="footer-quote">"You can't do everything. What you don't see is only a reason to come back."</p>
-        <p>&copy; 2026 Joe Lint &middot; Detroit, MI</p>
+        <img src="saint-james-way.svg" alt="Buen Camino" style="width: 28px; height: auto; margin-bottom: 1rem; opacity: 0.85; filter: brightness(0) saturate(100%) invert(76%) sepia(60%) saturate(500%) hue-rotate(5deg) brightness(95%)">
+        <p>&copy; 2026 <span style="font-family: 'Corben', serif; font-weight: 400; font-size: 1.1rem;">Joe Lint</span> &middot; Detroit, MI</p>
     </footer>
 
     <!-- ============ SCRIPTS ============ -->
 
     <!-- Globe dependencies -->
-    <script src="https://unpkg.com/three@0.155.0/build/three.min.js"></script>
-    <script src="https://unpkg.com/topojson-client@3"></script>
-    <script src="https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js"></script>
+    <!-- Globe libs loaded lazily when section nears viewport -->
 
     <script>
     // ============ SCROLL REVEAL ============
@@ -3021,23 +3092,6 @@
         document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
     }, 200);
 
-    // ============ PARALLAX FLOATING SHAPES ============
-    const shapes = document.querySelectorAll('.shape');
-    let ticking = false;
-
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                const scrollY = window.scrollY;
-                shapes.forEach((shape, i) => {
-                    const speed = 0.02 + (i * 0.01);
-                    shape.style.transform = `translateY(${scrollY * speed}px)`;
-                });
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
 
     // ============ GLOBE UNIVERSAL-STUDIOS ARC ============
     (function globeArc() {
@@ -3274,42 +3328,49 @@
             { speedX: -0.09, speedY: -0.05, scale: 0.00005 },
         ];
 
+        let parallaxTicking = false;
+        const cachedHeadshot = document.querySelector('.headshot');
+
         window.addEventListener('scroll', () => {
-            requestAnimationFrame(() => {
-                const scrollY = window.scrollY;
-                const vh = window.innerHeight;
+            if (!parallaxTicking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const vh = window.innerHeight;
 
-                // Floating shapes parallax — strong in hero, subtle outside
-                const heroProgress = Math.min(scrollY / heroHeight, 1);
-                const intensity = 1 - heroProgress * 0.85; // 100% in hero, 15% after
-                shapes.forEach((shape, i) => {
-                    const cfg = shapeConfigs[i] || shapeConfigs[0];
-                    const x = scrollY * cfg.speedX * intensity;
-                    const y = scrollY * cfg.speedY * intensity;
-                    const s = 1 + scrollY * cfg.scale * intensity;
-                    shape.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
-                });
+                    // Floating shapes parallax — strong in hero, subtle outside
+                    const heroProgress = Math.min(scrollY / heroHeight, 1);
+                    const intensity = 1 - heroProgress * 0.85;
+                    shapes.forEach((shape, i) => {
+                        const cfg = shapeConfigs[i] || shapeConfigs[0];
+                        const x = scrollY * cfg.speedX * intensity;
+                        const y = scrollY * cfg.speedY * intensity;
+                        const s = 1 + scrollY * cfg.scale * intensity;
+                        shape.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+                    });
 
-                // Photo parallax — each photo moves at slightly different rate
-                photos.forEach((photo, i) => {
-                    const rect = photo.getBoundingClientRect();
-                    if (rect.top < vh && rect.bottom > 0) {
-                        const offset = (rect.top - vh / 2) * (0.03 + i * 0.015);
-                        photo.style.transform = `translateY(${offset}px)`;
+                    // Photo parallax
+                    photos.forEach((photo, i) => {
+                        const rect = photo.getBoundingClientRect();
+                        if (rect.top < vh && rect.bottom > 0) {
+                            const offset = (rect.top - vh / 2) * (0.03 + i * 0.015);
+                            photo.style.transform = `translateY(${offset}px)`;
+                        }
+                    });
+
+                    // Headshot subtle float
+                    if (cachedHeadshot) {
+                        const rect = cachedHeadshot.getBoundingClientRect();
+                        if (rect.top < vh && rect.bottom > 0) {
+                            const offset = (rect.top - vh / 2) * 0.04;
+                            cachedHeadshot.style.transform = `translateY(${offset}px)`;
+                        }
                     }
-                });
 
-                // Headshot subtle float
-                const headshot = document.querySelector('.headshot');
-                if (headshot) {
-                    const rect = headshot.getBoundingClientRect();
-                    if (rect.top < vh && rect.bottom > 0) {
-                        const offset = (rect.top - vh / 2) * 0.04;
-                        headshot.style.transform = `translateY(${offset}px)`;
-                    }
-                }
-            });
-        });
+                    parallaxTicking = false;
+                });
+                parallaxTicking = true;
+            }
+        }, { passive: true });
     })();
 
     // ============ DUMO GALLERY OBJECTS PARALLAX ============
@@ -3656,10 +3717,48 @@
         }
     })();
 
-    // ============ 3D GLOBE (globe.gl) ============
-    (function initGlobe() {
+    // ============ 3D GLOBE (globe.gl) — LAZY LOADED ============
+    (function lazyGlobe() {
         const container = document.getElementById('globe');
         if (!container) return;
+
+        let globeLoaded = false;
+
+        function loadGlobeScripts() {
+            if (globeLoaded) return;
+            globeLoaded = true;
+
+            const scripts = [
+                'https://unpkg.com/three@0.155.0/build/three.min.js',
+                'https://unpkg.com/topojson-client@3',
+                'https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js'
+            ];
+
+            function loadNext(i) {
+                if (i >= scripts.length) { initGlobe(); return; }
+                const s = document.createElement('script');
+                s.src = scripts[i];
+                s.onload = () => loadNext(i + 1);
+                s.onerror = () => {
+                    container.classList.add('loaded');
+                    container.querySelector('.globe-label').textContent = '30 countries & territories visited';
+                };
+                document.head.appendChild(s);
+            }
+            loadNext(0);
+        }
+
+        const globeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    globeObserver.disconnect();
+                    loadGlobeScripts();
+                }
+            });
+        }, { rootMargin: '200px' });
+        globeObserver.observe(container);
+
+        function initGlobe() {
 
         // Visited country names for polygon highlighting
         const visitedNames = new Set([
@@ -3706,7 +3805,6 @@
             { lat: 39.90, lng: 116.40, name: 'Beijing', size: 0.35 },
             { lat: 30.57, lng: 104.07, name: 'Chengdu', size: 0.3 },
             { lat: 29.65, lng: 91.10, name: 'Lhasa', size: 0.3 },
-            { lat: 28.00, lng: 86.85, name: 'Mt. Everest', size: 0.35 },
             { lat: 27.71, lng: 85.32, name: 'Kathmandu', size: 0.35 },
             // Japan
             { lat: 34.69, lng: 135.50, name: 'Osaka', size: 0.3 },
@@ -3895,11 +3993,15 @@
         // Initial view: looking at Asia
         globe.pointOfView({ lat: 25, lng: 100, altitude: 2.2 }, 0);
 
+        // Hide loader
+        container.classList.add('loaded');
+
         // Responsive
         window.addEventListener('resize', () => {
             globe.width(container.clientWidth);
             globe.height(container.clientHeight);
         });
+        } // end initGlobe
     })();
 
     // ============ KONAMI CODE → SNAKE ============
@@ -4114,52 +4216,23 @@
 
     /* ============ HEADSHOT SPEECH BUBBLE ============ */
     (function headshotTalk() {
-        const mouth = document.querySelector('.headshot-mouth');
-        const mouthPath = document.querySelector('.mouth-path');
         const bubble = document.querySelector('.speech-bubble');
         const typedEl = bubble ? bubble.querySelector('.typed-text') : null;
         const headshot = document.querySelector('.headshot');
-        if (!mouth || !mouthPath || !bubble || !typedEl || !headshot) return;
+        if (!bubble || !typedEl || !headshot) return;
 
         const message = "Hi! I'm Joe!";
         let playing = false;
-        let mouthAnim = null;
-
-        function startMouthAnim() {
-            let t = 0;
-            function frame() {
-                t += 0.12;
-                const topY = 3 + Math.abs(Math.sin(t)) * 1;
-                const botY = 8 + Math.abs(Math.sin(t)) * 9;
-                mouthPath.setAttribute('d', `M 1,2 Q 15,${topY} 29,2 Q 15,${botY} 1,2 Z`);
-                mouthAnim = requestAnimationFrame(frame);
-            }
-            mouthAnim = requestAnimationFrame(frame);
-        }
-
-        function stopMouthAnim() {
-            if (mouthAnim) cancelAnimationFrame(mouthAnim);
-            mouthAnim = null;
-        }
 
         function play() {
             if (playing) return;
             playing = true;
-
-            // Reset state
             typedEl.textContent = '';
             bubble.classList.remove('visible', 'done');
-            mouth.style.opacity = '1';
-            mouthPath.setAttribute('d', 'M 1,2 Q 15,4 29,2 Q 15,11 1,2 Z');
 
-            // Show bubble
             setTimeout(() => {
                 bubble.classList.add('visible');
-
-                // Start talking
                 setTimeout(() => {
-                    startMouthAnim();
-
                     let i = 0;
                     const typeInterval = setInterval(() => {
                         typedEl.textContent = message.slice(0, i + 1);
@@ -4167,11 +4240,7 @@
                         if (i >= message.length) {
                             clearInterval(typeInterval);
                             setTimeout(() => {
-                                stopMouthAnim();
                                 bubble.classList.add('done');
-                                // Fade out mouth
-                                mouth.style.transition = 'opacity 0.4s ease';
-                                mouth.style.opacity = '0';
                                 playing = false;
                             }, 300);
                         }
@@ -4180,10 +4249,8 @@
             }, 100);
         }
 
-        // Click to trigger
         headshot.addEventListener('click', play);
 
-        // Also auto-trigger on first scroll into view
         const obs = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -4202,6 +4269,7 @@
         if (!photos.length) return;
 
         const srcs = Array.from(photos).map(img => img.src);
+        const alts = Array.from(photos).map(img => img.alt);
         let current = 0;
         let overlay = null;
         let imgEl = null;
@@ -4213,8 +4281,9 @@
             overlay.innerHTML = `
                 <button class="lightbox-close" aria-label="Close">&times;</button>
                 <button class="lightbox-arrow prev" aria-label="Previous">&#8249;</button>
-                <img class="lightbox-img" src="${srcs[current]}" alt="">
+                <img class="lightbox-img" src="${srcs[current]}" alt="${alts[current]}">
                 <button class="lightbox-arrow next" aria-label="Next">&#8250;</button>
+                <div class="lightbox-caption">${alts[current]}</div>
                 <div class="lightbox-counter">${current + 1} / ${srcs.length}</div>
             `;
             document.body.appendChild(overlay);
@@ -4234,7 +4303,9 @@
             imgEl.style.opacity = '0';
             setTimeout(() => {
                 imgEl.src = srcs[current];
+                imgEl.alt = alts[current];
                 imgEl.style.opacity = '1';
+                overlay.querySelector('.lightbox-caption').textContent = alts[current];
                 overlay.querySelector('.lightbox-counter').textContent = `${current + 1} / ${srcs.length}`;
             }, 150);
         }
@@ -4265,6 +4336,9 @@
             <h3>Get in Touch</h3>
             <p class="contact-subtitle">I'll get back to you soon.</p>
             <form id="contact-form" action="https://formspree.io/f/mjgegwad" method="POST">
+                <input type="hidden" name="_subject" value="New message from joelint.com">
+                <input type="hidden" name="_formname" value="joelint.com contact form">
+                <input type="hidden" name="user_agent" id="contact-ua" value="">
                 <div class="form-group">
                     <label for="contact-name">Name</label>
                     <input type="text" id="contact-name" name="name" required autocomplete="name">
@@ -4295,9 +4369,10 @@
 
         function openModal(e) {
             e.preventDefault();
+            document.getElementById('contact-ua').value = navigator.userAgent;
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            setTimeout(() => overlay.querySelector('input').focus(), 350);
+            setTimeout(() => overlay.querySelector('input[name="name"]').focus(), 350);
         }
 
         function closeModal() {
@@ -4306,6 +4381,8 @@
         }
 
         trigger.addEventListener('click', openModal);
+        const triggerBottom = document.getElementById('contact-trigger-bottom');
+        if (triggerBottom) triggerBottom.addEventListener('click', openModal);
         closeBtn.addEventListener('click', closeModal);
 
         overlay.addEventListener('click', (e) => {
@@ -4348,6 +4425,7 @@
         });
     })();
     </script>
+
 
 </body>
 </html>
