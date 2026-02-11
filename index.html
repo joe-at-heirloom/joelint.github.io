@@ -1271,19 +1271,18 @@
             }
 
             .dumo-gallery-objects {
-                transform: scale(0.7);
-                transform-origin: left top;
+                left: 8px;
+            }
+            .dumo-gallery-objects .dumo-object {
+                transform: scale(0.6);
+                transform-origin: left center;
             }
 
             .proactive-matrix-objects {
-                transform: scale(0.7);
-                transform-origin: left top;
+                left: 3px;
             }
-
-            .clark-water-line,
-            #clark-rain-container {
-                transform: scale(0.7);
-                transform-origin: left bottom;
+            .proactive-matrix-objects .matrix-line {
+                font-size: 7px;
             }
 
             .job-proactive::before {
@@ -2352,11 +2351,6 @@
                 font-size: 0.7rem;
             }
 
-            /* Show left-side animations on mobile (override the hide) */
-            .dumo-gallery-objects,
-            .proactive-matrix-objects {
-                display: block;
-            }
 
             /* --- TRAVEL: globe static, no touch interaction --- */
             .globe-container {
