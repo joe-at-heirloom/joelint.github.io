@@ -14,7 +14,8 @@
     path { fill: #d0d8e4; stroke: #b8c0cc; stroke-width: 0.3; }
     #th, #jp, #cn, #np, #vn, #kh, #tw, #es, #fr, #pt, #it, #de,
     #nl, #gb, #al, #me, #hr, #ba, #at, #pl, #cz, #ca, #bs, #us,
-    #mc, #hk { fill: rgba(37, 99, 235, 0.4); stroke: rgba(37, 99, 235, 0.5); }
+    #th path, #jp path, #cn path, #es path, #fr path, #pt path,
+    #it path, #gb path, #ca path, #bs path, #us path { fill: rgba(37, 99, 235, 0.4); stroke: rgba(37, 99, 235, 0.5); }
 </style>
 <desc>
     Author: Al MacDonald
