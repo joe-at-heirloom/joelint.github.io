@@ -1595,26 +1595,13 @@
         .globe-mobile {
             display: none;
             text-align: center;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
         }
-        .globe-mobile-inner {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
-        .globe-mobile-icon {
-            font-size: 2rem;
-        }
-        .globe-mobile-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        .globe-mobile-map {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            opacity: 0.85;
         }
 
         .globe-label {
@@ -2895,10 +2882,7 @@
 
         <!-- MOBILE GLOBE FALLBACK -->
         <div class="globe-mobile reveal">
-            <div class="globe-mobile-inner">
-                <span class="globe-mobile-icon">&#127758;</span>
-                <span class="globe-mobile-text">30 countries & territories visited</span>
-            </div>
+            <object data="world-map-mobile.svg" type="image/svg+xml" class="globe-mobile-map" aria-label="World map showing 30 visited countries"></object>
         </div>
 
         <!-- CAMINO PHOTOS -->
