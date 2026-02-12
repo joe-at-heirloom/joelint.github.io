@@ -44,15 +44,15 @@
 
     <style>
         :root {
-            --bg: #ffffff;
-            --surface: #f5f7fa;
-            --surface-hover: #edf0f5;
-            --border: #e0e4ea;
-            --text: #1a1a2e;
-            --text-muted: #6b7280;
-            --accent: #2563eb;
-            --accent-dim: #1d4ed8;
-            --accent-glow: rgba(37, 99, 235, 0.1);
+           --bg: #ffffff;
+           --surface: #f5f7fa;
+           --surface-hover: #edf0f5;
+           --border: #e0e4ea;
+           --text: #1a1a2e;
+           --text-muted: #6b7280;
+           --accent: #2563eb;
+           --accent-dim: #1d4ed8;
+           --accent-glow: rgba(37, 99, 235, 0.1);
         }
 
         * {
@@ -74,7 +74,7 @@
             background: var(--bg);
             color: var(--text);
             line-height: 1.7;
-            -webkit-font-smoothing: auto;
+           -webkit-font-smoothing: auto;
             overflow-x: hidden;
         }
 
@@ -156,7 +156,7 @@
             width: 100%;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+           -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             z-index: 100;
             padding: 0 2rem;
@@ -883,7 +883,7 @@
             border-left: none;
         }
 
-        /* Ornate frame left edge — gilded molding profile */
+        /* Ornate frame left edge - gilded molding profile */
         .job-dumo::before {
             content: '';
             position: absolute;
@@ -916,7 +916,7 @@
             border-radius: 2px;
         }
 
-        /* Ornate frame — inner shadow & highlight for depth */
+        /* Ornate frame - inner shadow & highlight for depth */
         .job-dumo::after {
             content: '';
             position: absolute;
@@ -1090,7 +1090,7 @@
             color: #22c55e;
             white-space: nowrap;
             will-change: transform, opacity;
-            -webkit-mask-image: linear-gradient(to left, #000 60%, transparent 100%);
+           -webkit-mask-image: linear-gradient(to left, #000 60%, transparent 100%);
             mask-image: linear-gradient(to left, #000 60%, transparent 100%);
             overflow: hidden;
         }
@@ -1147,7 +1147,7 @@
             position: relative;
         }
 
-        /* Crack left border — jagged SVG line */
+        /* Crack left border - jagged SVG line */
         .job-clark::before {
             content: '';
             position: absolute;
@@ -1159,7 +1159,7 @@
             opacity: 0.5;
         }
 
-        /* Wet crack overlay — reveals bottom-up (water pools at base) */
+        /* Wet crack overlay - reveals bottom-up (water pools at base) */
         .clark-water-line {
             position: absolute;
             top: 0;
@@ -1174,7 +1174,7 @@
             clip-path: inset(100% 0 0 0);
         }
 
-        /* Rain container — zero-width, anchored at the crack line */
+        /* Rain container - zero-width, anchored at the crack line */
         .clark-rain-streaks {
             position: absolute;
             top: 0;
@@ -1195,7 +1195,7 @@
             will-change: transform, opacity;
         }
 
-        /* The streak line — angled to match diagonal travel */
+        /* The streak line - angled to match diagonal travel */
         .rain-drop .streak {
             width: 22px;
             height: 2px;
@@ -1743,7 +1743,7 @@
             letter-spacing: 0.05em;
         }
 
-        /* Passport stamps — float above everything, no layout impact */
+        /* Passport stamps - float above everything, no layout impact */
         .passport-stamp {
             position: absolute;
             z-index: 50;
@@ -2574,7 +2574,7 @@
                     <line x1="15" y1="4" x2="15" y2="12" stroke="#c4a35a" stroke-width="0.5" opacity="0.5"/>
                 </svg>
 
-                <!-- Classical bust with beard — front-facing clipart style -->
+                <!-- Classical bust with beard - front-facing clipart style -->
                 <svg class="dumo-object dumo-sculpture" viewBox="-1 -5 50 71" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <!-- pedestal -->
                     <rect x="8" y="60" width="32" height="4" rx="0.5" stroke="#c4a35a" stroke-width="1.2" fill="none"/>
@@ -2593,7 +2593,7 @@
                     <!-- neck -->
                     <path d="M18 41 L18 37" stroke="#c4a35a" stroke-width="1" fill="none"/>
                     <path d="M30 41 L30 37" stroke="#c4a35a" stroke-width="1" fill="none"/>
-                    <!-- head outline — centered, front-facing -->
+                    <!-- head outline - centered, front-facing -->
                     <path d="M18 37 Q14 36 12 33 Q10 30 9 26
                              Q8 22 9 18 Q10 14 13 11
                              Q16 8 20 7 L28 7
@@ -2601,7 +2601,7 @@
                              Q40 22 39 26 Q38 30 36 33
                              Q34 36 30 37"
                         stroke="#c4a35a" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-                    <!-- big curly hair — outer mass -->
+                    <!-- big curly hair - outer mass -->
                     <path d="M10 14 Q8 11 9 8 Q10 5 13 3
                              Q16 1 20 0 Q24 -1 28 0
                              Q32 1 35 3 Q38 5 39 8
@@ -2623,10 +2623,10 @@
                     <path d="M6 19 Q5 21 6 23" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
                     <path d="M39 18 Q42 16 42 19 Q42 22 41 24 Q40 25 39 26" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
                     <path d="M42 19 Q43 21 42 23" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
-                    <!-- brows — stern, slightly angled -->
+                    <!-- brows - stern, slightly angled -->
                     <path d="M14 16 L20 15" stroke="#c4a35a" stroke-width="0.8" fill="none" opacity="0.6"/>
                     <path d="M28 15 L34 16" stroke="#c4a35a" stroke-width="0.8" fill="none" opacity="0.6"/>
-                    <!-- eyes — level, serious -->
+                    <!-- eyes - level, serious -->
                     <line x1="15" y1="19" x2="20" y2="19" stroke="#c4a35a" stroke-width="0.8" opacity="0.5"/>
                     <line x1="28" y1="19" x2="33" y2="19" stroke="#c4a35a" stroke-width="0.8" opacity="0.5"/>
                     <!-- pupils -->
@@ -2684,7 +2684,7 @@
                 Fine art auction house, founded 1927. I spent four years leading their digital transformation as Technology and Marketing Manager. I launched a brand refresh and website rebuild that delivered a 300% increase in bidder registrations and doubled our web traffic. I also set photography standards, refurbished their iconic antique neon street sign, acted as product owner for our custom ERP system, shipping over 15 major features including AI-assisted cataloging.
             </p>
             <p class="job-story">
-                Jeff Bezos started with books because no other category had more SKUs — the complexity of paperbacks, hardcovers, first editions, and languages made it the hardest catalog problem to solve. Nail that, and you can sell anything. Auctions are the same kind of problem. Every item is unique, on sale for a limited time, marketed to an unusual set of buyers — and you have to attract the merchandise in the first place. That complexity is what made DuMouchelles such a formative experience.
+                Jeff Bezos started with books because no other category had more SKUs - the complexity of paperbacks, hardcovers, first editions, and languages made it the hardest catalog problem to solve. Nail that, and you can sell anything. Auctions are the same kind of problem. Every item is unique, on sale for a limited time, marketed to an unusual set of buyers - and you have to attract the merchandise in the first place. That complexity is what made DuMouchelles such a formative experience.
             </p>
             <div class="job-highlights">
                 <div class="job-highlight reveal reveal-delay-1">
@@ -2707,7 +2707,7 @@
 
             <!-- CASE STUDY: Before & After -->
             <div class="case-study reveal">
-                <p class="case-study-label">Case Study — Website Rebuild</p>
+                <p class="case-study-label">Case Study - Website Rebuild</p>
                 <div class="before-after">
                     <div class="before-after-item">
                         <p class="ba-label">Before</p>
@@ -2729,7 +2729,7 @@
             <!-- COLLAPSIBLE: LotMaker ERP -->
             <button class="collapsible-toggle reveal" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open');">
                 <span class="toggle-icon">&#9654;</span>
-                LotMaker — The Custom ERP I Managed
+                LotMaker - The Custom ERP I Managed
                 <span class="toggle-label">Details</span>
             </button>
             <div class="collapsible-content">
@@ -2807,7 +2807,7 @@
             <!-- CASE STUDY: Attorney Grievance Commission -->
             <button class="collapsible-toggle reveal" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open');">
                 <span class="toggle-icon">&#9654;</span>
-                Case Study — Attorney Grievance Commission of Michigan
+                Case Study - Attorney Grievance Commission of Michigan
                 <span class="toggle-label">Details</span>
             </button>
             <div class="collapsible-content">
@@ -2836,7 +2836,7 @@
         <div class="job job-clark reveal">
             <!-- Rain hitting the wall -->
             <div class="clark-rain-streaks" id="clark-rain-container"></div>
-            <!-- Wet crack overlay — reveals bottom-up as water accumulates -->
+            <!-- Wet crack overlay - reveals bottom-up as water accumulates -->
             <div class="clark-water-line"></div>
 
             <div class="job-header">
@@ -2846,7 +2846,7 @@
                     </div>
                     <div>
                         <h3>Clark Basement Waterproofing</h3>
-                        <p class="job-meta">Freelance — Marketing & Web · Ongoing · <a href="https://clarkwaterproofing.com" target="_blank">clarkwaterproofing.com</a></p>
+                        <p class="job-meta">Freelance - Marketing & Web · Ongoing · <a href="https://clarkwaterproofing.com" target="_blank">clarkwaterproofing.com</a></p>
                     </div>
                 </div>
             </div>
@@ -2879,7 +2879,7 @@
 
         <img src="stamp-arrival-to-thailand.svg" alt="Arrival to Thailand passport stamp" class="passport-stamp passport-stamp-left">
         <p class="travel-intro reveal">
-            In February 2025, I left my job, packed a single carry-on backpack, and bought a one-way ticket to Bangkok. I'd spent four years building systems for other people - I wanted to see what I'd learn building nothing but my own days for a while. Eight months through Asia and Europe — Thailand, Vietnam, Cambodia, China, Tibet, Nepal, Japan, then across Spain, Portugal, France, Italy, and a dozen more. I turned 30 at the Potala Palace in Tibet. I walked 500 miles across Spain. I became a Dual Pilgrim. I saw the most beautiful sunset of my life in Fisterra, Spain. Learned the hard way that street food roulette is real. Dreamed of National Coney Island Hanis in Kathmandu.
+            In February 2025, I left my job, packed a single carry-on backpack, and bought a one-way ticket to Bangkok. I'd spent four years building systems for other people - I wanted to see what I'd learn building nothing but my own days for a while. Eight months through Asia and Europe - Thailand, Vietnam, Cambodia, China, Tibet, Nepal, Japan, then across Spain, Portugal, France, Italy, and a dozen more. I turned 30 at the Potala Palace in Tibet. I walked 500 miles across Spain. I became a Dual Pilgrim. I saw the most beautiful sunset of my life in Fisterra, Spain. Learned the hard way that street food roulette is real. Dreamed of National Coney Island Hanis in Kathmandu.
         </p>
 
         <!-- GLOBE -->
@@ -2960,7 +2960,7 @@
         <h2 class="reveal">Things I'm Building</h2>
 
         <p class="projects-intro reveal">
-            Side projects, tools, and experiments — mostly born out of curiosity or scratching my own itch.
+            Side projects, tools, and experiments - mostly born out of curiosity or scratching my own itch.
         </p>
 
         <div class="projects-grid">
@@ -3101,7 +3101,7 @@
         <h2 class="reveal">What I'm Looking For</h2>
 
         <p class="reveal">
-            I'm looking for a role where systems thinking matters. Product, design, marketing technology — something where I can see the whole picture and make it work better. I'm good at connecting the dots, and I'm looking for a company that values that.
+            I'm looking for a role where systems thinking matters. Product, design, marketing technology - something where I can see the whole picture and make it work better. I'm good at connecting the dots, and I'm looking for a company that values that.
         </p>
 
         <p class="reveal">
@@ -3198,7 +3198,7 @@
             const centerX = viewW / 2 - naturalCenterX;   // offset so arc is centered on viewport
             const translateX = centerX + (t * maxX);
 
-            // Vertical: parabolic arc — high at edges, lowest at center
+            // Vertical: parabolic arc - high at edges, lowest at center
             // At t=±1 (edges): translateY = -arcLift (high up)
             // At t=0 (center): translateY = 0 (natural position)
             const arcLift = viewH * 0.35;
@@ -3420,7 +3420,7 @@
         const sectionRect = dumoSection.getBoundingClientRect();
         const marginLeft = sectionRect.left; // px from viewport left to section left
 
-        // Each object drifts a different distance — further items go further left
+        // Each object drifts a different distance - further items go further left
         const config = [
             { driftRatio: 0.35, baseRotate: -4 },   // painting
             { driftRatio: 0.2, baseRotate: 10 },    // ring
@@ -3503,7 +3503,7 @@
 
         let typingStarted = false;
         let typingStartTime = 0;
-        const charInterval = 180; // ms per character — slow deliberate typing
+        const charInterval = 180; // ms per character - slow deliberate typing
 
         function tickTyping(now) {
             if (!typingStartTime) typingStartTime = now;
@@ -3546,7 +3546,7 @@
         }, { threshold: 0.1 });
         typingObserver.observe(proSection);
 
-        // Scroll parallax — drift lines left
+        // Scroll parallax - drift lines left
         const driftRatios = [0.25, 0.4, 0.18, 0.32, 0.22, 0.35, 0.15, 0.28, 0.2, 0.38];
 
         let cachedMargin = proSection.getBoundingClientRect().left;
@@ -3687,7 +3687,7 @@
             const totalTravel = vh + rect.height;
             const progress = Math.max(0, Math.min(1, (vh - rect.top) / totalTravel));
 
-            // Wet crack — reveals bottom-up (water pools at base)
+            // Wet crack - reveals bottom-up (water pools at base)
             const revealPercent = Math.min(100, progress * 130);
             waterLine.style.clipPath = `inset(${100 - revealPercent}% 0 0 0)`;
 
@@ -3717,7 +3717,7 @@
         const travelSection = document.getElementById('travel');
         if (!travelSection) return;
 
-        // Thailand stamp — left of travel intro
+        // Thailand stamp - left of travel intro
         const intro = document.querySelector('.travel-intro');
         const isMobileStamp = window.innerWidth <= 640;
         if (stampLeft && intro) {
@@ -3733,7 +3733,7 @@
             obsLeft.observe(intro);
         }
 
-        // USA stamp — vertically centered in travel stats area
+        // USA stamp - vertically centered in travel stats area
         const stats = document.querySelector('.travel-stats');
         if (stampRight && stats) {
             const obsRight = new IntersectionObserver((entries) => {
@@ -3754,12 +3754,12 @@
         }
     })();
 
-    // ============ 3D GLOBE (globe.gl) — LAZY LOADED ============
+    // ============ 3D GLOBE (globe.gl) - LAZY LOADED ============
     (function lazyGlobe() {
         const container = document.getElementById('globe');
         if (!container) return;
 
-        // Don't load 3D globe on mobile — SVG fallback shown via CSS
+        // Don't load 3D globe on mobile - SVG fallback shown via CSS
         if (window.innerWidth <= 640) {
             container.style.display = 'none';
             return;
