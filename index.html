@@ -2020,6 +2020,56 @@
             transform: translateY(-1px);
         }
 
+        .cert-card {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+        }
+        .cert-card a {
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .cert-card a:hover {
+            background: rgba(96, 165, 250, 0.1);
+            border-color: rgba(96, 165, 250, 0.3);
+            transform: translateY(-1px);
+        }
+        .cert-card .cert-inner {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+        .cert-card .google-g {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            line-height: 1.15;
+            white-space: pre;
+            flex-shrink: 0;
+        }
+        .cert-card .cert-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .cert-card .cert-title {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+        }
+        .cert-card .cert-meta {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.35);
+        }
+        .cert-card .cert-verify {
+            font-size: 0.6rem;
+            color: #60a5fa;
+            margin-top: 0.1rem;
+        }
+
         .skills-cursor {
             display: inline-block;
             width: 7px;
@@ -3074,7 +3124,27 @@
                         <span>Video Production</span>
                     </div>
                 </div>
-                <div class="skill-line" data-delay="4" style="margin-bottom: 0;">
+                <div class="skill-line" data-delay="4">
+                    <div class="prompt"><span class="cmd">cat</span> <span class="flag">--certificates</span></div>
+                    <div class="cert-card">
+                        <a href="https://coursera.org/share/11eebe149616f3e74070ddcc9781f8c9" target="_blank" rel="noopener">
+                            <div class="cert-inner">
+                                <div class="google-g"><span style="color:#4285F4">  ██████╗ </span>
+<span style="color:#EA4335"> ██╔════╝ </span>
+<span style="color:#FBBC05"> ██║  ███╗</span>
+<span style="color:#34A853"> ██║   ██║</span>
+<span style="color:#4285F4"> ╚██████╔╝</span>
+<span style="color:#4285F4">  ╚═════╝ </span></div>
+                                <div class="cert-info">
+                                    <span class="cert-title">Google Digital Marketing & E-commerce</span>
+                                    <span class="cert-meta">Professional Certificate - 8 courses - Feb 2026</span>
+                                    <span class="cert-verify">Verify on Coursera ↗</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="5" style="margin-bottom: 0;">
                     <div class="prompt" style="margin-bottom: 0;"><span class="cmd">_</span><span class="skills-cursor"></span></div>
                 </div>
             </div>
