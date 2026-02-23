@@ -1,0 +1,4539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joe Lint</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8RKE8VQ4W6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8RKE8VQ4W6');
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Joe Lint">
+    <meta property="og:description" content="If it's broken, I'll fix it. If it's working, I'll make it better. Part technologist, part marketer, part whatever-you-need. Self-taught and still learning.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://joelint.com">
+    <meta property="og:image" content="https://joelint.com/og-image.jpg">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Joe Lint">
+    <meta name="twitter:description" content="If it's broken, I'll fix it. If it's working, I'll make it better. Part technologist, part marketer, part whatever-you-need.">
+    <meta name="twitter:image" content="https://joelint.com/og-image.jpg">
+
+    <!-- SEO -->
+    <meta name="description" content="If it's broken, I'll fix it. If it's working, I'll make it better. Part technologist, part marketer, part whatever-you-need. Self-taught and still learning.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://joelint.com">
+
+    <style>
+        :root {
+           --bg: #ffffff;
+           --surface: #f5f7fa;
+           --surface-hover: #edf0f5;
+           --border: #e0e4ea;
+           --text: #1a1a2e;
+           --text-muted: #6b7280;
+           --accent: #2563eb;
+           --accent-dim: #1d4ed8;
+           --accent-glow: rgba(37, 99, 235, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Instrument Serif', serif;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+           -webkit-font-smoothing: auto;
+            overflow-x: hidden;
+        }
+
+
+        /* ============ SCROLL ANIMATIONS ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        .reveal-slide-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-slide-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-slide-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-slide-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ============ PARALLAX SECTIONS ============ */
+        .parallax-bg {
+            position: relative;
+        }
+
+        .mobile-br { display: none; }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+            opacity: 0.3;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        /* ============ NAV ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+           -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 0 2rem;
+        }
+
+        nav .nav-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+
+        nav .logo {
+            font-weight: 400;
+            font-size: 1.4rem;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            font-family: 'Instrument Serif', serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ============ SECTIONS ============ */
+        section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 56px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-intro {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 400;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            font-style: normal;
+            max-width: 700px;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .hero .tagline {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .hero .tagline .highlight {
+            color: var(--text);
+        }
+
+        .availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-family: 'DM Sans', sans-serif;
+            color: #16a34a;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.25rem;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #16a34a;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0); }
+        }
+
+        .hero .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .hero .contact-row a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .hero .contact-row a:hover {
+            color: var(--accent);
+        }
+
+        .hero .contact-row svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .hero .contact-row .resume-btn {
+            background: var(--accent);
+            color: #fff;
+            padding: 0.4rem 0.9rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .hero .contact-row .resume-btn:hover {
+            background: var(--accent-dim);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .hero .contact-row .resume-btn svg {
+            stroke: #fff;
+        }
+
+        /* Hero scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .scroll-indicator .arrow {
+            width: 1px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ============ HEADSHOT ============ */
+        .headshot-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .headshot {
+            width: 160px;
+            height: 200px;
+            min-width: 160px;
+            border-radius: 8px;
+            overflow: visible;
+            position: relative;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .headshot img {
+            border-radius: 8px;
+        }
+
+        /* Speech bubble */
+        .speech-bubble {
+            position: absolute;
+            bottom: 57px;
+            right: auto;
+            left: -4.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 0.45rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+            opacity: 0;
+            transform: scale(0.7) translateX(10px);
+            transform-origin: right center;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+        .speech-bubble.visible {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+        }
+        .speech-bubble .typed-text::after {
+            content: '|';
+            animation: blink-cursor 0.6s step-end infinite;
+            margin-left: 1px;
+            color: var(--text-muted);
+        }
+        .speech-bubble.done .typed-text::after {
+            display: none;
+        }
+        @keyframes blink-cursor {
+            50% { opacity: 0; }
+        }
+
+        .headshot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .headshot .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            gap: 0.5rem;
+        }
+
+        .headshot .placeholder svg {
+            width: 32px;
+            height: 32px;
+            opacity: 0.3;
+        }
+
+        /* ============ STORY ============ */
+        .story-section p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.9;
+        }
+
+        .story-section p strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .story-section p em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .story-section .pull-quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text);
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 3rem 0;
+            line-height: 1.6;
+        }
+
+        /* ============ BUDDHA REVEAL ============ */
+        .buddha-reveal {
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .buddha-sticky-wrapper {
+            position: relative;
+            min-height: 200vh;
+        }
+
+        .buddha-sticky {
+            position: sticky;
+            top: 80px;
+            padding: 3rem 0;
+        }
+
+        .buddha-catalog {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .buddha-catalog .lot-number {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 0.75rem;
+        }
+
+        .buddha-catalog .lot-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .buddha-catalog .estimate {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 0.5rem;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .buddha-catalog .estimate.revealed {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+
+        .buddha-catalog .estimate-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.6s ease;
+        }
+
+        .buddha-catalog .estimate-label.revealed {
+            color: var(--accent);
+        }
+
+        .buddha-story {
+            margin-top: 2rem;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+        }
+
+        .buddha-story.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Price particles */
+        .price-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--accent);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @keyframes particle-burst {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+        }
+
+        /* ============ COUNT UP ============ */
+        .count-up {
+            display: inline-block;
+        }
+
+        /* ============ SECTION TRANSITIONS ============ */
+        .section-label {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-label.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Stagger children in travel cards */
+        .travel-card p,
+        .travel-card h3 {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .travel-card.visible p,
+        .travel-card.visible h3 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Enhanced photo parallax */
+        .photo-gallery .photo {
+            transition: transform 0.3s ease;
+        }
+
+        .photo-gallery .photo:hover {
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 640px) {
+            .buddha-catalog .estimate.revealed {
+                font-size: 2.8rem;
+            }
+
+            .buddha-sticky-wrapper {
+                min-height: auto;
+            }
+
+            .buddha-sticky {
+                position: relative;
+                top: auto;
+            }
+        }
+
+        /* ============ EXPERIENCE ============ */
+        .job {
+            margin-bottom: 4rem;
+        }
+
+        .job:last-child {
+            margin-bottom: 0;
+        }
+
+        .job .job-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .job h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .job .job-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .job .job-meta a {
+            color: var(--accent-dim);
+            text-decoration: none;
+        }
+
+        .job .job-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .job .job-story {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .job .job-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .job .job-highlight {
+            padding: 1rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .job .job-highlight .number {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--accent);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .job .job-highlight .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ============ JOB LOGO ============ */
+        .job-header-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .job-logo {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.2rem;
+        }
+
+        .job-logo img,
+        .job-logo svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 6px;
+        }
+
+        .job-logo img {
+            filter: brightness(0);
+        }
+
+        .job-logo .logo-placeholder {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* ============ CASE STUDY ============ */
+        .case-study {
+            margin-top: 2.5rem;
+        }
+
+        .case-study-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .before-after-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .before-after-item .ba-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0.75rem 1rem 0.5rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .before-after-item .ba-label.after {
+            color: var(--text-muted);
+        }
+
+        .before-after-item .ba-screenshot {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: #edf0f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .before-after-item .ba-screenshot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .before-after-item .ba-screenshot .placeholder {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+        }
+
+        .before-after-item .ba-desc {
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============ JOB THEMES ============ */
+
+        /* --- Shared illustration container --- */
+        .job-illustration {
+            margin: 1rem 0 0.5rem;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .job-illo-svg {
+            width: 200px;
+            height: 70px;
+        }
+
+        /* --- DuMouchelles: Art / Gallery --- */
+        .job-dumo {
+            padding-left: 2.8rem;
+            position: relative;
+            border-left: none;
+        }
+
+        /* Ornate frame left edge - gilded molding profile */
+        .job-dumo::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 18px;
+            height: calc(100% + 16px);
+            background:
+                linear-gradient(to right,
+                    #8b6914 0px,
+                    #c4a35a 1px,
+                    #e8d9a0 2.5px,
+                    #f5ecc8 3.5px,
+                    #e8d9a0 4.5px,
+                    #c4a35a 5.5px,
+                    #8b6914 6.5px,
+                    #6b5010 7px,
+                    #c4a35a 7.5px,
+                    #e8d9a0 8.5px,
+                    #f5ecc8 9px,
+                    #e8d9a0 9.5px,
+                    #c4a35a 11px,
+                    #a07d30 12.5px,
+                    #e8d9a0 14px,
+                    #f5ecc8 15px,
+                    #c4a35a 16.5px,
+                    #8b6914 18px
+                );
+            opacity: 0.5;
+            border-radius: 2px;
+        }
+
+        /* Ornate frame - inner shadow & highlight for depth */
+        .job-dumo::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 18px;
+            height: calc(100% + 16px);
+            background:
+                linear-gradient(to right,
+                    rgba(255,255,255,0.15) 0px,
+                    rgba(255,255,255,0.25) 3px,
+                    transparent 5px,
+                    transparent 7px,
+                    rgba(0,0,0,0.1) 7.5px,
+                    transparent 8.5px,
+                    rgba(255,255,255,0.2) 9px,
+                    transparent 11px,
+                    transparent 14px,
+                    rgba(255,255,255,0.15) 15px,
+                    rgba(0,0,0,0.08) 18px
+                ),
+                /* repeating ornament texture */
+                repeating-linear-gradient(to bottom,
+                    transparent 0px,
+                    transparent 18px,
+                    rgba(139,105,20,0.15) 19px,
+                    rgba(232,217,160,0.12) 20px,
+                    transparent 21px,
+                    transparent 39px,
+                    rgba(196,163,90,0.1) 40px,
+                    transparent 41px
+                );
+            border-radius: 2px;
+        }
+
+        /* Stat cards as picture frames */
+        .job-dumo .job-highlight {
+            border: 2px solid #c4a35a;
+            border-radius: 0;
+            position: relative;
+            background: var(--bg);
+            box-shadow: inset 0 0 0 4px var(--bg), inset 0 0 0 5px rgba(196, 163, 90, 0.3);
+        }
+
+        /* Corner ornaments on stat frames */
+        .job-dumo .job-highlight::before,
+        .job-dumo .job-highlight::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #c4a35a;
+            border-style: solid;
+            opacity: 0.5;
+        }
+
+        .job-dumo .job-highlight::before {
+            top: 4px;
+            left: 4px;
+            border-width: 1.5px 0 0 1.5px;
+        }
+
+        .job-dumo .job-highlight::after {
+            bottom: 4px;
+            right: 4px;
+            border-width: 0 1.5px 1.5px 0;
+        }
+
+        .job-dumo .job-highlight .number {
+            color: #c4a35a;
+        }
+
+        .job-dumo .job-logo {
+            border-color: rgba(196, 163, 90, 0.3);
+        }
+
+        /* Gallery objects floating from the frame */
+        .dumo-gallery-objects {
+            position: absolute;
+            top: 0;
+            left: 18px;
+            width: 0;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dumo-object {
+            position: absolute;
+            right: 0;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .dumo-painting {
+            width: 80px;
+            top: 10%;
+        }
+
+        .dumo-ring {
+            width: 52px;
+            top: 35%;
+        }
+
+        .dumo-sculpture {
+            width: 56px;
+            top: 55%;
+        }
+
+        .dumo-vase {
+            width: 50px;
+            top: 78%;
+        }
+
+        /* --- Proactive: Tech / IT --- */
+        .job-proactive {
+            padding-left: 2.8rem;
+            position: relative;
+            border-left: none;
+        }
+
+        /* Console prompt left line */
+        .job-proactive::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 4px;
+            height: calc(100% + 16px);
+            background: linear-gradient(to bottom,
+                #22c55e 0px,
+                #22c55e 20px,
+                rgba(34, 197, 94, 0.5) 20px,
+                rgba(34, 197, 94, 0.5) 100%
+            );
+            border-radius: 2px;
+            opacity: 0.6;
+        }
+
+        /* > prompt character at top of line */
+        .job-proactive::after {
+            content: '>';
+            position: absolute;
+            top: -8px;
+            left: -14px;
+            color: #22c55e;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0.7;
+            line-height: 1;
+        }
+
+        /* Matrix floating objects container */
+        .proactive-matrix-objects {
+            position: absolute;
+            top: 0;
+            left: 4px;
+            width: 0;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .matrix-line {
+            position: absolute;
+            right: 0;
+            opacity: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: #22c55e;
+            white-space: nowrap;
+            will-change: transform, opacity;
+           -webkit-mask-image: linear-gradient(to left, #000 60%, transparent 100%);
+            mask-image: linear-gradient(to left, #000 60%, transparent 100%);
+            overflow: hidden;
+        }
+
+        /* Terminal-style stat cards */
+        .job-proactive .job-highlight {
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 4px;
+            position: relative;
+            background: var(--bg);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .job-proactive .job-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #22c55e, rgba(34, 197, 94, 0.2));
+            border-radius: 4px 4px 0 0;
+            opacity: 0.6;
+        }
+
+        .job-proactive .job-highlight .number {
+            font-family: 'JetBrains Mono', monospace;
+            color: #22c55e;
+            letter-spacing: -0.02em;
+        }
+
+        .job-proactive .job-highlight .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .job-proactive .collapsible-toggle {
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .job-proactive .tech-list span {
+            border-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .job-proactive .job-logo {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        /* --- Clark: Waterproofing --- */
+        .job-clark {
+            padding-left: 2.5rem;
+            position: relative;
+        }
+
+        /* Crack left border - jagged SVG line */
+        .job-clark::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2px;
+            width: 8px;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='160' viewBox='0 0 8 160'%3E%3Cpath d='M4 0 L3 6 L5 14 L2 22 L4 28 L1 36 L5 44 L2 52 L4 58 L1 66 L5 74 L3 82 L5 88 L2 96 L4 104 L1 112 L5 120 L3 128 L4 136 L2 144 L5 152 L4 160' stroke='%23999' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Cpath d='M4 28 L6 32 L5 36' stroke='%23999' stroke-width='0.7' fill='none' opacity='0.4'/%3E%3Cpath d='M2 96 L0 100 L1 103' stroke='%23999' stroke-width='0.7' fill='none' opacity='0.4'/%3E%3C/svg%3E") repeat-y;
+            opacity: 0.5;
+        }
+
+        /* Wet crack overlay - reveals bottom-up (water pools at base) */
+        .clark-water-line {
+            position: absolute;
+            top: 0;
+            left: 2px;
+            width: 8px;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='160' viewBox='0 0 8 160'%3E%3Cpath d='M4 0 L3 6 L5 14 L2 22 L4 28 L1 36 L5 44 L2 52 L4 58 L1 66 L5 74 L3 82 L5 88 L2 96 L4 104 L1 112 L5 120 L3 128 L4 136 L2 144 L5 152 L4 160' stroke='%234a90d9' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-y;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            will-change: clip-path, opacity;
+            clip-path: inset(100% 0 0 0);
+        }
+
+        /* Rain container - zero-width, anchored at the crack line */
+        .clark-rain-streaks {
+            position: absolute;
+            top: 0;
+            left: 6px;
+            width: 0;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            overflow: visible;
+        }
+
+        /* Each raindrop anchored at the wall */
+        .rain-drop {
+            position: absolute;
+            right: 0;
+            height: 2px;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* The streak line - angled to match diagonal travel */
+        .rain-drop .streak {
+            width: 22px;
+            height: 2px;
+            background: linear-gradient(to bottom right, transparent, rgba(74, 144, 217, 0.5));
+            transform: rotate(35deg);
+            transform-origin: right center;
+        }
+
+        /* Small drop at impact point */
+        .rain-drop .drop {
+            position: absolute;
+            right: 0;
+            top: -1px;
+            width: 2.5px;
+            height: 0;
+            border-radius: 50% 50% 60% 40%;
+            background: rgba(74, 144, 217, 0.5);
+            opacity: 0;
+        }
+
+        @keyframes drop-hit {
+            0%   { height: 0; opacity: 0; top: -1px; }
+            20%  { height: 3px; width: 2.5px; opacity: 0.55; }
+            60%  { height: 4px; width: 2px; opacity: 0.35; top: 4px; }
+            100% { height: 5px; width: 1.5px; opacity: 0; top: 12px; }
+        }
+
+        .rain-drop.hit .drop {
+            animation: drop-hit 0.6s ease-in forwards;
+        }
+
+        /* Cinder block stat cards */
+        .job-clark .job-highlight {
+            position: relative;
+            border-radius: 1px;
+            background-color: #f0f0f0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='60' viewBox='0 0 160 60'%3E%3Crect width='160' height='60' fill='%23f0f0f0' stroke='%23d0d0d0' stroke-width='0.5' rx='1'/%3E%3Cline x1='0' y1='20' x2='160' y2='20' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='0' y1='40' x2='160' y2='40' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='40' y1='0' x2='40' y2='20' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='80' y1='0' x2='80' y2='20' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='120' y1='0' x2='120' y2='20' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='60' y1='20' x2='60' y2='40' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='100' y1='20' x2='100' y2='40' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='40' y1='40' x2='40' y2='60' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='80' y1='40' x2='80' y2='60' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3Cline x1='120' y1='40' x2='120' y2='60' stroke='%23d8d8d8' stroke-width='0.5'/%3E%3C/svg%3E");
+            background-size: 160px 60px;
+            border: 0.5px solid #d0d0d0;
+        }
+
+        .job-clark .job-highlight .number {
+            color: #666;
+        }
+
+        .job-clark .job-logo {
+            border-color: rgba(136, 136, 136, 0.3);
+        }
+
+        /* --- Responsive: simplify on mobile --- */
+        @media (max-width: 600px) {
+            .job-dumo,
+            .job-proactive,
+            .job-clark {
+                padding-left: 1.25rem;
+            }
+
+            .job-dumo::before,
+            .job-dumo::after {
+                width: 8px;
+            }
+
+            .job-dumo .job-highlight::before,
+            .job-dumo .job-highlight::after {
+                display: none;
+            }
+
+            .dumo-gallery-objects {
+                left: 8px;
+            }
+            .dumo-gallery-objects .dumo-object {
+                transform: scale(0.6);
+                transform-origin: left center;
+            }
+
+            .proactive-matrix-objects {
+                left: 3px;
+            }
+            .proactive-matrix-objects .matrix-line {
+                font-size: 7px;
+            }
+
+            .job-proactive::before {
+                width: 3px;
+            }
+
+            .job-illo-svg {
+                width: 160px;
+                height: 56px;
+            }
+        }
+
+        /* ============ COLLAPSIBLE ============ */
+        .collapsible-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1rem 1.25rem;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: border-color 0.3s;
+            text-align: left;
+            color: var(--text);
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1rem;
+        }
+
+        .collapsible-toggle:hover {
+            border-color: var(--accent-dim);
+        }
+
+        .collapsible-toggle .toggle-icon {
+            font-size: 0.7rem;
+            color: var(--accent);
+            transition: transform 0.3s;
+            font-family: 'DM Sans', sans-serif;
+            min-width: 1rem;
+        }
+
+        .collapsible-toggle.open .toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .collapsible-toggle .toggle-label {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'DM Sans', sans-serif;
+            margin-left: auto;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .collapsible-content.open {
+            max-height: 800px;
+        }
+
+        .collapsible-inner {
+            padding: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .collapsible-inner p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .collapsible-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .collapsible-inner .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .collapsible-inner .tech-list span {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 2px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        @media (max-width: 640px) {
+            .before-after {
+                grid-template-columns: 1fr;
+            }
+
+            .job-header-row {
+                gap: 1rem;
+            }
+
+            .job-logo {
+                width: 44px;
+                height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* ============ PHOTO GALLERY ============ */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto 220px;
+            gap: 0.75rem;
+            margin: 3rem 0;
+        }
+
+        .photo-gallery .photo {
+            aspect-ratio: 4 / 3;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-gallery .photo.tall {
+            grid-row: span 2;
+            aspect-ratio: auto;
+        }
+
+        .photo-gallery .photo.wide {
+            aspect-ratio: auto;
+            height: 100%;
+        }
+
+        /* Explicit grid placement for clean masonry */
+        .photo-gallery .photo:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }  /* camino - tall */
+        .photo-gallery .photo:nth-child(2) { grid-column: 2; grid-row: 1; }       /* spanish - small */
+        .photo-gallery .photo:nth-child(3) { grid-column: 2; grid-row: 2; }       /* fisterra - small */
+        .photo-gallery .photo:nth-child(4) { grid-column: 3; grid-row: 1 / 3; }   /* tibet - tall */
+        .photo-gallery .photo:nth-child(5) { grid-column: 1 / 4; grid-row: 3; }   /* kumano - wide bottom */
+
+        .photo-gallery .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-gallery .photo {
+            cursor: pointer;
+        }
+
+        /* ============ PHOTO LIGHTBOX ============ */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox-overlay.active {
+            opacity: 1;
+        }
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 78vh;
+            object-fit: contain;
+            border-radius: 4px;
+            transition: opacity 0.25s ease;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem 0.5rem;
+            transition: color 0.2s;
+        }
+        .lightbox-close:hover {
+            color: #fff;
+        }
+        .lightbox-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 2.5rem;
+            cursor: pointer;
+            padding: 1rem;
+            transition: color 0.2s;
+            user-select: none;
+        }
+        .lightbox-arrow:hover {
+            color: #fff;
+        }
+        .lightbox-arrow.prev { left: 1rem; }
+        .lightbox-arrow.next { right: 1rem; }
+        .lightbox-counter {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
+        }
+        .lightbox-caption {
+            position: absolute;
+            bottom: 3.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .photo-gallery .photo .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            gap: 0.4rem;
+            min-height: 140px;
+        }
+
+        .photo-gallery .photo .placeholder svg {
+            width: 24px;
+            height: 24px;
+            opacity: 0.2;
+        }
+
+        .photo-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.75rem;
+        }
+
+        /* ============ TRAVEL ============ */
+        .travel-intro {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 0;
+        }
+
+        /* Globe container */
+        .globe-container {
+            width: 100%;
+            height: 700px;
+            margin: -1rem 0 -150px;
+            position: relative;
+            border-radius: 4px;
+            overflow: visible;
+            z-index: 5;
+            will-change: transform, opacity;
+        }
+
+        .globe-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .globe-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .globe-loader .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: globe-spin 0.8s linear infinite;
+            margin: 0 auto 0.75rem;
+        }
+        @keyframes globe-spin {
+            to { transform: rotate(360deg); }
+        }
+        .globe-container.loaded .globe-loader {
+            display: none;
+        }
+
+        .globe-mobile {
+            display: none;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .globe-mobile-map {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            opacity: 0.85;
+        }
+
+        .globe-label {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-family: 'DM Sans', sans-serif;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 0.4rem 1rem;
+            border-radius: 2px;
+        }
+
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .travel-card {
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .travel-card:hover {
+            border-color: var(--accent-dim);
+        }
+
+        .travel-card h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+        }
+
+        .travel-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .dual-pilgrim-card {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            gap: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            transition: border-color 0.3s;
+        }
+
+        .dual-pilgrim-card:hover {
+            border-color: var(--accent-dim);
+        }
+
+        .dual-pilgrim-card .dp-logo {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .dual-pilgrim-card h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .dual-pilgrim-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .dual-pilgrim-card .distance {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            display: block;
+        }
+
+        .travel-card .distance {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 1rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .travel-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .travel-stat {
+            text-align: center;
+        }
+
+        .travel-stat .number {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--accent);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .travel-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Passport stamps - float above everything, no layout impact */
+        .passport-stamp {
+            position: absolute;
+            z-index: 50;
+            height: auto;
+            opacity: 0;
+            pointer-events: none;
+            filter: brightness(0);
+            transform-origin: center center;
+        }
+
+        .passport-stamp-right {
+            width: 180px;
+            right: 100%;
+            margin-right: 1rem;
+            transform: scale(3) rotate(-18deg);
+        }
+
+        .passport-stamp-left {
+            width: 180px;
+            right: 100%;
+            margin-right: 1rem;
+            transform: scale(3) rotate(12deg);
+        }
+
+        .passport-stamp-right.stamped {
+            animation: stamp-hit-right 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        .passport-stamp-left.stamped {
+            animation: stamp-hit-left 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        @keyframes stamp-hit-right {
+            0%   { opacity: 0; transform: scale(3) rotate(-18deg); }
+            35%  { opacity: 1; transform: scale(0.97) rotate(-4deg); }
+            55%  { opacity: 1; transform: scale(1.03) rotate(-7deg); }
+            75%  { opacity: 1; transform: scale(0.99) rotate(-5.5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(-6deg); }
+        }
+
+        @keyframes stamp-hit-left {
+            0%   { opacity: 0; transform: scale(3) rotate(12deg); }
+            35%  { opacity: 1; transform: scale(0.97) rotate(5deg); }
+            55%  { opacity: 1; transform: scale(1.03) rotate(3deg); }
+            75%  { opacity: 1; transform: scale(0.99) rotate(4.5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(4deg); }
+        }
+
+        /* ============ PROJECTS ============ */
+        .projects-intro {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 3rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: border-color 0.3s, transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-4px);
+        }
+
+        .project-card .app-icon {
+            width: 96px;
+            height: 96px;
+            border-radius: 22px;
+            overflow: hidden;
+            margin: 0 auto 1.25rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-card .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-card .app-icon .icon-placeholder {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .project-card h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 0.35rem;
+        }
+
+        .project-card .project-tagline {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            min-height: 2.4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .project-card .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+            margin-top: auto;
+        }
+
+        .project-card .tech-stack span {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 2px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .project-card .app-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--accent-dim);
+            border-radius: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .project-card .app-link:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .project-card .app-link svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .project-card .app-link.coming-soon {
+            border-color: var(--border);
+            color: var(--text-muted);
+            cursor: default;
+        }
+        .project-card .app-link.coming-soon:hover {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        /* ============ SKILLS ============ */
+        .skills-terminal {
+            background: #1a1e2e;
+            border-radius: 8px;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+            max-width: 700px;
+        }
+
+        .skills-terminal-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: #151829;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .skills-terminal-bar .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .skills-terminal-bar .dot.red { background: #ff5f57; }
+        .skills-terminal-bar .dot.yellow { background: #febc2e; }
+        .skills-terminal-bar .dot.green { background: #28c840; }
+        .skills-terminal-bar .title {
+            flex: 1;
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.05em;
+        }
+
+        .skills-terminal-body {
+            padding: 1.5rem;
+            min-height: 200px;
+        }
+
+        .skill-line {
+            margin-bottom: 1.25rem;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .skill-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-line .prompt {
+            color: #28c840;
+            font-size: 0.75rem;
+            margin-bottom: 0.4rem;
+        }
+        .skill-line .prompt::before {
+            content: '❯ ';
+            color: #7c3aed;
+        }
+        .skill-line .prompt .cmd {
+            color: #60a5fa;
+        }
+        .skill-line .prompt .flag {
+            color: #fbbf24;
+        }
+
+        .skill-line .output {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding-left: 1rem;
+        }
+
+        .skill-line .output span {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.25s ease;
+            cursor: default;
+        }
+        .skill-line .output span:hover {
+            background: rgba(96, 165, 250, 0.15);
+            border-color: rgba(96, 165, 250, 0.3);
+            color: #93c5fd;
+            transform: translateY(-1px);
+        }
+
+        .cert-card {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+        }
+        .cert-card a {
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .cert-card a:hover {
+            background: rgba(96, 165, 250, 0.1);
+            border-color: rgba(96, 165, 250, 0.3);
+            transform: translateY(-1px);
+        }
+        .cert-card .cert-inner {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+        .cert-card .google-g {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            line-height: 1.15;
+            white-space: pre;
+            flex-shrink: 0;
+        }
+        .cert-card .cert-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .cert-card .cert-title {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+        }
+        .cert-card .cert-meta {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.35);
+        }
+        .cert-card .cert-verify {
+            font-size: 0.6rem;
+            color: #60a5fa;
+            margin-top: 0.1rem;
+        }
+
+        .skills-cursor {
+            display: inline-block;
+            width: 7px;
+            height: 14px;
+            background: #28c840;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: terminal-blink 1s step-end infinite;
+        }
+        @keyframes terminal-blink {
+            50% { opacity: 0; }
+        }
+
+        /* ============ NOW ============ */
+        .now-section p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .now-section .cta {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .now-section .cta:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 3rem 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer .footer-quote {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 640px) {
+            nav .nav-links {
+                display: none;
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(12px);
+                padding: 1.5rem 2rem;
+                gap: 1.25rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            nav .nav-links.open {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .hero .contact-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .headshot-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: left;
+            }
+
+            .headshot {
+                width: 120px;
+                height: 150px;
+                min-width: 120px;
+            }
+
+            .speech-bubble {
+                bottom: auto;
+                top: -40px;
+                right: auto;
+                left: 50%;
+                margin-right: 0;
+                transform: scale(0.7) translateX(-50%);
+                transform-origin: center bottom;
+                font-size: 0.85rem;
+            }
+            .speech-bubble::before {
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -7px;
+                transform: translateX(-50%) rotate(45deg);
+                border-top: none;
+                border-left: none;
+                border-bottom: 1px solid var(--border);
+                border-right: 1px solid var(--border);
+            }
+            .speech-bubble.visible {
+                transform: scale(1) translateX(-50%);
+            }
+
+            .travel-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .travel-stats {
+                gap: 1.5rem;
+            }
+        }
+
+        /* ============ CONTACT MODAL ============ */
+        .contact-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        .contact-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .contact-modal {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 460px;
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+        .contact-overlay.active .contact-modal {
+            transform: translateY(0) scale(1);
+        }
+        .contact-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .contact-modal-close:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+        .contact-modal h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+        .contact-modal .contact-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .contact-modal .form-group {
+            margin-bottom: 1rem;
+        }
+        .contact-modal label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.35rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .contact-modal input,
+        .contact-modal textarea {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .contact-modal input:focus,
+        .contact-modal textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .contact-modal textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .contact-modal .send-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
+        }
+        .contact-modal .send-btn:hover {
+            background: var(--accent-dim);
+        }
+        .contact-modal .send-btn:active {
+            transform: scale(0.98);
+        }
+        .contact-modal .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .contact-modal .form-status {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            min-height: 1.4em;
+        }
+        .contact-modal .form-status.success {
+            color: #16a34a;
+        }
+        .contact-modal .form-status.error {
+            color: #dc2626;
+        }
+
+        @media (max-width: 600px) {
+            .contact-modal {
+                padding: 1.75rem;
+                width: 95%;
+            }
+        }
+
+        /* ============ MOBILE-ONLY FIXES ============ */
+        @media (max-width: 640px) {
+
+            /* --- HERO --- */
+            .hero {
+                padding-top: 80px;
+                min-height: 100vh;
+                padding-bottom: 4rem;
+            }
+
+            /* Remove resume button styling, make it match other links */
+            .hero .contact-row .resume-btn {
+                background: transparent;
+                color: var(--text-muted);
+                padding: 0;
+                border-radius: 0;
+                font-weight: 400;
+            }
+            .hero .contact-row .resume-btn:hover {
+                background: transparent;
+                color: var(--accent);
+                transform: none;
+            }
+            .hero .contact-row .resume-btn svg {
+                stroke: currentColor;
+            }
+
+            /* Show scroll indicator on mobile */
+            .scroll-indicator {
+                display: flex;
+            }
+
+            /* Hide divider after hero on mobile */
+            .hero + .section-divider {
+                display: none;
+            }
+
+            /* --- STORY: speech bubble overlap fix --- */
+            .headshot-container {
+                margin-top: 1.5rem;
+            }
+
+            /* --- WORK: stat frames narrower on mobile --- */
+            .job .job-highlights {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+            }
+            .job .job-highlight {
+                padding: 0.75rem 0.9rem;
+            }
+            .job .job-highlight .number {
+                font-size: 1.25rem;
+            }
+            .job .job-highlight .label {
+                font-size: 0.7rem;
+            }
+
+
+            /* --- TRAVEL: hide 3D globe, show SVG on mobile --- */
+            .globe-container {
+                display: none;
+            }
+            .globe-mobile {
+                display: block;
+            }
+
+            /* --- TRAVEL: photo gallery single column, no lightbox --- */
+            .photo-gallery {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 0.75rem;
+            }
+            .photo-gallery .photo {
+                aspect-ratio: 16 / 10;
+                cursor: default;
+                pointer-events: none;
+            }
+            .photo-gallery .photo.tall {
+                grid-row: span 1;
+                aspect-ratio: 3 / 4;
+            }
+            .photo-gallery .photo.wide {
+                aspect-ratio: 16 / 9;
+            }
+            .photo-gallery .photo:nth-child(1),
+            .photo-gallery .photo:nth-child(2),
+            .photo-gallery .photo:nth-child(3),
+            .photo-gallery .photo:nth-child(4),
+            .photo-gallery .photo:nth-child(5) {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            /* --- TRAVEL: stamps centered on mobile --- */
+            .passport-stamp {
+                position: relative;
+                right: auto;
+                margin-right: 0;
+                display: block;
+                margin: 1.5rem auto;
+                width: 120px;
+            }
+            .passport-stamp-left {
+                transform: scale(1) rotate(6deg);
+            }
+            .passport-stamp-right {
+                transform: scale(1) rotate(-6deg);
+            }
+            .passport-stamp-left.stamped {
+                animation: stamp-hit-left-mobile 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            }
+            .passport-stamp-right.stamped {
+                animation: stamp-hit-right-mobile 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            }
+
+            @keyframes stamp-hit-right-mobile {
+                0%   { opacity: 0; transform: scale(3) rotate(-18deg); }
+                35%  { opacity: 1; transform: scale(0.97) rotate(-4deg); }
+                55%  { opacity: 1; transform: scale(1.03) rotate(-7deg); }
+                75%  { opacity: 1; transform: scale(0.99) rotate(-5.5deg); }
+                100% { opacity: 1; transform: scale(1) rotate(-6deg); }
+            }
+            @keyframes stamp-hit-left-mobile {
+                0%   { opacity: 0; transform: scale(3) rotate(12deg); }
+                35%  { opacity: 1; transform: scale(0.97) rotate(5deg); }
+                55%  { opacity: 1; transform: scale(1.03) rotate(3deg); }
+                75%  { opacity: 1; transform: scale(0.99) rotate(4.5deg); }
+                100% { opacity: 1; transform: scale(1) rotate(4deg); }
+            }
+
+            /* --- DUAL PILGRIM: stack vertically --- */
+            .dual-pilgrim-card {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            /* --- COUNTRIES & TERRITORIES: line break --- */
+            .mobile-br { display: inline; }
+
+            /* --- PROJECTS: cards less than full width --- */
+            .projects-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            /* --- BOTTOM BUTTONS: center align --- */
+            .now-section > .reveal:last-child {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <span class="logo">Joe Lint</span>
+            <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+            <ul class="nav-links">
+                <li><a href="#story">Story</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#travel">Travel</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#now">Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <p class="hero-intro reveal">Detroit, MI</p>
+        <h1 class="reveal reveal-delay-1">If it's broken, I'll <span class="accent">fix it</span>.<br>If it's working, I'll make it <span class="accent">better</span>.</h1>
+        <p class="tagline reveal reveal-delay-2">
+            Part technologist, part marketer, part whatever-you-need.<br><span class="highlight">Self-taught and still learning.</span>
+        </p>
+        <div class="availability-badge reveal reveal-delay-3">
+            <span class="status-dot"></span> Open to opportunities
+        </div>
+        <div class="contact-row reveal reveal-delay-3">
+            <a href="#" id="contact-trigger">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                Contact
+            </a>
+            <a href="https://linkedin.com/in/joelint" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+            </a>
+            <a href="https://github.com/joe-at-heirloom" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
+            <a href="resume.pdf" download class="resume-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                Resume
+            </a>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- STORY -->
+    <section id="story" class="story-section">
+        <p class="section-label reveal">Story</p>
+        <h2 class="reveal">The Short Version</h2>
+
+        <div class="headshot-container reveal">
+            <div class="headshot">
+                <img src="Joseph_Lint_Headshot.jpg" alt="Joe Lint">
+                <div class="speech-bubble"><span class="typed-text"></span></div>
+            </div>
+            <div>
+                <p>
+                    I'm a self-taught systems thinker from Detroit. Hard work, passion, and figuring things out by doing them - starting with WordPress at 13, then IT infrastructure, then product management, then marketing, then whatever else needed doing. And I consistently pushed the envelope.
+                </p>
+            </div>
+        </div>
+
+        <p class="reveal">
+            At DuMouchelles, a 97-year-old auction house, I was the technology and marketing department. I owned a custom ERP, refreshed their brand and rebuilt their website, introduced AI-assisted cataloging, and led research and marketing on a Chinese bronze that was estimated at $1,500-$3,000. It <a href="https://www.dumoart.com/rare-chinese-luohan-statue-discovered-in-michigan-garage-sells-for-930000-at-dumouchelles-auction/" target="_blank" rel="noopener">sold for $930,000</a>.
+        </p>
+
+        <p class="reveal">
+            When I left, those responsibilities were distributed across three companies and multiple colleagues.
+        </p>
+
+        <p class="pull-quote reveal-slide-left">
+            "Getting lost is the most expensive education you can buy, but also the cheapest way to find yourself."
+        </p>
+
+        <p class="reveal">
+            In 2025, I spent eight months traveling alone through Asia and Europe. I walked 500 miles across Spain on the Camino de Santiago. I learned the hard way that street food roulette is real. I became a different person somewhere along the way.
+        </p>
+
+        <p class="reveal">
+            Now I'm back in Detroit, looking for the next thing worth building.
+        </p>
+
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- WORK -->
+    <section id="work">
+        <p class="section-label reveal">Work</p>
+        <h2 class="reveal">Where I've Been</h2>
+
+        <div class="job job-dumo reveal">
+            <!-- Gallery objects peeking from the frame -->
+            <div class="dumo-gallery-objects">
+                <!-- Painting / framed canvas -->
+                <svg class="dumo-object dumo-painting" viewBox="0 0 44 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="40" height="32" rx="1" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+                    <rect x="5" y="5" width="34" height="26" stroke="#c4a35a" stroke-width="0.5" fill="none"/>
+                    <!-- landscape lines -->
+                    <path d="M5 25 L15 15 L22 20 L30 10 L39 18" stroke="#c4a35a" stroke-width="0.75" fill="none"/>
+                    <path d="M5 28 L12 22 L20 26 L28 19 L39 24" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.6"/>
+                    <circle cx="33" cy="10" r="3" stroke="#c4a35a" stroke-width="0.75" fill="none"/>
+                </svg>
+
+                <!-- Ring / jewelry -->
+                <svg class="dumo-object dumo-ring" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="15" cy="17" rx="10" ry="8" stroke="#c4a35a" stroke-width="1.5" fill="none"/>
+                    <ellipse cx="15" cy="17" rx="7" ry="5.5" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.5"/>
+                    <!-- gem -->
+                    <path d="M12 9 L15 4 L18 9 L15 12Z" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <line x1="15" y1="4" x2="15" y2="12" stroke="#c4a35a" stroke-width="0.5" opacity="0.5"/>
+                </svg>
+
+                <!-- Classical bust with beard - front-facing clipart style -->
+                <svg class="dumo-object dumo-sculpture" viewBox="-1 -5 50 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- pedestal -->
+                    <rect x="8" y="60" width="32" height="4" rx="0.5" stroke="#c4a35a" stroke-width="1.2" fill="none"/>
+                    <path d="M12 60 L12 56 L36 56 L36 60" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <!-- shoulders / torso -->
+                    <path d="M12 56 Q11 52 8 49 Q6 47 4 46
+                             Q10 43 16 41 L32 41
+                             Q38 43 44 46 Q42 47 40 49
+                             Q37 52 36 56"
+                        stroke="#c4a35a" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+                    <!-- toga sash -->
+                    <path d="M6 46 Q14 50 22 54 Q27 56 32 56" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <path d="M8 47 Q16 51 24 55 Q29 56 34 56" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.4"/>
+                    <!-- collar -->
+                    <path d="M16 41 Q20 43 24 43 Q28 43 32 41" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <!-- neck -->
+                    <path d="M18 41 L18 37" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <path d="M30 41 L30 37" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <!-- head outline - centered, front-facing -->
+                    <path d="M18 37 Q14 36 12 33 Q10 30 9 26
+                             Q8 22 9 18 Q10 14 13 11
+                             Q16 8 20 7 L28 7
+                             Q32 8 35 11 Q38 14 39 18
+                             Q40 22 39 26 Q38 30 36 33
+                             Q34 36 30 37"
+                        stroke="#c4a35a" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+                    <!-- big curly hair - outer mass -->
+                    <path d="M10 14 Q8 11 9 8 Q10 5 13 3
+                             Q16 1 20 0 Q24 -1 28 0
+                             Q32 1 35 3 Q38 5 39 8
+                             Q40 11 38 14"
+                        stroke="#c4a35a" stroke-width="1.2" fill="none"/>
+                    <!-- curl bumps around the crown -->
+                    <path d="M10 14 Q7 12 8 9 Q9 6 10 8 Q11 10 10 14" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <path d="M13 3 Q11 1 12 -1 Q14 -2 16 0" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <path d="M20 0 Q19 -2 21 -3 Q23 -2 24 0" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <path d="M28 0 Q30 -2 32 -1 Q34 1 35 3" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <path d="M38 14 Q41 12 40 9 Q39 6 38 8 Q37 10 38 14" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <!-- inner curl texture -->
+                    <path d="M14 5 Q13 3 15 2 Q17 3 16 5" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <path d="M20 3 Q19 1 21 0 Q23 1 22 3" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <path d="M27 3 Q26 1 28 0 Q30 1 29 3" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <path d="M33 5 Q32 3 34 3 Q36 4 34 6" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <!-- side curls / sideburns -->
+                    <path d="M9 18 Q6 16 6 19 Q6 22 7 24 Q8 25 9 26" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <path d="M6 19 Q5 21 6 23" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <path d="M39 18 Q42 16 42 19 Q42 22 41 24 Q40 25 39 26" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <path d="M42 19 Q43 21 42 23" stroke="#c4a35a" stroke-width="0.6" fill="none" opacity="0.5"/>
+                    <!-- brows - stern, slightly angled -->
+                    <path d="M14 16 L20 15" stroke="#c4a35a" stroke-width="0.8" fill="none" opacity="0.6"/>
+                    <path d="M28 15 L34 16" stroke="#c4a35a" stroke-width="0.8" fill="none" opacity="0.6"/>
+                    <!-- eyes - level, serious -->
+                    <line x1="15" y1="19" x2="20" y2="19" stroke="#c4a35a" stroke-width="0.8" opacity="0.5"/>
+                    <line x1="28" y1="19" x2="33" y2="19" stroke="#c4a35a" stroke-width="0.8" opacity="0.5"/>
+                    <!-- pupils -->
+                    <circle cx="17.5" cy="18.5" r="0.7" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                    <circle cx="30.5" cy="18.5" r="0.7" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                    <!-- nose -->
+                    <path d="M22 18 L21 24 Q22 25 24 25 Q25 25 26 24" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <!-- mustache -->
+                    <path d="M17 27 Q20 29 24 27 Q28 29 31 27" stroke="#c4a35a" stroke-width="0.8" fill="none"/>
+                    <!-- beard outline -->
+                    <path d="M12 28 Q11 31 12 34
+                             Q13 37 16 39 Q20 41 24 41
+                             Q28 41 32 39 Q35 37 36 34
+                             Q37 31 36 28"
+                        stroke="#c4a35a" stroke-width="1" fill="none" stroke-linejoin="round"/>
+                    <!-- beard texture -->
+                    <path d="M16 30 Q17 34 16 37" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                    <path d="M20 30 Q21 35 20 39" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                    <path d="M24 30 Q25 35 24 40" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                    <path d="M28 30 Q29 35 28 39" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                    <path d="M32 30 Q33 34 32 37" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.4"/>
+                </svg>
+
+                <!-- Vase -->
+                <svg class="dumo-object dumo-vase" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- body -->
+                    <path d="M8 10 Q4 18 6 28 Q7 34 10 36 L18 36 Q21 34 22 28 Q24 18 20 10Z" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <!-- neck -->
+                    <path d="M10 10 Q10 6 9 4 L19 4 Q18 6 18 10Z" stroke="#c4a35a" stroke-width="1" fill="none"/>
+                    <!-- rim -->
+                    <ellipse cx="14" cy="4" rx="5.5" ry="2" stroke="#c4a35a" stroke-width="0.75" fill="none"/>
+                    <!-- decorative bands -->
+                    <path d="M6 20 Q14 22 22 20" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.6"/>
+                    <path d="M6 22 Q14 24 22 22" stroke="#c4a35a" stroke-width="0.5" fill="none" opacity="0.6"/>
+                    <!-- base -->
+                    <ellipse cx="14" cy="36" rx="4.5" ry="1.5" stroke="#c4a35a" stroke-width="0.5" fill="none"/>
+                </svg>
+            </div>
+
+            <div class="job-header">
+                <div class="job-header-row">
+                    <div class="job-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 342" fill="currentColor">
+                            <path d="M1396.97 2092.59c-195.93 0-339.9-54.31-433.118-106.64-146.914-82.46-254.598-208.94-295.446-347.02-56.211-190.02 24.211-359.36 209.883-441.96 28.578-12.71 56.316-23.05 83.188-31.27 44.553 62.52 91.533 130.64 141.023 204.79 180.94 271.05 342.41 544.37 438.86 712.67-50.91 6.52-99.06 9.43-144.39 9.43zM284.242 690.148c-122.133 0-195.12-52.109-195.12-102.5 0-20.91 13.21-40.757 37.198-55.886 22.082-13.93 63.789-30.551 137.051-30.551 51.621 0 126.781 28.801 235.109 121.219-76.019 38.652-145.121 67.718-214.238 67.718zm301.067-56.179C753.277 545.25 944 445.91 1232.18 500.77c431.99 82.218 889.18 509.85 881.24 1015.38-4.69 298.82-193.41 501.77-518.59 558.96-95.49-167.22-262.4-450.96-450.21-732.34-44.95-67.34-88.62-130.9-131-190.67 285.82-61.59 464.77 116.75 517.81 180.02 85.29 101.76 104.3 195.05 85.25 223.26l41.77 28.22c38.67-57.23 1.5-176.62-88.38-283.86-49.75-59.36-200.7-211.28-439.01-211.3-46.48-.01-96.25 5.77-149.279 19.13-148.746-206.23-281.078-364.261-396.472-473.601Zm487.231-199.137c-218.208-.012-379.481 85.199-514.247 156.398-4.199 2.211-8.371 4.418-12.523 6.602-111.278-97.844-205.59-147.031-282.399-147.031-67.523 0-124.223 13.25-163.953 38.308-39.149 24.711-60.711 59.7-60.711 98.539 0 75.993 84.34 152.922 245.535 152.922 85.672 0 165.84-36.14 254.571-82.172 102.042 94.821 230.468 241.743 391.691 464.202-23.649 7.87-47.887 17.27-72.707 28.31-210.582 93.67-301.68 286.15-237.731 502.33 44.536 150.55 160.844 287.85 319.11 376.68 124.404 69.81 333.734 143.12 629.114 100.46 41.73 73.54 65.86 117.8 66.61 119.18l59.39 3.38c-.7-1.28-36.68-67.04-73.09-131.42 340.45-65.89 537.61-284.61 542.64-604.59 3.43-218.64-87.58-458.12-249.68-657.032-174.58-214.207-413.43-359.339-672.56-408.66-59.97-11.406-116.2-16.406-169.06-16.406" style="fill-rule:nonzero;stroke:none" transform="matrix(.13333 0 0 -.13333 0 342)"/>
+                            <path d="M1282.53 0C952.305 0 638.652 125.199 399.336 352.551l34.074 35.879C663.492 169.852 965.051 49.48 1282.53 49.48c679.9 0 1233.04 553.141 1233.04 1233.04 0 679.9-553.14 1233.04-1233.04 1233.04-679.913 0-1233.053-553.14-1233.053-1233.04 0-147.46 25.761-291.692 76.554-428.688l-46.387-17.203C26.797 979.148 0 1129.16 0 1282.52c0 707.19 575.336 1282.52 1282.53 1282.52 707.18 0 1282.52-575.33 1282.52-1282.52C2565.05 575.332 1989.71 0 1282.53 0" style="fill-rule:nonzero;stroke:none" transform="matrix(.13333 0 0 -.13333 0 342)"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>DuMouchelles</h3>
+                        <p class="job-meta">Technology & Marketing Manager · 2021–2025 · Detroit · <a href="https://dumoart.com" target="_blank">dumoart.com</a></p>
+                    </div>
+                </div>
+            </div>
+            <p class="job-story">
+                Fine art auction house, founded 1927. I spent four years leading their digital transformation as Technology and Marketing Manager. I launched a brand refresh and website rebuild that delivered a 300% increase in bidder registrations and doubled our web traffic. I also set photography standards, refurbished their iconic antique neon street sign, acted as product owner for our custom ERP system, shipping over 15 major features including AI-assisted cataloging.
+            </p>
+            <p class="job-story">
+                Jeff Bezos started with books because no other category had more SKUs - the complexity of paperbacks, hardcovers, first editions, and languages made it the hardest catalog problem to solve. Nail that, and you can sell anything. Auctions are the same kind of problem. Every item is unique, on sale for a limited time, marketed to an unusual set of buyers - and you have to attract the merchandise in the first place. That complexity is what made DuMouchelles such a formative experience.
+            </p>
+            <div class="job-highlights">
+                <div class="job-highlight reveal reveal-delay-1">
+                    <div class="number"><span class="count-up" data-target="300" data-suffix="%">0%</span></div>
+                    <div class="label">Increase in bidders</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-2">
+                    <div class="number"><span class="count-up" data-target="100" data-suffix="%">0%</span></div>
+                    <div class="label">Increase in web traffic</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-3">
+                    <div class="number"><span class="count-up" data-target="15" data-suffix="+">0+</span></div>
+                    <div class="label">Major feature releases</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-4">
+                    <div class="number"><span class="count-up" data-target="3">0</span></div>
+                    <div class="label">Direct reports</div>
+                </div>
+            </div>
+
+            <!-- CASE STUDY: Before & After -->
+            <div class="case-study reveal">
+                <p class="case-study-label">Case Study - Website Rebuild</p>
+                <div class="before-after">
+                    <div class="before-after-item">
+                        <p class="ba-label">Before</p>
+                        <div class="ba-screenshot">
+                            <img src="dumoart.com_old.png" alt="DuMouchelles old website">
+                        </div>
+                        <p class="ba-desc">Custom-coded, outdated design. Live bidding segmented. Minimal customer adoption. Unprofessional photography.</p>
+                    </div>
+                    <div class="before-after-item">
+                        <p class="ba-label after">After</p>
+                        <div class="ba-screenshot">
+                            <img src="dumoart.com_new.png" alt="DuMouchelles new website">
+                        </div>
+                        <p class="ba-desc">Modern responsive design. Integrated live bidding and text alerts. Enhanced descriptions and accurate metadata. Clean, clear, and professional photographs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLLAPSIBLE: LotMaker ERP -->
+            <button class="collapsible-toggle reveal" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open');">
+                <span class="toggle-icon">&#9654;</span>
+                LotMaker - The Custom ERP I Managed
+                <span class="toggle-label">Details</span>
+            </button>
+            <div class="collapsible-content">
+                <div class="collapsible-inner">
+                    <p>
+                        LotMaker was DuMouchelles' custom-built ERP - the operational backbone handling lot cataloging, photography workflow, invoicing, consignor settlement, CRM, and order fulfillment. I became the product owner, working directly with our developer in Argentina for four years to scope, prioritize, and ship features.
+                    </p>
+                    <p>
+                        I wrote requirements, managed the backlog, ran QA, coordinated deployments, and trained staff. I introduced AI-assisted cataloging within months of ChatGPT's release and led the migration from on-premise servers to Azure - 90% complete when I left.
+                    </p>
+                    <p>
+                        I removed friction wherever I found it - simplifying workflows, improving cross-department communication, and making the system actually work for the people using it.
+                    </p>
+                    <div class="tech-list">
+                        <span>.NET / C#</span>
+                        <span>SQL Server</span>
+                        <span>Azure</span>
+                        <span>IIS</span>
+                        <span>SSRS Reporting</span>
+                        <span>REST APIs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="job job-proactive reveal">
+            <!-- Binary lines typed out from the console, fading left -->
+            <div class="proactive-matrix-objects">
+                <span class="matrix-line" style="top: 5%">0110100101001011011</span>
+                <span class="matrix-line" style="top: 14%">1011010011101001</span>
+                <span class="matrix-line" style="top: 23%">01001011010011010110</span>
+                <span class="matrix-line" style="top: 32%">110100101110101</span>
+                <span class="matrix-line" style="top: 42%">0101101001011010011</span>
+                <span class="matrix-line" style="top: 52%">10011010110100</span>
+                <span class="matrix-line" style="top: 62%">01110101001101001011</span>
+                <span class="matrix-line" style="top: 71%">1001011011010010</span>
+                <span class="matrix-line" style="top: 80%">011010011101010011</span>
+                <span class="matrix-line" style="top: 90%">10110100101101</span>
+            </div>
+
+            <div class="job-header">
+                <div class="job-header-row">
+                    <div class="job-logo">
+                        <img src="proactive_logo.svg" alt="Proactive Technology Management">
+                    </div>
+                    <div>
+                        <h3>Proactive Technology Management</h3>
+                        <p class="job-meta">IT Engineer &rarr; Team Lead · 2017–2021 · Greater Detroit · <a href="https://proactivemgmt.com" target="_blank">proactivemgmt.com</a></p>
+                    </div>
+                </div>
+            </div>
+            <p class="job-story">
+                Managed service provider covering Detroit's east side and the Grosse Pointes. I started as a mobile technician and climbed the ranks to Team Lead, managing five people and serving as primary tech for 25-30 client organizations - law firms, medical practices, schools, manufacturers. I led M365 migrations, Windows Server upgrades, new-office network builds, and a company-wide credential management migration to PassPortal/ITGlue. I also scoped and sold upgrade packages directly to clients. Four years of seeing how different organizations work, what breaks, and what actually fixes it.
+            </p>
+
+            <div class="job-highlights">
+                <div class="job-highlight reveal reveal-delay-1">
+                    <div class="number"><span class="count-up" data-target="25" data-suffix="+">0+</span></div>
+                    <div class="label">Clients as primary tech</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-2">
+                    <div class="number"><span class="count-up" data-target="5">0</span></div>
+                    <div class="label">Engineers on my team</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-3">
+                    <div class="number"><span class="count-up" data-target="10" data-suffix="+">0+</span></div>
+                    <div class="label">IT projects sold & delivered</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-4">
+                    <div class="number"><span class="count-up" data-target="100" data-suffix="+">0+</span></div>
+                    <div class="label">Incidents resolved with the power button</div>
+                </div>
+            </div>
+
+            <!-- CASE STUDY: Attorney Grievance Commission -->
+            <button class="collapsible-toggle reveal" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open');">
+                <span class="toggle-icon">&#9654;</span>
+                Case Study - Attorney Grievance Commission of Michigan
+                <span class="toggle-label">Details</span>
+            </button>
+            <div class="collapsible-content">
+                <div class="collapsible-inner">
+                    <p>
+                        The AGC was a sort of "dormant" client when I inherited the account - minimal interaction, aging hardware, and an on-premise Exchange server that needed to be migrated to the cloud. I turned it into one of our top accounts through consistent service and a series of modernization projects.
+                    </p>
+                    <p>
+                        I led a full <strong>Microsoft 365 migration</strong> from their on-premise Exchange environment, upgraded every workstation with SSDs and Windows 10, and coordinated a custom software development project that synced attorney disciplinary status from the State Bar of Michigan directly into their <strong>TimeMatters</strong> legal case management system - an integration that was abandoned and undocumented by a third-party developer.
+                    </p>
+                    <p>
+                        What started as a neglected account became a case study in what happens when someone actually pays attention.
+                    </p>
+                    <div class="tech-list">
+                        <span>Office 365</span>
+                        <span>Exchange Migration</span>
+                        <span>Windows 10</span>
+                        <span>TimeMatters</span>
+                        <span>Custom Integration</span>
+                        <span>Active Directory</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="job job-clark reveal">
+            <!-- Rain hitting the wall -->
+            <div class="clark-rain-streaks" id="clark-rain-container"></div>
+            <!-- Wet crack overlay - reveals bottom-up as water accumulates -->
+            <div class="clark-water-line"></div>
+
+            <div class="job-header">
+                <div class="job-header-row">
+                    <div class="job-logo">
+                        <img src="clark_basement_waterproofing_logo.svg" alt="Clark Basement Waterproofing">
+                    </div>
+                    <div>
+                        <h3>Clark Basement Waterproofing</h3>
+                        <p class="job-meta">Freelance - Marketing & Web · Ongoing · <a href="https://clarkwaterproofing.com" target="_blank">clarkwaterproofing.com</a></p>
+                    </div>
+                </div>
+            </div>
+            <p class="job-story">
+                A family business I've been managing the digital side of on an ongoing basis. I built and maintain their website, run their paid advertising campaigns, and design and coordinate direct mail marketing. We've got an exciting new look for 2026!
+            </p>
+            <div class="job-highlights">
+                <div class="job-highlight reveal reveal-delay-1">
+                    <div class="number">Web</div>
+                    <div class="label">Design & maintenance</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-2">
+                    <div class="number">Ads</div>
+                    <div class="label">Google & paid campaigns</div>
+                </div>
+                <div class="job-highlight reveal reveal-delay-3">
+                    <div class="number">Mail</div>
+                    <div class="label">Direct mail campaigns</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- TRAVEL -->
+    <section id="travel">
+        <p class="section-label reveal">Travel</p>
+        <h2 class="reveal">Eight Months, One Backpack</h2>
+
+        <img src="stamp-arrival-to-thailand.svg" alt="Arrival to Thailand passport stamp" class="passport-stamp passport-stamp-left">
+        <p class="travel-intro reveal">
+            In February 2025, I left my job, packed a single carry-on backpack, and bought a one-way ticket to Bangkok. I'd spent four years building systems for other people - I wanted to see what I'd learn building nothing but my own days for a while. Eight months through Asia and Europe - Thailand, Vietnam, Cambodia, China, Tibet, Nepal, Japan, then across Spain, Portugal, France, Italy, and a dozen more. I turned 30 at the Potala Palace in Tibet. I walked 500 miles across Spain. I became a Dual Pilgrim. I saw the most beautiful sunset of my life in Fisterra, Spain. Learned the hard way that street food roulette is real. Dreamed of National Coney Island Hanis in Kathmandu.
+        </p>
+
+        <!-- GLOBE -->
+        <div class="globe-container" id="globe">
+            <div class="globe-loader"><div class="spinner"></div>Loading globe...</div>
+            <div class="globe-label">30 countries & territories visited</div>
+        </div>
+
+        <!-- MOBILE GLOBE FALLBACK -->
+        <div class="globe-mobile reveal">
+            <object data="world-map-mobile.svg?v=2" type="image/svg+xml" class="globe-mobile-map" aria-label="World map showing 30 visited countries"></object>
+        </div>
+
+        <!-- CAMINO PHOTOS -->
+        <div class="photo-gallery">
+            <div class="photo tall reveal reveal-delay-1">
+                <img src="travel/camino_trail.jpeg" alt="On the Camino de Santiago trail" style="object-position: 40% center;">
+            </div>
+            <div class="photo reveal reveal-delay-2">
+                <img src="travel/spanish_landscape.jpeg" alt="Spanish landscape">
+            </div>
+            <div class="photo reveal reveal-delay-3">
+                <img src="travel/kumano_kodo.jpeg" alt="Kumano Kodo pilgrimage trail in Japan">
+            </div>
+            <div class="photo tall reveal reveal-delay-2">
+                <img src="travel/tibet_yak.jpeg" alt="Yak in Tibet">
+            </div>
+            <div class="photo wide reveal reveal-delay-3">
+                <img src="travel/fisterra_sunset.jpeg" alt="Sunset at Fisterra, Spain" style="object-position: center 35%;">
+            </div>
+        </div>
+
+        <div class="travel-grid">
+            <div class="travel-card reveal reveal-delay-1">
+                <h3>Camino de Santiago</h3>
+                <p>The French Way across Spain - Saint-Jean-Pied-de-Port to Santiago de Compostela. Thirty-three days of walking, thinking, and strangers who became friends.</p>
+                <p class="distance">500+ miles on foot</p>
+            </div>
+            <div class="travel-card reveal reveal-delay-2">
+                <h3>Kumano Kodo</h3>
+                <p>Japan's ancient pilgrimage through the mountains of the Kii Peninsula. One of only two UNESCO-designated pilgrimage routes in the world.</p>
+                <p class="distance">5 days through sacred forests</p>
+            </div>
+        </div>
+
+        <a href="https://dual-pilgrim.spiritual-pilgrimages.com/joseph-lint/" target="_blank" rel="noopener" class="dual-pilgrim-card reveal">
+            <img src="dual_pilgrim.svg" alt="Dual Pilgrim Badge" class="dp-logo">
+            <div>
+                <h3>Dual Pilgrim</h3>
+                <p>Grateful to have been able to complete both UNESCO-designated pilgrimage routes - the Camino de Santiago in Spain and the Kumano Kodo in Japan.</p>
+                <span class="distance">See my Dual Pilgrim listing</span>
+            </div>
+        </a>
+
+        <img src="stamp-return-to-usa.svg" alt="Return to USA passport stamp" class="passport-stamp passport-stamp-right">
+        <div class="travel-stats reveal">
+            <div class="travel-stat">
+                <div class="number"><span class="count-up" data-target="30">0</span></div>
+                <div class="label">Countries &<br class="mobile-br"> Territories</div>
+            </div>
+            <div class="travel-stat">
+                <div class="number"><span class="count-up" data-target="8">0</span></div>
+                <div class="label">Months Traveling</div>
+            </div>
+            <div class="travel-stat">
+                <div class="number">1</div>
+                <div class="label">Carry-On Backpack</div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <p class="section-label reveal">Projects</p>
+        <h2 class="reveal">Things I'm Building</h2>
+
+        <p class="projects-intro reveal">
+            Side projects, tools, and experiments - mostly born out of curiosity or scratching my own itch.
+        </p>
+
+        <div class="projects-grid">
+            <div class="project-card reveal reveal-delay-1">
+                <a href="https://apps.apple.com/app/id6504857688" target="_blank" rel="noopener" class="app-icon">
+                    <img src="heirloom-icon.png" alt="Heirloom App Icon">
+                </a>
+                <h3>Heirloom</h3>
+                <p class="project-tagline">What's it worth?</p>
+                <p>AI-powered image analysis to help collectors catalog, identify, and value their art and antiques.</p>
+                <div class="tech-stack">
+                    <span>Swift / SwiftUI</span>
+                    <span>Firebase</span>
+                    <span>Vision AI</span>
+                    <span>SwiftData</span>
+                </div>
+                <span class="app-link coming-soon">Coming Soon</span>
+            </div>
+
+            <div class="project-card reveal reveal-delay-2">
+                <a href="https://apps.apple.com/app/id6759269358" target="_blank" rel="noopener" class="app-icon">
+                    <img src="ollintuner-icon.png" alt="The Ollin Tuner App Icon">
+                </a>
+                <h3>The Ollin Tuner</h3>
+                <p class="project-tagline">Calibrate the ancient frequency</p>
+                <p>An Aztec oracle that lives in your phone. Hold the Sun Stone, receive a spoken transmission from the void. Ages 4+.</p>
+                <div class="tech-stack">
+                    <span>Swift / SwiftUI</span>
+                    <span>Groq AI</span>
+                    <span>ElevenLabs</span>
+                    <span>CloudKit</span>
+                </div>
+                <a href="https://apps.apple.com/app/id6759269358" target="_blank" rel="noopener" class="app-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                    App Store
+                </a>
+            </div>
+
+            <div class="project-card reveal reveal-delay-3">
+                <div class="app-icon">
+                    <span class="icon-placeholder">&#x1F0CF;</span>
+                </div>
+                <h3>Learn to Play Cards</h3>
+                <p class="project-tagline">From novice to grandmaster</p>
+                <p>Interactive lessons for Texas Hold'em, Blackjack, Hearts, and Spades with a CardIQ ranking system.</p>
+                <div class="tech-stack">
+                    <span>Swift / SwiftUI</span>
+                    <span>GameKit</span>
+                    <span>Game Center</span>
+                </div>
+                <span class="app-link coming-soon">Coming Soon</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- SKILLS -->
+    <section id="skills">
+        <p class="section-label reveal">Skills & Tools</p>
+        <h2 class="reveal">What I Work With</h2>
+
+        <div class="skills-terminal reveal">
+            <div class="skills-terminal-bar">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <div class="title">joe@detroit ~ /skills</div>
+            </div>
+            <div class="skills-terminal-body">
+                <div class="skill-line" data-delay="0">
+                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--infrastructure</span></div>
+                    <div class="output">
+                        <span>Microsoft Azure</span>
+                        <span>Microsoft 365</span>
+                        <span>Active Directory</span>
+                        <span>Windows Server</span>
+                        <span>Networking</span>
+                        <span>Stripe</span>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="1">
+                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--marketing</span></div>
+                    <div class="output">
+                        <span>Google Ads</span>
+                        <span>Google Analytics</span>
+                        <span>SEO</span>
+                        <span>Mailchimp</span>
+                        <span>Direct Mail</span>
+                        <span>WordPress</span>
+                        <span>E-commerce</span>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="2">
+                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--product-ops</span></div>
+                    <div class="output">
+                        <span>Product Management</span>
+                        <span>ERP Systems</span>
+                        <span>Digital Transformation</span>
+                        <span>AI Integration</span>
+                        <span>Agile</span>
+                        <span>ClickUp</span>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="3">
+                    <div class="prompt"><span class="cmd">ls</span> <span class="flag">--creative</span></div>
+                    <div class="output">
+                        <span>Adobe Creative Suite</span>
+                        <span>Figma</span>
+                        <span>Photography</span>
+                        <span>Video Production</span>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="4">
+                    <div class="prompt"><span class="cmd">cat</span> <span class="flag">--certificates</span></div>
+                    <div class="cert-card">
+                        <a href="https://coursera.org/share/11eebe149616f3e74070ddcc9781f8c9" target="_blank" rel="noopener">
+                            <div class="cert-inner">
+                                <div class="google-g"><span style="color:#4285F4">  ██████╗ </span>
+<span style="color:#EA4335"> ██╔════╝ </span>
+<span style="color:#FBBC05"> ██║  ███╗</span>
+<span style="color:#34A853"> ██║   ██║</span>
+<span style="color:#4285F4"> ╚██████╔╝</span>
+<span style="color:#4285F4">  ╚═════╝ </span></div>
+                                <div class="cert-info">
+                                    <span class="cert-title">Google Digital Marketing & E-commerce</span>
+                                    <span class="cert-meta">Professional Certificate - 8 courses - Feb 2026</span>
+                                    <span class="cert-verify">Verify on Coursera ↗</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="skill-line" data-delay="5" style="margin-bottom: 0;">
+                    <div class="prompt" style="margin-bottom: 0;"><span class="cmd">_</span><span class="skills-cursor"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="skills-terminal reveal" style="overflow: hidden; margin-top: 2.5rem;">
+            <div class="skills-terminal-bar">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <div class="title">joe@detroit ~ /music</div>
+            </div>
+            <div style="padding: 0;">
+                <iframe style="border-radius: 0; display: block;" src="https://open.spotify.com/embed/playlist/7bswn451RNhogOFqebkuZu?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- NOW -->
+    <section id="now" class="now-section">
+        <p class="section-label reveal">Now</p>
+        <h2 class="reveal">What I'm Looking For</h2>
+
+        <p class="reveal">
+            I'm looking for a role where systems thinking matters. Product, design, marketing technology - something where I can see the whole picture and make it work better. I'm good at connecting the dots, and I'm looking for a company that values that.
+        </p>
+
+        <p class="reveal">
+            I have eight years of building things that work, a track record of results, and references who can tell you I leave things better than I found them.
+        </p>
+
+        <p class="reveal">
+            If any of this resonates with you, email me.
+        </p>
+
+        <div class="reveal" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
+            <a href="#" class="cta" id="contact-trigger-bottom">Get in Touch</a>
+            <a href="resume.pdf" target="_blank" class="cta" style="border-color: var(--border); color: var(--text-muted);">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px;vertical-align:middle;margin-right:0.4rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>Resume
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <img src="saint-james-way.svg" alt="Buen Camino" style="width: 28px; height: auto; margin-bottom: 1rem; opacity: 0.85; filter: brightness(0) saturate(100%) invert(76%) sepia(60%) saturate(500%) hue-rotate(5deg) brightness(95%)">
+        <p>&copy; 2026 <span style="font-family: 'Instrument Serif', serif; font-weight: 700; font-size: 1.1rem;">Joe Lint</span> &middot; Detroit, MI</p>
+    </footer>
+
+    <!-- ============ SCRIPTS ============ -->
+
+    <!-- Globe dependencies -->
+    <!-- Globe libs loaded lazily when section nears viewport -->
+
+    <script>
+    // ============ SCROLL REVEAL ============
+    const revealElements = document.querySelectorAll('.reveal, .reveal-slide-left, .reveal-slide-right, .reveal-scale');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Auto-reveal hero elements on load
+    setTimeout(() => {
+        document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+    }, 200);
+
+
+    // ============ GLOBE UNIVERSAL-STUDIOS ARC ============
+    (function globeArc() {
+        const globe = document.getElementById('globe');
+        if (!globe) return;
+
+        // Cache the natural (untransformed) position of the globe's parent section
+        // to avoid feedback loops from getBoundingClientRect on a transformed element
+        let naturalOffsetTop = 0;
+        let naturalHeight = 0;
+        let naturalCenterX = 0;
+
+        function cacheNaturalPosition() {
+            // Temporarily strip transform to get the real layout position
+            const savedTransform = globe.style.transform;
+            const savedOpacity = globe.style.opacity;
+            globe.style.transform = 'none';
+            globe.style.opacity = '1';
+            const rect = globe.getBoundingClientRect();
+            naturalOffsetTop = rect.top + window.scrollY;
+            naturalHeight = rect.height;
+            naturalCenterX = rect.left + rect.width / 2;
+            globe.style.transform = savedTransform;
+            globe.style.opacity = savedOpacity;
+        }
+
+        function updateGlobe() {
+            const viewH = window.innerHeight;
+            const viewW = window.innerWidth;
+            const scrollY = window.scrollY;
+
+            // Where is the natural center of the globe relative to the viewport?
+            const naturalCenterY = naturalOffsetTop + naturalHeight / 2 - scrollY;
+
+            // t: 1 = entering from bottom, 0 = dead center of viewport, -1 = exiting top
+            const raw = (naturalCenterY - viewH / 2) / (viewH * 0.9);
+            const t = Math.max(-1.3, Math.min(1.3, raw));
+
+            // --- Shooting-star orbit: swoops in from upper-right, dips through center, exits upper-left ---
+
+            // Horizontal: sweep full viewport width
+            const maxX = viewW * 0.55;
+            const centerX = viewW / 2 - naturalCenterX;   // offset so arc is centered on viewport
+            const translateX = centerX + (t * maxX);
+
+            // Vertical: parabolic arc - high at edges, lowest at center
+            // At t=±1 (edges): translateY = -arcLift (high up)
+            // At t=0 (center): translateY = 0 (natural position)
+            const arcLift = viewH * 0.35;
+            const translateY = -arcLift * t * t;
+
+            // Scale: biggest at center (closest flyby), smaller at edges
+            const dist = Math.abs(t);
+            const scale = 0.45 + (1 - dist) * 0.65;
+
+            // Opacity: fade in/out smoothly
+            const opacity = Math.max(0, Math.min(1, (1.3 - dist) * 1.2));
+
+            // Rotation: tilts along the arc like a spinning object
+            const rotate = t * 18;
+
+            globe.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotate(${rotate}deg)`;
+            globe.style.opacity = opacity;
+        }
+
+        // Cache position on load and resize
+        cacheNaturalPosition();
+        window.addEventListener('resize', () => {
+            cacheNaturalPosition();
+            updateGlobe();
+        }, { passive: true });
+
+        let globeTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!globeTicking) {
+                requestAnimationFrame(() => {
+                    updateGlobe();
+                    globeTicking = false;
+                });
+                globeTicking = true;
+            }
+        }, { passive: true });
+
+        updateGlobe();
+    })();
+
+    // ============ MOBILE NAV ============
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.remove('open');
+        });
+    });
+
+    // ============ TRAVEL CARD REVEAL ============
+    document.querySelectorAll('.travel-card').forEach(el => {
+        revealObserver.observe(el);
+    });
+
+    // ============ SKILLS TERMINAL REVEAL ============
+    (function skillsTerminal() {
+        const terminal = document.querySelector('.skills-terminal');
+        if (!terminal) return;
+        const lines = terminal.querySelectorAll('.skill-line');
+        let triggered = false;
+
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting && !triggered) {
+                    triggered = true;
+                    obs.disconnect();
+                    lines.forEach((line, i) => {
+                        const delay = parseInt(line.dataset.delay || 0);
+                        setTimeout(() => {
+                            line.classList.add('visible');
+                        }, delay * 350 + 200);
+                    });
+                }
+            });
+        }, { threshold: 0.15 });
+
+        obs.observe(terminal);
+    })();
+
+    // ============ BUDDHA REVEAL ============
+    (function buddhaReveal() {
+        const catalog = document.getElementById('buddha-catalog');
+        const estimate = document.getElementById('buddha-estimate');
+        const label = document.getElementById('buddha-label');
+        const story = document.getElementById('buddha-story');
+        if (!catalog || !estimate) return;
+
+        let revealed = false;
+
+        function createParticles() {
+            const rect = estimate.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 24; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('price-particle');
+                const angle = (Math.PI * 2 * i) / 24;
+                const dist = 60 + Math.random() * 120;
+                particle.style.left = (rect.width / 2) + 'px';
+                particle.style.top = (estimate.offsetTop + rect.height / 2) + 'px';
+                particle.style.setProperty('--px', Math.cos(angle) * dist + 'px');
+                particle.style.setProperty('--py', Math.sin(angle) * dist + 'px');
+                particle.style.animation = `particle-burst 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
+                particle.style.animationDelay = (Math.random() * 0.15) + 's';
+                catalog.appendChild(particle);
+                setTimeout(() => particle.remove(), 1200);
+            }
+        }
+
+        const buddhaObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !revealed) {
+                    revealed = true;
+                    // Stage 1: Show the estimate
+                    setTimeout(() => {
+                        // Stage 2: Animate to $930,000
+                        estimate.textContent = '$930,000';
+                        estimate.classList.add('revealed');
+                        label.textContent = 'Sold at auction';
+                        label.classList.add('revealed');
+                        createParticles();
+                        // Stage 3: Show the story
+                        setTimeout(() => {
+                            story.classList.add('revealed');
+                        }, 400);
+                    }, 800);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        buddhaObserver.observe(catalog);
+    })();
+
+    // ============ COUNT-UP ANIMATION ============
+    (function countUpInit() {
+        const countEls = document.querySelectorAll('.count-up');
+
+        function animateCount(el) {
+            const target = parseInt(el.dataset.target);
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const duration = 1500;
+            const start = performance.now();
+
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease out cubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(eased * target);
+                el.textContent = prefix + current.toLocaleString() + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    countObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        countEls.forEach(el => countObserver.observe(el));
+    })();
+
+    // ============ ENHANCED PARALLAX ============
+    (function enhancedParallax() {
+        const photos = document.querySelectorAll('.photo-gallery .photo');
+        const sections = document.querySelectorAll('section');
+        const heroSection = document.querySelector('.hero');
+        const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+
+        let parallaxTicking = false;
+        const cachedHeadshot = document.querySelector('.headshot');
+
+        window.addEventListener('scroll', () => {
+            if (!parallaxTicking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const vh = window.innerHeight;
+
+                    // Photo parallax
+                    photos.forEach((photo, i) => {
+                        const rect = photo.getBoundingClientRect();
+                        if (rect.top < vh && rect.bottom > 0) {
+                            const offset = (rect.top - vh / 2) * (0.03 + i * 0.015);
+                            photo.style.transform = `translateY(${offset}px)`;
+                        }
+                    });
+
+                    // Headshot subtle float
+                    if (cachedHeadshot) {
+                        const rect = cachedHeadshot.getBoundingClientRect();
+                        if (rect.top < vh && rect.bottom > 0) {
+                            const offset = (rect.top - vh / 2) * 0.04;
+                            cachedHeadshot.style.transform = `translateY(${offset}px)`;
+                        }
+                    }
+
+                    parallaxTicking = false;
+                });
+                parallaxTicking = true;
+            }
+        }, { passive: true });
+    })();
+
+    // ============ DUMO GALLERY OBJECTS PARALLAX ============
+    (function dumoGalleryParallax() {
+        const dumoSection = document.querySelector('.job-dumo');
+        const objects = document.querySelectorAll('.dumo-object');
+        if (!dumoSection || !objects.length) return;
+
+        // How far left of the section the dumo container sits from viewport edge
+        // Objects will drift from the frame edge out into the left margin
+        const sectionRect = dumoSection.getBoundingClientRect();
+        const marginLeft = sectionRect.left; // px from viewport left to section left
+
+        // Each object drifts a different distance - further items go further left
+        const config = [
+            { driftRatio: 0.35, baseRotate: -4 },   // painting
+            { driftRatio: 0.2, baseRotate: 10 },    // ring
+            { driftRatio: 0.42, baseRotate: 0 },    // sculpture
+            { driftRatio: 0.28, baseRotate: -5 },   // vase
+        ];
+
+        let cachedMargin = marginLeft;
+        window.addEventListener('resize', () => {
+            cachedMargin = dumoSection.getBoundingClientRect().left;
+        }, { passive: true });
+
+        function update() {
+            const rect = dumoSection.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            // Only animate when section is in view
+            if (rect.bottom < -100 || rect.top > vh + 100) return;
+
+            // Progress: 0 at start → 1 when fully scrolled through
+            const totalTravel = vh + rect.height;
+            const progress = Math.max(0, Math.min(1, (vh - rect.top) / totalTravel));
+
+            // Ease: slow start, smooth middle, slow end
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            objects.forEach((obj, i) => {
+                const cfg = config[i] || config[0];
+                // Max drift = ratio of left margin, so objects go into the gutter
+                const maxDrift = cachedMargin * cfg.driftRatio;
+                const drift = eased * maxDrift;
+                const wobble = Math.sin(progress * Math.PI * 1.5) * 4;
+                const rotate = cfg.baseRotate + (eased - 0.5) * 10;
+
+                obj.style.transform = `translateX(${-drift}px) translateY(${wobble}px) rotate(${rotate}deg)`;
+
+                // Fade in during first 15%, stay visible, fade out in last 10%
+                const fadeIn = Math.min(1, progress / 0.15);
+                const fadeOut = 1 - Math.max(0, (progress - 0.9) / 0.1);
+                obj.style.opacity = fadeIn * fadeOut * 0.55;
+            });
+        }
+
+        let dumoTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!dumoTicking) {
+                requestAnimationFrame(() => {
+                    update();
+                    dumoTicking = false;
+                });
+                dumoTicking = true;
+            }
+        }, { passive: true });
+
+        update();
+    })();
+
+    // ============ PROACTIVE MATRIX PARALLAX ============
+    (function proactiveMatrixParallax() {
+        const proSection = document.querySelector('.job-proactive');
+        const lines = document.querySelectorAll('.matrix-line');
+        if (!proSection || !lines.length) return;
+
+        // Store full text, clear visible content, track typing state
+        const lineData = [];
+        lines.forEach((line, i) => {
+            const fullText = line.textContent;
+            line.textContent = '';
+            lineData.push({
+                el: line,
+                fullText: fullText,
+                typed: 0,
+                started: false,
+                done: false,
+                delay: 100 + Math.random() * 300,  // nearly simultaneous, slight jitter
+            });
+        });
+
+        let typingStarted = false;
+        let typingStartTime = 0;
+        const charInterval = 180; // ms per character - slow deliberate typing
+
+        function tickTyping(now) {
+            if (!typingStartTime) typingStartTime = now;
+            const elapsed = now - typingStartTime;
+            let allDone = true;
+
+            lineData.forEach((ld) => {
+                if (ld.done) return;
+                allDone = false;
+
+                const lineElapsed = elapsed - ld.delay;
+                if (lineElapsed < 0) return;
+                ld.started = true;
+
+                const charsToShow = Math.min(
+                    ld.fullText.length,
+                    Math.floor(lineElapsed / charInterval)
+                );
+
+                if (charsToShow > ld.typed) {
+                    ld.typed = charsToShow;
+                    ld.el.textContent = ld.fullText.slice(0, charsToShow);
+                }
+
+                if (ld.typed >= ld.fullText.length) ld.done = true;
+            });
+
+            if (!allDone) requestAnimationFrame(tickTyping);
+        }
+
+        // Start typing when section enters viewport
+        const typingObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !typingStarted) {
+                    typingStarted = true;
+                    requestAnimationFrame(tickTyping);
+                    typingObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.1 });
+        typingObserver.observe(proSection);
+
+        // Scroll parallax - drift lines left
+        const driftRatios = [0.25, 0.4, 0.18, 0.32, 0.22, 0.35, 0.15, 0.28, 0.2, 0.38];
+
+        let cachedMargin = proSection.getBoundingClientRect().left;
+        window.addEventListener('resize', () => {
+            cachedMargin = proSection.getBoundingClientRect().left;
+        }, { passive: true });
+
+        function updateDrift() {
+            const rect = proSection.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            if (rect.bottom < -100 || rect.top > vh + 100) return;
+
+            const totalTravel = vh + rect.height;
+            const progress = Math.max(0, Math.min(1, (vh - rect.top) / totalTravel));
+
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            lines.forEach((line, i) => {
+                const ratio = driftRatios[i % driftRatios.length];
+                const maxDrift = cachedMargin * ratio;
+                const drift = eased * maxDrift;
+
+                line.style.transform = `translateX(${-drift}px)`;
+
+                const fadeIn = Math.min(1, progress / 0.12);
+                const fadeOut = 1 - Math.max(0, (progress - 0.9) / 0.1);
+                const baseOpacity = 0.35 + (i % 3) * 0.08;
+                line.style.opacity = fadeIn * fadeOut * baseOpacity;
+            });
+        }
+
+        let proTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!proTicking) {
+                requestAnimationFrame(() => {
+                    updateDrift();
+                    proTicking = false;
+                });
+                proTicking = true;
+            }
+        }, { passive: true });
+
+        updateDrift();
+    })();
+
+    // ============ CLARK RAIN & WET CRACK ============
+    (function clarkRainEffect() {
+        const clarkSection = document.querySelector('.job-clark');
+        const waterLine = document.querySelector('.clark-water-line');
+        const rainContainer = document.getElementById('clark-rain-container');
+        if (!clarkSection || !waterLine || !rainContainer) return;
+
+        let isInView = false;
+        let rainInterval = null;
+        let cachedMargin = clarkSection.getBoundingClientRect().left;
+        window.addEventListener('resize', () => {
+            cachedMargin = clarkSection.getBoundingClientRect().left;
+        }, { passive: true });
+
+        function spawnDrop() {
+            const el = document.createElement('div');
+            el.className = 'rain-drop';
+            // Start higher up so diagonal path ends at the crack
+            const topEnd = 8 + Math.random() * 84;
+            el.innerHTML = '<div class="streak"></div><div class="drop"></div>';
+            rainContainer.appendChild(el);
+
+            // Diagonal: start top-left, end bottom-right at the crack
+            const startX = -(cachedMargin * (0.4 + Math.random() * 0.5));
+            const startY = -Math.abs(startX) * 0.7; // travel downward proportional to horizontal distance
+            const duration = 800 + Math.random() * 500;
+            const startTime = performance.now();
+
+            el.style.top = topEnd + '%';
+            el.style.opacity = '0';
+            el.style.transform = `translate(${startX}px, ${startY}px)`;
+
+            function animate(now) {
+                const t = Math.min(1, (now - startTime) / duration);
+                const ease = t * (2 - t);
+                const x = startX * (1 - ease);
+                const y = startY * (1 - ease);
+                const opacity = t < 0.1 ? t / 0.1 * 0.55 : (t < 0.65 ? 0.55 : 0.55 * (1 - (t - 0.65) / 0.35));
+                el.style.transform = `translate(${x}px, ${y}px)`;
+                el.style.opacity = opacity;
+
+                if (t < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    el.style.opacity = '0';
+                    el.classList.add('hit');
+                    setTimeout(() => el.remove(), 700);
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function startRain() {
+            if (rainInterval) return;
+            function scheduleNext() {
+                rainInterval = setTimeout(() => {
+                    spawnDrop();
+                    spawnDrop();
+                    if (Math.random() > 0.3) {
+                        setTimeout(spawnDrop, 40 + Math.random() * 80);
+                    }
+                    if (Math.random() > 0.5) {
+                        setTimeout(spawnDrop, 90 + Math.random() * 100);
+                    }
+                    scheduleNext();
+                }, 150 + Math.random() * 200);
+            }
+            scheduleNext();
+        }
+
+        function stopRain() {
+            if (rainInterval) {
+                clearTimeout(rainInterval);
+                rainInterval = null;
+            }
+        }
+
+        function update() {
+            const rect = clarkSection.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            if (rect.bottom < 0 || rect.top > vh) {
+                waterLine.style.opacity = 0;
+                if (isInView) { isInView = false; stopRain(); }
+                return;
+            }
+
+            if (!isInView) { isInView = true; startRain(); }
+
+            const totalTravel = vh + rect.height;
+            const progress = Math.max(0, Math.min(1, (vh - rect.top) / totalTravel));
+
+            // Wet crack - reveals bottom-up (water pools at base)
+            const revealPercent = Math.min(100, progress * 130);
+            waterLine.style.clipPath = `inset(${100 - revealPercent}% 0 0 0)`;
+
+            const fadeIn = Math.min(1, progress / 0.1);
+            const fadeOut = 1 - Math.max(0, (progress - 0.92) / 0.08);
+            waterLine.style.opacity = fadeIn * fadeOut * 0.6;
+        }
+
+        let clarkTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!clarkTicking) {
+                requestAnimationFrame(() => {
+                    update();
+                    clarkTicking = false;
+                });
+                clarkTicking = true;
+            }
+        }, { passive: true });
+
+        update();
+    })();
+
+    // ============ PASSPORT STAMPS ============
+    (function passportStamps() {
+        const stampRight = document.querySelector('.passport-stamp-right');
+        const stampLeft = document.querySelector('.passport-stamp-left');
+        const travelSection = document.getElementById('travel');
+        if (!travelSection) return;
+
+        // Thailand stamp - left of travel intro
+        const intro = document.querySelector('.travel-intro');
+        const isMobileStamp = window.innerWidth <= 640;
+        if (stampLeft && intro) {
+            if (!isMobileStamp) stampLeft.style.top = intro.offsetTop + 'px';
+            const obsLeft = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        stampLeft.classList.add('stamped');
+                        obsLeft.disconnect();
+                    }
+                });
+            }, { threshold: 0.2 });
+            obsLeft.observe(intro);
+        }
+
+        // USA stamp - vertically centered in travel stats area
+        const stats = document.querySelector('.travel-stats');
+        if (stampRight && stats) {
+            const obsRight = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        // Center on the actual stat content, not the padding
+                        const stampH = 180 * (850 / 1266);
+                        const firstStat = stats.querySelector('.travel-stat');
+                        const contentTop = firstStat.offsetTop + stats.offsetTop;
+                        const contentH = firstStat.offsetHeight;
+                        if (!isMobileStamp) stampRight.style.top = (contentTop + contentH / 2 - stampH / 2) + 'px';
+                        stampRight.classList.add('stamped');
+                        obsRight.disconnect();
+                    }
+                });
+            }, { threshold: 0.3 });
+            obsRight.observe(stats);
+        }
+    })();
+
+    // ============ 3D GLOBE (globe.gl) - LAZY LOADED ============
+    (function lazyGlobe() {
+        const container = document.getElementById('globe');
+        if (!container) return;
+
+        // Don't load 3D globe on mobile - SVG fallback shown via CSS
+        if (window.innerWidth <= 640) {
+            container.style.display = 'none';
+            return;
+        }
+
+        let globeLoaded = false;
+
+        function loadGlobeScripts() {
+            if (globeLoaded) return;
+            globeLoaded = true;
+
+            const scripts = [
+                'https://unpkg.com/three@0.155.0/build/three.min.js',
+                'https://unpkg.com/topojson-client@3',
+                'https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js'
+            ];
+
+            function loadNext(i) {
+                if (i >= scripts.length) { initGlobe(); return; }
+                const s = document.createElement('script');
+                s.src = scripts[i];
+                s.onload = () => loadNext(i + 1);
+                s.onerror = () => {
+                    container.classList.add('loaded');
+                    container.querySelector('.globe-label').textContent = '30 countries & territories visited';
+                };
+                document.head.appendChild(s);
+            }
+            loadNext(0);
+        }
+
+        const globeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    globeObserver.disconnect();
+                    loadGlobeScripts();
+                }
+            });
+        }, { rootMargin: '200px' });
+        globeObserver.observe(container);
+
+        function initGlobe() {
+
+        // Visited country names for polygon highlighting
+        const visitedNames = new Set([
+            'Thailand', 'Japan', 'China', 'Nepal', 'Vietnam', 'Cambodia',
+            'Taiwan', 'Spain', 'France', 'Portugal', 'Italy', 'Germany',
+            'Netherlands', 'United Kingdom', 'Albania', 'Montenegro',
+            'Croatia', 'Bosnia and Herzegovina', 'Austria', 'Poland',
+            'Czech Republic', 'Czech Rep.', 'Monaco',
+            'Canada', 'Bahamas', 'The Bahamas',
+            'United States', 'United States of America'
+        ]);
+
+        // Alternate GeoJSON names
+        const altNames = {
+            'Viet Nam': 'Vietnam',
+            'Bosnia and Herz.': 'Bosnia and Herzegovina',
+            'Czechia': 'Czech Republic',
+            'Czech Rep.': 'Czech Republic',
+        };
+
+        function isVisited(name) {
+            if (visitedNames.has(name)) return true;
+            if (altNames[name] && visitedNames.has(altNames[name])) return true;
+            return false;
+        }
+
+        // Key cities/stops for pins (unique locations showing the route)
+        const points = [
+            // Thailand
+            { lat: 13.76, lng: 100.50, name: 'Bangkok', size: 0.4 },
+            { lat: 18.79, lng: 98.98, name: 'Chiang Mai', size: 0.3 },
+            { lat: 8.09, lng: 98.91, name: 'Krabi', size: 0.25 },
+            // Cambodia
+            { lat: 13.36, lng: 103.86, name: 'Siem Reap', size: 0.3 },
+            { lat: 11.56, lng: 104.92, name: 'Phnom Penh', size: 0.3 },
+            // Vietnam
+            { lat: 10.82, lng: 106.63, name: 'Ho Chi Minh', size: 0.3 },
+            { lat: 16.05, lng: 108.22, name: 'Da Nang', size: 0.25 },
+            { lat: 21.03, lng: 105.85, name: 'Hanoi', size: 0.3 },
+            // Hong Kong & Taiwan
+            { lat: 22.32, lng: 114.17, name: 'Hong Kong', size: 0.3 },
+            { lat: 25.03, lng: 121.57, name: 'Taipei', size: 0.3 },
+            // China → Tibet → Nepal
+            { lat: 39.90, lng: 116.40, name: 'Beijing', size: 0.35 },
+            { lat: 30.57, lng: 104.07, name: 'Chengdu', size: 0.3 },
+            { lat: 29.65, lng: 91.10, name: 'Lhasa', size: 0.3 },
+            { lat: 27.71, lng: 85.32, name: 'Kathmandu', size: 0.35 },
+            // Japan
+            { lat: 34.69, lng: 135.50, name: 'Osaka', size: 0.3 },
+            { lat: 33.72, lng: 135.77, name: 'Kumano Kodo', size: 0.25 },
+            { lat: 35.68, lng: 139.69, name: 'Tokyo', size: 0.35 },
+            { lat: 35.01, lng: 135.77, name: 'Kyoto', size: 0.3 },
+            // Europe
+            { lat: 48.86, lng: 2.35, name: 'Paris', size: 0.35 },
+            { lat: 41.32, lng: 19.82, name: 'Durrës', size: 0.25 },
+            { lat: 42.42, lng: 18.77, name: 'Kotor', size: 0.25 },
+            { lat: 42.65, lng: 18.09, name: 'Dubrovnik', size: 0.25 },
+            { lat: 43.34, lng: 17.81, name: 'Mostar', size: 0.25 },
+            { lat: 43.86, lng: 18.41, name: 'Sarajevo', size: 0.25 },
+            { lat: 45.81, lng: 15.98, name: 'Zagreb', size: 0.25 },
+            { lat: 48.21, lng: 16.37, name: 'Vienna', size: 0.3 },
+            { lat: 50.06, lng: 19.94, name: 'Kraków', size: 0.25 },
+            { lat: 50.08, lng: 14.44, name: 'Prague', size: 0.3 },
+            { lat: 52.52, lng: 13.41, name: 'Berlin', size: 0.3 },
+            { lat: 52.37, lng: 4.90, name: 'Amsterdam', size: 0.3 },
+            { lat: 51.51, lng: -0.13, name: 'London', size: 0.35 },
+            // Italy
+            { lat: 43.77, lng: 11.25, name: 'Florence', size: 0.25 },
+            { lat: 41.90, lng: 12.50, name: 'Rome', size: 0.3 },
+            { lat: 43.70, lng: 7.27, name: 'Nice', size: 0.25 },
+            // Camino de Santiago
+            { lat: 43.16, lng: -1.24, name: 'St-Jean-Pied-de-Port', size: 0.2 },
+            { lat: 42.88, lng: -8.54, name: 'Santiago', size: 0.35 },
+            { lat: 42.91, lng: -9.26, name: 'Fisterra', size: 0.25 },
+            // Portugal & back
+            { lat: 41.15, lng: -8.61, name: 'Porto', size: 0.3 },
+            { lat: 40.42, lng: -3.70, name: 'Madrid', size: 0.35 },
+        ];
+
+        // Extra pins for day trips and territories (not part of arc route)
+        const extraPoints = [
+            { lat: 22.20, lng: 113.54, name: 'Macau', size: 0.2 },
+            { lat: 43.74, lng: 7.42, name: 'Monaco', size: 0.2 },
+            { lat: 41.90, lng: 12.45, name: 'Vatican City', size: 0.2 },
+            // Family trips (no arcs)
+            { lat: 42.31, lng: -83.04, name: 'Windsor', size: 0.2 },
+            { lat: 18.34, lng: -64.93, name: 'St. Thomas', size: 0.2 },
+            { lat: 18.04, lng: -63.07, name: 'St. Maarten', size: 0.2 },
+            { lat: 25.03, lng: -77.40, name: 'Nassau', size: 0.2 },
+            // US cities
+            { lat: 42.33, lng: -83.05, name: 'Detroit', size: 0.25 },
+            { lat: 41.88, lng: -87.63, name: 'Chicago', size: 0.2 },
+            { lat: 40.71, lng: -74.01, name: 'New York', size: 0.2 },
+            { lat: 38.91, lng: -77.04, name: 'Washington DC', size: 0.2 },
+            { lat: 28.54, lng: -81.38, name: 'Orlando', size: 0.2 },
+            { lat: 29.21, lng: -81.02, name: 'Daytona Beach', size: 0.15 },
+            { lat: 36.85, lng: -75.98, name: 'Virginia Beach', size: 0.15 },
+            { lat: 36.16, lng: -86.78, name: 'Nashville', size: 0.2 },
+            { lat: 33.75, lng: -84.39, name: 'Atlanta', size: 0.2 },
+            { lat: 38.63, lng: -90.20, name: 'St. Louis', size: 0.2 },
+            { lat: 39.74, lng: -104.99, name: 'Denver', size: 0.2 },
+            { lat: 47.61, lng: -122.33, name: 'Seattle', size: 0.2 },
+            { lat: 45.52, lng: -122.68, name: 'Portland', size: 0.2 },
+            { lat: 39.53, lng: -119.81, name: 'Reno', size: 0.15 },
+            { lat: 39.10, lng: -120.04, name: 'Lake Tahoe', size: 0.15 },
+            { lat: 44.76, lng: -85.62, name: 'Traverse City', size: 0.15 },
+            { lat: 44.25, lng: -85.40, name: 'Cadillac', size: 0.15 },
+            { lat: 20.80, lng: -156.32, name: 'Maui', size: 0.2 },
+            { lat: 20.76, lng: -155.99, name: 'Hana', size: 0.15 },
+            // China (previous trip)
+            { lat: 34.26, lng: 108.94, name: "Xi'an", size: 0.2 },
+            { lat: 29.12, lng: 110.48, name: 'Zhangjiajie', size: 0.2 },
+            { lat: 31.23, lng: 121.47, name: 'Shanghai', size: 0.2 },
+        ];
+        const allPoints = points.concat(extraPoints);
+
+        // Arcs follow the actual travel route (city to city in order)
+        const arcs = [];
+        for (let i = 0; i < points.length - 1; i++) {
+            arcs.push({
+                startLat: points[i].lat,
+                startLng: points[i].lng,
+                endLat: points[i + 1].lat,
+                endLng: points[i + 1].lng,
+            });
+        }
+        // Add the Paris→Florence loop back (Paris→London was already there, then back to Paris→Italy)
+        // Add arc from London back to Paris
+        arcs.push({ startLat: 51.51, startLng: -0.13, endLat: 48.86, endLng: 2.35 });
+        // Detroit → Bangkok (departure) and Madrid → Detroit (return home)
+        arcs.push({ startLat: 42.33, startLng: -83.05, endLat: 13.76, endLng: 100.50 });
+        arcs.push({ startLat: 40.42, startLng: -3.70, endLat: 42.33, endLng: -83.05 });
+
+        // Build globe
+        const globe = Globe()
+            .globeImageUrl('')
+            .backgroundColor('rgba(0,0,0,0)')
+            .showAtmosphere(true)
+            .atmosphereColor('#2563eb')
+            .atmosphereAltitude(0.15)
+            // Points (pins)
+            .pointsData(allPoints)
+            .pointLat('lat')
+            .pointLng('lng')
+            .pointColor(() => '#2563eb')
+            .pointAltitude(0.01)
+            .pointRadius('size')
+            .pointsMerge(true)
+            // Arcs
+            .arcsData(arcs)
+            .arcColor(() => ['#2563eb', '#1d4ed8'])
+            .arcStroke(0.5)
+            .arcDashLength(0.4)
+            .arcDashGap(0.2)
+            .arcDashAnimateTime(4000)
+            .arcAltitudeAutoScale(0.3)
+            // Width
+            .width(container.clientWidth)
+            .height(container.clientHeight)
+            (container);
+
+        // Style the globe materials after creation
+        const globeMaterial = globe.globeMaterial();
+        globeMaterial.color = new THREE.Color(0xe8ecf2);
+        globeMaterial.emissive = new THREE.Color(0xd0d8e4);
+        globeMaterial.emissiveIntensity = 0.3;
+        globeMaterial.shininess = 15;
+
+        // Add directional light for better globe visibility
+        const scene = globe.scene();
+        const dirLight = new THREE.DirectionalLight(0x2563eb, 0.4);
+        dirLight.position.set(5, 3, 5);
+        scene.add(dirLight);
+
+        // Fetch world GeoJSON for country polygons
+        fetch('https://unpkg.com/world-atlas@2/countries-110m.json')
+            .then(res => res.json())
+            .then(worldData => {
+                const countries = topojson.feature(worldData, worldData.objects.countries);
+
+                // Split MultiPolygon features so overseas territories can be colored separately
+                const splitFeatures = [];
+                countries.features.forEach(feat => {
+                    const name = feat.properties.name;
+                    if (name === 'France' && feat.geometry.type === 'MultiPolygon') {
+                        feat.geometry.coordinates.forEach(polyCoords => {
+                            // Calculate centroid of this sub-polygon
+                            const ring = polyCoords[0] || [];
+                            let latSum = 0, lngSum = 0;
+                            ring.forEach(pt => { lngSum += pt[0]; latSum += pt[1]; });
+                            const centLat = latSum / ring.length;
+                            const isEuropean = centLat > 30;
+                            splitFeatures.push({
+                                type: 'Feature',
+                                properties: { name: isEuropean ? 'France' : 'France (overseas)' },
+                                geometry: { type: 'Polygon', coordinates: polyCoords }
+                            });
+                        });
+                    } else {
+                        splitFeatures.push(feat);
+                    }
+                });
+
+                globe
+                    .polygonsData(splitFeatures)
+                    .polygonCapColor(feat => {
+                        const name = feat.properties.name;
+                        return isVisited(name) || (altNames[name] && isVisited(altNames[name]))
+                            ? 'rgba(37, 99, 235, 0.35)' : 'rgba(180, 190, 205, 0.5)';
+                    })
+                    .polygonSideColor(() => 'rgba(200, 210, 225, 0.4)')
+                    .polygonStrokeColor(() => 'rgba(160, 170, 190, 0.5)')
+                    .polygonAltitude(feat => {
+                        const name = feat.properties.name;
+                        return (isVisited(name) || (altNames[name] && isVisited(altNames[name])))
+                            ? 0.008 : 0.003;
+                    });
+            });
+
+        // Controls
+        globe.controls().autoRotate = true;
+        globe.controls().autoRotateSpeed = 0.5;
+        globe.controls().enableZoom = false;
+
+        // Initial view: looking at Asia
+        globe.pointOfView({ lat: 25, lng: 100, altitude: 2.2 }, 0);
+
+        // Hide loader
+        container.classList.add('loaded');
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            globe.width(container.clientWidth);
+            globe.height(container.clientHeight);
+        });
+        } // end initGlobe
+    })();
+
+    // ============ KONAMI CODE → SNAKE ============
+    (function konamiSnake() {
+        const code = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+        let pos = 0;
+
+        document.addEventListener('keydown', e => {
+            if (document.getElementById('snake-overlay')) return;
+            const expected = code[pos];
+            if (e.key === expected || e.key.toLowerCase() === expected) {
+                pos++;
+                if (pos === code.length) {
+                    pos = 0;
+                    launchSnake();
+                }
+            } else {
+                pos = 0;
+            }
+        });
+
+        function launchSnake() {
+            const overlay = document.createElement('div');
+            overlay.id = 'snake-overlay';
+            Object.assign(overlay.style, {
+                position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                background: 'rgba(255,255,255,0.95)', zIndex: 9999,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+            });
+
+            const header = document.createElement('div');
+            Object.assign(header.style, {
+                color: '#2563eb', fontSize: '0.75rem', letterSpacing: '0.15em',
+                textTransform: 'uppercase', marginBottom: '1rem'
+            });
+            header.textContent = 'You found it. Use arrow keys to play.';
+
+            const scoreEl = document.createElement('div');
+            Object.assign(scoreEl.style, {
+                color: '#1a1a2e', fontSize: '1rem', marginBottom: '0.75rem', fontWeight: '300'
+            });
+            scoreEl.textContent = 'Score: 0';
+
+            const canvas = document.createElement('canvas');
+            const size = Math.min(400, window.innerWidth - 40, window.innerHeight - 200);
+            canvas.width = size;
+            canvas.height = size;
+            Object.assign(canvas.style, {
+                border: '1px solid #e0e4ea', borderRadius: '4px', background: '#f5f7fa'
+            });
+
+            const closeBtn = document.createElement('div');
+            Object.assign(closeBtn.style, {
+                color: '#6b7280', fontSize: '0.7rem', marginTop: '1rem',
+                cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase'
+            });
+            closeBtn.textContent = 'ESC to close';
+
+            overlay.appendChild(header);
+            overlay.appendChild(scoreEl);
+            overlay.appendChild(canvas);
+            overlay.appendChild(closeBtn);
+            document.body.appendChild(overlay);
+
+            const ctx = canvas.getContext('2d');
+            const grid = 20;
+            const cols = Math.floor(size / grid);
+            const rows = Math.floor(size / grid);
+            let snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
+            let dir = { x: 1, y: 0 };
+            let nextDir = { x: 1, y: 0 };
+            let food = spawnFood();
+            let score = 0;
+            let gameOver = false;
+            let interval;
+
+            function spawnFood() {
+                let f;
+                do {
+                    f = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+                } while (snake.some(s => s.x === f.x && s.y === f.y));
+                return f;
+            }
+
+            function draw() {
+                ctx.fillStyle = '#f5f7fa';
+                ctx.fillRect(0, 0, size, size);
+
+                // Grid lines
+                ctx.strokeStyle = 'rgba(200,210,225,0.6)';
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i <= cols; i++) {
+                    ctx.beginPath(); ctx.moveTo(i * grid, 0); ctx.lineTo(i * grid, size); ctx.stroke();
+                }
+                for (let i = 0; i <= rows; i++) {
+                    ctx.beginPath(); ctx.moveTo(0, i * grid); ctx.lineTo(size, i * grid); ctx.stroke();
+                }
+
+                // Food
+                ctx.fillStyle = '#2563eb';
+                ctx.shadowColor = '#2563eb';
+                ctx.shadowBlur = 8;
+                ctx.beginPath();
+                ctx.arc(food.x * grid + grid / 2, food.y * grid + grid / 2, grid / 2.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Snake
+                snake.forEach((seg, i) => {
+                    const alpha = 1 - (i / snake.length) * 0.4;
+                    ctx.fillStyle = i === 0
+                        ? `rgba(37, 99, 235, ${alpha})`
+                        : `rgba(29, 78, 216, ${alpha})`;
+                    ctx.fillRect(seg.x * grid + 1, seg.y * grid + 1, grid - 2, grid - 2);
+                    if (i === 0) {
+                        ctx.fillStyle = '#ffffff';
+                        const ex = dir.x === 1 ? 0.65 : dir.x === -1 ? 0.25 : 0.5;
+                        const ey = dir.y === 1 ? 0.65 : dir.y === -1 ? 0.25 : 0.35;
+                        ctx.beginPath();
+                        ctx.arc(seg.x * grid + grid * ex - 2, seg.y * grid + grid * ey, 2, 0, Math.PI * 2);
+                        ctx.arc(seg.x * grid + grid * ex + 2, seg.y * grid + grid * ey, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+
+                if (gameOver) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                    ctx.fillRect(0, 0, size, size);
+                    ctx.fillStyle = '#2563eb';
+                    ctx.font = '600 1.2rem -apple-system, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Game Over', size / 2, size / 2 - 10);
+                    ctx.fillStyle = '#6b7280';
+                    ctx.font = '0.75rem -apple-system, sans-serif';
+                    ctx.fillText('Score: ' + score + '  ·  Press SPACE to restart', size / 2, size / 2 + 20);
+                }
+            }
+
+            function tick() {
+                if (gameOver) return;
+                dir = { ...nextDir };
+                const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+                // Wall collision
+                if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+                    gameOver = true; draw(); clearInterval(interval); return;
+                }
+                // Self collision
+                if (snake.some(s => s.x === head.x && s.y === head.y)) {
+                    gameOver = true; draw(); clearInterval(interval); return;
+                }
+
+                snake.unshift(head);
+                if (head.x === food.x && head.y === food.y) {
+                    score++;
+                    scoreEl.textContent = 'Score: ' + score;
+                    food = spawnFood();
+                } else {
+                    snake.pop();
+                }
+                draw();
+            }
+
+            function handleKey(e) {
+                if (!document.getElementById('snake-overlay')) {
+                    document.removeEventListener('keydown', handleKey);
+                    return;
+                }
+                if (e.key === 'Escape') {
+                    cleanup();
+                    return;
+                }
+                if (e.key === ' ' && gameOver) {
+                    e.preventDefault();
+                    snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
+                    dir = { x: 1, y: 0 };
+                    nextDir = { x: 1, y: 0 };
+                    food = spawnFood();
+                    score = 0;
+                    scoreEl.textContent = 'Score: 0';
+                    gameOver = false;
+                    interval = setInterval(tick, 100);
+                    draw();
+                    return;
+                }
+                const keyMap = {
+                    ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 },
+                    ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 }
+                };
+                if (keyMap[e.key]) {
+                    e.preventDefault();
+                    const nd = keyMap[e.key];
+                    if (nd.x !== -dir.x || nd.y !== -dir.y) {
+                        nextDir = nd;
+                    }
+                }
+            }
+
+            function cleanup() {
+                clearInterval(interval);
+                document.removeEventListener('keydown', handleKey);
+                overlay.remove();
+            }
+
+            closeBtn.addEventListener('click', cleanup);
+            document.addEventListener('keydown', handleKey);
+            interval = setInterval(tick, 100);
+            draw();
+        }
+    })();
+
+    /* ============ HEADSHOT SPEECH BUBBLE ============ */
+    (function headshotTalk() {
+        const bubble = document.querySelector('.speech-bubble');
+        const typedEl = bubble ? bubble.querySelector('.typed-text') : null;
+        const headshot = document.querySelector('.headshot');
+        if (!bubble || !typedEl || !headshot) return;
+
+        const message = "Hi! I'm Joe!";
+        let playing = false;
+
+        function play() {
+            if (playing) return;
+            playing = true;
+            typedEl.textContent = '';
+            bubble.classList.remove('visible', 'done');
+
+            setTimeout(() => {
+                bubble.classList.add('visible');
+                setTimeout(() => {
+                    let i = 0;
+                    const typeInterval = setInterval(() => {
+                        typedEl.textContent = message.slice(0, i + 1);
+                        i++;
+                        if (i >= message.length) {
+                            clearInterval(typeInterval);
+                            setTimeout(() => {
+                                bubble.classList.add('done');
+                                playing = false;
+                            }, 300);
+                        }
+                    }, 75);
+                }, 200);
+            }, 100);
+        }
+
+        headshot.addEventListener('click', play);
+
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    obs.disconnect();
+                    setTimeout(play, 600);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        obs.observe(headshot);
+    })();
+
+    /* ============ PHOTO LIGHTBOX ============ */
+    (function photoLightbox() {
+        const photos = document.querySelectorAll('.photo-gallery .photo img');
+        if (!photos.length) return;
+
+        const srcs = Array.from(photos).map(img => img.src);
+        const alts = Array.from(photos).map(img => img.alt);
+        let current = 0;
+        let overlay = null;
+        let imgEl = null;
+
+        function open(index) {
+            current = index;
+            overlay = document.createElement('div');
+            overlay.className = 'lightbox-overlay';
+            overlay.innerHTML = `
+                <button class="lightbox-close" aria-label="Close">&times;</button>
+                <button class="lightbox-arrow prev" aria-label="Previous">&#8249;</button>
+                <img class="lightbox-img" src="${srcs[current]}" alt="${alts[current]}">
+                <button class="lightbox-arrow next" aria-label="Next">&#8250;</button>
+                <div class="lightbox-caption">${alts[current]}</div>
+                <div class="lightbox-counter">${current + 1} / ${srcs.length}</div>
+            `;
+            document.body.appendChild(overlay);
+            imgEl = overlay.querySelector('.lightbox-img');
+
+            requestAnimationFrame(() => overlay.classList.add('active'));
+
+            overlay.querySelector('.lightbox-close').addEventListener('click', close);
+            overlay.querySelector('.lightbox-arrow.prev').addEventListener('click', () => navigate(-1));
+            overlay.querySelector('.lightbox-arrow.next').addEventListener('click', () => navigate(1));
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+            document.addEventListener('keydown', handleKey);
+        }
+
+        function navigate(dir) {
+            current = (current + dir + srcs.length) % srcs.length;
+            imgEl.style.opacity = '0';
+            setTimeout(() => {
+                imgEl.src = srcs[current];
+                imgEl.alt = alts[current];
+                imgEl.style.opacity = '1';
+                overlay.querySelector('.lightbox-caption').textContent = alts[current];
+                overlay.querySelector('.lightbox-counter').textContent = `${current + 1} / ${srcs.length}`;
+            }, 150);
+        }
+
+        function close() {
+            if (!overlay) return;
+            overlay.classList.remove('active');
+            document.removeEventListener('keydown', handleKey);
+            setTimeout(() => { overlay.remove(); overlay = null; }, 300);
+        }
+
+        function handleKey(e) {
+            if (e.key === 'Escape') close();
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        }
+
+        photos.forEach((img, i) => {
+            img.closest('.photo').addEventListener('click', () => {
+                if (window.innerWidth > 640) open(i);
+            });
+        });
+    })();
+    </script>
+
+    <!-- CONTACT MODAL -->
+    <div class="contact-overlay" id="contact-overlay">
+        <div class="contact-modal">
+            <button class="contact-modal-close" aria-label="Close">&times;</button>
+            <h3>Get in Touch</h3>
+            <p class="contact-subtitle">I'll get back to you soon.</p>
+            <form id="contact-form" action="https://formspree.io/f/mjgegwad" method="POST">
+                <input type="hidden" name="_subject" value="New message from joelint.com">
+                <input type="hidden" name="_formname" value="joelint.com contact form">
+                <input type="hidden" name="user_agent" id="contact-ua" value="">
+                <div class="form-group">
+                    <label for="contact-name">Name</label>
+                    <input type="text" id="contact-name" name="name" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" name="email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="send-btn">Send Message</button>
+                <div class="form-status" id="form-status"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // Contact Modal
+    (function contactModal() {
+        const trigger = document.getElementById('contact-trigger');
+        const overlay = document.getElementById('contact-overlay');
+        const form = document.getElementById('contact-form');
+        const status = document.getElementById('form-status');
+        const closeBtn = overlay.querySelector('.contact-modal-close');
+        if (!trigger || !overlay || !form) return;
+
+        function openModal(e) {
+            e.preventDefault();
+            document.getElementById('contact-ua').value = navigator.userAgent;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => overlay.querySelector('input[name="name"]').focus(), 350);
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        trigger.addEventListener('click', openModal);
+        const triggerBottom = document.getElementById('contact-trigger-bottom');
+        if (triggerBottom) triggerBottom.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('.send-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            status.textContent = '';
+            status.className = 'form-status';
+
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (res.ok) {
+                    status.textContent = 'Message sent! Thanks for reaching out.';
+                    status.className = 'form-status success';
+                    form.reset();
+                    setTimeout(closeModal, 2000);
+                } else {
+                    throw new Error('Failed');
+                }
+            } catch (err) {
+                status.textContent = 'Something went wrong. Try again or email me directly.';
+                status.className = 'form-status error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Message';
+            }
+        });
+    })();
+    </script>
+
+
+</body>
+</html>
