@@ -1806,6 +1806,12 @@
             gap: 1.5rem;
         }
 
+        .projects-grid-2col {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 66%;
+            margin: 1.5rem auto 0;
+        }
+
         .project-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -2495,6 +2501,10 @@
                 padding: 0 1rem;
             }
 
+            .projects-grid-2col {
+                max-width: 100%;
+            }
+
             /* --- BOTTOM BUTTONS: center align --- */
             .now-section > .reveal:last-child {
                 justify-content: center;
@@ -3069,7 +3079,9 @@
                     Website
                 </a>
             </div>
+        </div>
 
+        <div class="projects-grid projects-grid-2col">
             <div class="project-card reveal reveal-delay-1">
                 <div class="app-icon">
                     <span class="icon-placeholder">🌍</span>
