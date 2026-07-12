@@ -1801,9 +1801,16 @@
         }
 
         .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 1.5rem;
+        }
+
+        /* Three per row; an incomplete final row (e.g. 7 cards → 3+3+1) centers
+           instead of stranding the last card at the left. */
+        .projects-grid > .project-card {
+            flex: 0 1 calc(33.333% - 1rem);
         }
 
         .project-card {
@@ -2507,8 +2514,11 @@
 
             /* --- PROJECTS: cards less than full width --- */
             .projects-grid {
-                grid-template-columns: 1fr;
                 padding: 0 1rem;
+            }
+
+            .projects-grid > .project-card {
+                flex-basis: 100%;
             }
 
             /* --- BOTTOM BUTTONS: center align --- */
@@ -3143,6 +3153,25 @@
                 <a href="https://dailycanvasapp.com" target="_blank" rel="noopener" class="app-link">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5a17.92 17.92 0 0 1-8.716-2.247m0 0A8.966 8.966 0 0 1 3 12c0-1.264.26-2.467.732-3.559" /></svg>
                     Website
+                </a>
+            </div>
+
+            <div class="project-card reveal reveal-delay-3">
+                <div class="app-icon">
+                    <img src="shellride-icon.png" alt="Shell RIDE App Icon">
+                </div>
+                <h3>Shell RIDE</h3>
+                <p class="project-tagline">Your e-scooter, connected.</p>
+                <p>The official companion app for the Shell RIDE SR-5S electric scooter — pair over Bluetooth for a real-time telemetry dashboard, ride controls, and over-the-air firmware updates.</p>
+                <div class="tech-stack">
+                    <span>React Native / Expo</span>
+                    <span>BLE</span>
+                    <span>OTA Firmware</span>
+                    <span>Live Telemetry</span>
+                </div>
+                <a href="https://apps.apple.com/app/id1560759041" target="_blank" rel="noopener" class="app-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5a17.92 17.92 0 0 1-8.716-2.247m0 0A8.966 8.966 0 0 1 3 12c0-1.264.26-2.467.732-3.559" /></svg>
+                    App Store
                 </a>
             </div>
         </div>
