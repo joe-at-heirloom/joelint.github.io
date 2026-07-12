@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Converter - Free, native macOS file converter | Joe Lint</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8RKE8VQ4W6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8RKE8VQ4W6');
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="The Converter - Free, native macOS file converter">
+    <meta property="og:description" content="A free, open-source Mac app that converts images, video, audio, and documents. Everything happens on your Mac - no uploads, no accounts, no limits.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://joelint.com/apps/the-converter/">
+    <!-- TODO: create og.png (1200x630) social preview image at this path -->
+    <meta property="og:image" content="https://joelint.com/apps/the-converter/og.png">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Converter - Free, native macOS file converter">
+    <meta name="twitter:description" content="Convert images, video, audio, and documents on your Mac. No uploads, no accounts, no limits. Free and open-source.">
+    <!-- TODO: create og.png (1200x630) social preview image at this path -->
+    <meta name="twitter:image" content="https://joelint.com/apps/the-converter/og.png">
+
+    <!-- SEO -->
+    <meta name="description" content="The Converter is a free, open-source, native macOS file converter for images, video, audio, and documents. Everything happens on your Mac - no uploads, no accounts, no daily limits, no file-size caps.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://joelint.com/apps/the-converter/">
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f5f7fa;
+            --surface-hover: #edf0f5;
+            --border: #e0e4ea;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --accent: #2563eb;
+            --accent-dim: #1d4ed8;
+            --accent-glow: rgba(37, 99, 235, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Instrument Serif', serif;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: auto;
+            overflow-x: hidden;
+        }
+
+        /* ============ SCROLL ANIMATIONS ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* No-JS / reduced-motion fallback: never hide content */
+        .no-js .reveal { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+            opacity: 0.3;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        /* ============ NAV ============ */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 0 2rem;
+        }
+
+        nav .nav-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+
+        nav .logo {
+            font-size: 1.4rem;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            font-family: 'Instrument Serif', serif;
+            font-weight: 700;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        nav .logo:hover {
+            color: var(--accent);
+        }
+
+        nav .nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        nav .nav-back:hover {
+            color: var(--accent);
+        }
+
+        /* ============ SECTIONS ============ */
+        section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: calc(100vh - 56px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .app-icon-hero {
+            width: 120px;
+            height: 120px;
+            border-radius: 27px;
+            margin-bottom: 2rem;
+            background: linear-gradient(150deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
+            border: 1px solid rgba(29, 78, 216, 0.3);
+            box-shadow: 0 12px 30px -8px rgba(37, 99, 235, 0.45),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-icon-hero svg {
+            width: 60px;
+            height: 60px;
+            stroke: #fff;
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-family: 'DM Sans', sans-serif;
+            color: #16a34a;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.25rem;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #16a34a;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .status-dot { animation: none; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            font-style: normal;
+            max-width: 640px;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 560px;
+            margin-bottom: 2.25rem;
+            line-height: 1.7;
+        }
+
+        .hero .tagline .highlight {
+            color: var(--text);
+        }
+
+        /* ============ BUTTONS ============ */
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.6rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            text-decoration: none;
+            transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s;
+            border: 1px solid transparent;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--accent-dim);
+            color: var(--accent);
+        }
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Disabled "coming soon" download */
+        .btn-disabled {
+            background: var(--surface);
+            border-color: var(--border);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            flex-direction: column;
+            gap: 0.1rem;
+            padding: 0.7rem 1.6rem;
+            align-items: flex-start;
+        }
+        .btn-disabled:hover {
+            background: var(--surface);
+            transform: none;
+        }
+        .btn-disabled .btn-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 500;
+        }
+        .btn-disabled .btn-sub {
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding-left: 1.6rem;
+        }
+
+        .hero-meta {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.25rem;
+            justify-content: center;
+        }
+        .hero-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .hero-meta .dot-sep { color: var(--border); }
+
+        /* ============ PRIVACY / DIFFERENTIATOR ============ */
+        .privacy-section {
+            text-align: center;
+        }
+
+        .privacy-section h2 {
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .privacy-lead {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            max-width: 620px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .privacy-lead strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .promise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .promise {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem 1.35rem;
+        }
+
+        .promise .promise-icon {
+            width: 22px;
+            height: 22px;
+            stroke: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+
+        .promise .promise-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.2rem;
+        }
+
+        .promise .promise-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============ FORMATS ============ */
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .format-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.75rem 1.5rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .format-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-4px);
+        }
+
+        .format-card .format-head {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .format-card .format-head svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .format-card h3 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .chip {
+            font-size: 0.72rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 2px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.01em;
+        }
+
+        .format-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============ FEATURES ============ */
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem 2rem;
+        }
+
+        .feature {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature .feature-icon {
+            width: 26px;
+            height: 26px;
+            min-width: 26px;
+            stroke: var(--accent);
+            margin-top: 0.2rem;
+        }
+
+        .feature h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ============ REQUIREMENTS / DOWNLOAD ============ */
+        .download-section {
+            text-align: center;
+        }
+
+        .req-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem 2rem;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        .req-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .req-stat .req-number {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: var(--accent);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.2;
+        }
+
+        .req-stat .req-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .req-note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 480px;
+            margin: 0 auto 2rem;
+        }
+        .req-note strong { color: var(--text); font-weight: 600; }
+
+        /* ============ SUPPORT / OPEN SOURCE ============ */
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .support-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.75rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .support-card svg {
+            width: 26px;
+            height: 26px;
+            margin-bottom: 0.9rem;
+            stroke: var(--accent);
+        }
+        .support-card svg.filled {
+            fill: var(--accent);
+            stroke: none;
+        }
+
+        .support-card h3 {
+            font-size: 1.15rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .support-card p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+
+        .support-card .app-link {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.1rem;
+            border: 1px solid var(--accent-dim);
+            border-radius: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.3s, color 0.3s;
+            align-self: flex-start;
+        }
+        .support-card .app-link:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        .support-card .app-link svg {
+            width: 16px;
+            height: 16px;
+            margin-bottom: 0;
+            stroke: currentColor;
+        }
+        .support-card .app-link.muted {
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+        .support-card .app-link.muted:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+        }
+        .support-card .app-link.muted svg { stroke: currentColor; fill: none; }
+
+        .license-line {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            line-height: 1.8;
+        }
+        .license-line a { color: var(--accent-dim); text-decoration: none; }
+        .license-line a:hover { text-decoration: underline; }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 3rem 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        footer a { color: var(--accent-dim); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 640px) {
+            section { padding: 4rem 1.5rem; }
+            .hero h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+            .btn-disabled, .btn { width: 100%; justify-content: center; }
+            .btn-disabled { align-items: center; }
+            .btn-disabled .btn-sub { padding-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <a href="../../index.html" class="logo">Joe Lint</a>
+            <a href="../../index.html#projects" class="nav-back">&larr; Projects</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="app-icon-hero reveal">
+            <!-- Placeholder mark until the real app icon ships -->
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5a4 4 0 0 0 4-4v-1"/>
+                <path d="M16.5 3 21 7.5m0 0L16.5 12M21 7.5H7.5a4 4 0 0 0-4 4v1"/>
+            </svg>
+        </div>
+        <div class="privacy-badge reveal reveal-delay-1">
+            <span class="status-dot"></span> 100% on your Mac
+        </div>
+        <h1 class="reveal reveal-delay-1">The <span class="accent">Converter</span></h1>
+        <p class="tagline reveal reveal-delay-2">
+            A free, native Mac app that converts images, video, audio, and documents.
+            <span class="highlight">Drop files in, pick a format, done</span> - and every file stays on your machine.
+        </p>
+        <div class="button-row reveal reveal-delay-3">
+            <span class="btn btn-disabled" role="button" aria-disabled="true" title="Not available yet - v0.1 coming soon">
+                <span class="btn-main">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                    Download for Mac
+                </span>
+                <span class="btn-sub">v0.1 coming soon</span>
+            </span>
+            <a href="https://github.com/joe-at-heirloom/the-converter" target="_blank" rel="noopener" class="btn btn-secondary">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View source on GitHub
+            </a>
+        </div>
+        <div class="hero-meta reveal reveal-delay-4">
+            <span>Free forever</span>
+            <span class="dot-sep">&middot;</span>
+            <span>Open source (GPL-3.0)</span>
+            <span class="dot-sep">&middot;</span>
+            <span>macOS 14+ &middot; Apple Silicon</span>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- PRIVACY / DIFFERENTIATOR -->
+    <section class="privacy-section">
+        <p class="section-label reveal">The difference</p>
+        <h2 class="reveal">Everything happens on your Mac</h2>
+        <p class="privacy-lead reveal">
+            Most online converters upload your files to someone else's server, cap your file size,
+            meter your daily conversions, or ask you to make an account. The Converter does none of that.
+            It runs the conversion <strong>entirely on your machine</strong> - so your files never leave it.
+        </p>
+        <div class="promise-grid">
+            <div class="promise reveal reveal-delay-1">
+                <svg class="promise-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.25 4.5 5.25v6c0 4.5 3 8.25 7.5 10.5 4.5-2.25 7.5-6 7.5-10.5v-6L12 2.25Z"/><path d="m9 12 2 2 4-4"/></svg>
+                <div class="promise-title">No uploads</div>
+                <div class="promise-desc">Files are read and written locally. Nothing is sent anywhere.</div>
+            </div>
+            <div class="promise reveal reveal-delay-1">
+                <svg class="promise-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0"/></svg>
+                <div class="promise-title">No accounts</div>
+                <div class="promise-desc">No sign-up, no email, no login. Open it and go.</div>
+            </div>
+            <div class="promise reveal reveal-delay-2">
+                <svg class="promise-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 10.5 21 3m0 0h-5.25M21 3v5.25M12 21a9 9 0 1 1 0-18"/></svg>
+                <div class="promise-title">No limits</div>
+                <div class="promise-desc">No daily quotas and no file-size caps. Convert as much as you like.</div>
+            </div>
+            <div class="promise reveal reveal-delay-2">
+                <svg class="promise-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18.364 5.636 5.636 18.364M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"/></svg>
+                <div class="promise-title">Zero network calls</div>
+                <div class="promise-desc">Fully offline. The app works with your Wi-Fi turned off.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FORMATS -->
+    <section>
+        <p class="section-label reveal">What it converts</p>
+        <h2 class="reveal">Images, video, audio, documents</h2>
+        <div class="format-grid">
+            <div class="format-card reveal reveal-delay-1">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4.5" width="18" height="15" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>
+                    <h3>Images</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">JPEG</span><span class="chip">PNG</span><span class="chip">HEIC</span><span class="chip">TIFF</span><span class="chip">GIF</span><span class="chip">BMP</span><span class="chip">WebP</span><span class="chip">AVIF</span>
+                </div>
+                <p class="format-note">Converted natively with macOS ImageIO where possible - preserving color profile, DPI, and orientation.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3V9Z"/></svg>
+                    <h3>Video</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">MP4</span><span class="chip">MOV</span><span class="chip">MKV</span><span class="chip">WebM</span><span class="chip">M4V</span>
+                </div>
+                <p class="format-note">FFmpeg under the hood with production-quality settings and live, real-time progress.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-1">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+                    <h3>Audio</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">MP3</span><span class="chip">M4A</span><span class="chip">WAV</span><span class="chip">FLAC</span><span class="chip">AAC</span><span class="chip">Opus</span><span class="chip">OGG</span>
+                </div>
+                <p class="format-note">Lossless FLAC, source-aware WAV bit depth, and quality-tuned MP3/AAC/Opus encoding.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/></svg>
+                    <h3>Documents</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">PDF &harr; images</span><span class="chip">PDF &rarr; Word</span><span class="chip">PDF &rarr; text</span><span class="chip">Office &rarr; PDF</span><span class="chip">Markdown</span><span class="chip">EPUB</span><span class="chip">CSV</span><span class="chip">XLSX</span>
+                </div>
+                <p class="format-note">A full office engine is bundled in, so Word, Excel, and PowerPoint conversions work offline.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FEATURES -->
+    <section>
+        <p class="section-label reveal">How it feels</p>
+        <h2 class="reveal">Built to get out of your way</h2>
+        <div class="feature-list">
+            <div class="feature reveal reveal-delay-1">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v13m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                <div>
+                    <h3>Drag &amp; drop</h3>
+                    <p>Drop one file or a whole folder onto the window and it queues up instantly.</p>
+                </div>
+            </div>
+            <div class="feature reveal reveal-delay-1">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="13" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>
+                <div>
+                    <h3>Batch conversion</h3>
+                    <p>Convert dozens of files in one pass, each with real-time progress.</p>
+                </div>
+            </div>
+            <div class="feature reveal reveal-delay-2">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 2"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><path d="M3 4v5h5"/></svg>
+                <div>
+                    <h3>Remembers your format</h3>
+                    <p>It recalls the last target you used for each media kind, across launches.</p>
+                </div>
+            </div>
+            <div class="feature reveal reveal-delay-2">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/><path d="M9 13h6"/></svg>
+                <div>
+                    <h3>Right-click in Finder</h3>
+                    <p>Convert with The Converter, to PDF, or to JPEG straight from the Finder Services menu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- REQUIREMENTS / DOWNLOAD -->
+    <section class="download-section">
+        <p class="section-label reveal">Getting it</p>
+        <h2 class="reveal">Requirements &amp; download</h2>
+        <div class="req-card reveal">
+            <div class="req-stats">
+                <div class="req-stat">
+                    <div class="req-number">macOS 14+</div>
+                    <div class="req-label">Apple Silicon</div>
+                </div>
+                <div class="req-stat">
+                    <div class="req-number">~1.1 GB</div>
+                    <div class="req-label">Download size</div>
+                </div>
+                <div class="req-stat">
+                    <div class="req-number">$0</div>
+                    <div class="req-label">Free forever</div>
+                </div>
+            </div>
+            <p class="req-note">
+                The download is large because it <strong>bundles a full office engine and media tools</strong> -
+                that's the trade for working completely offline, with nothing phoning home and nothing to install separately.
+            </p>
+            <div class="button-row">
+                <span class="btn btn-disabled" role="button" aria-disabled="true" title="Not available yet - v0.1 coming soon">
+                    <span class="btn-main">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                        Download for Mac
+                    </span>
+                    <span class="btn-sub">v0.1 coming soon</span>
+                </span>
+                <a href="https://github.com/joe-at-heirloom/the-converter" target="_blank" rel="noopener" class="btn btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Follow along on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- SUPPORT / OPEN SOURCE -->
+    <section>
+        <p class="section-label reveal">Free &amp; open</p>
+        <h2 class="reveal">A small gift, out in the open</h2>
+        <div class="support-grid">
+            <div class="support-card reveal reveal-delay-1">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="filled" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <h3>Open source</h3>
+                <p>Released under GPL-3.0. Read the code, file an issue, or build it yourself - it's all on GitHub.</p>
+                <a href="https://github.com/joe-at-heirloom/the-converter" target="_blank" rel="noopener" class="app-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-4.5-4.5H21m0 0v7.5M21 6l-9 9"/></svg>
+                    View repository
+                </a>
+            </div>
+            <div class="support-card reveal reveal-delay-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+                <h3>Donations welcome</h3>
+                <p>The Converter is free and always will be. If it saved you some hassle, a tip helps keep it maintained.</p>
+                <!-- TODO: replace href="#" with the real donations link (GitHub Sponsors / Ko-fi / Stripe) -->
+                <a href="#" class="app-link muted">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+                    Support the project
+                </a>
+            </div>
+        </div>
+        <p class="license-line reveal">
+            In the spirit of <a href="https://theunarchiver.com" target="_blank" rel="noopener">The Unarchiver</a> -
+            a genuinely free tool that just works.
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 <span style="font-family: 'Instrument Serif', serif; font-weight: 700; font-size: 1.1rem;">Joe Lint</span> &middot; <a href="../../index.html">joelint.com</a></p>
+    </footer>
+
+    <!-- ============ SCRIPTS ============ -->
+    <script>
+        // Flag JS on so reveal elements can animate (and stay visible without JS)
+        document.documentElement.classList.remove('no-js');
+
+        // Scroll reveal - mirrors the IntersectionObserver pattern used on the homepage
+        (function () {
+            var els = document.querySelectorAll('.reveal');
+            if (!('IntersectionObserver' in window)) {
+                els.forEach(function (el) { el.classList.add('visible'); });
+                return;
+            }
+            var obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            els.forEach(function (el) { obs.observe(el); });
+        })();
+    </script>
+</body>
+</html>
