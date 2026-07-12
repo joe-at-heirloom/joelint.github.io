@@ -1847,6 +1847,22 @@
             line-height: 1;
         }
 
+        /* The Converter: same mark as its landing page (blue gradient + white arrows). */
+        .project-card .app-icon.converter-icon {
+            background: linear-gradient(150deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
+            border-color: rgba(29, 78, 216, 0.3);
+        }
+
+        .project-card .app-icon.converter-icon svg {
+            width: 48px;
+            height: 48px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         .project-card h3 {
             font-size: 1.2rem;
             font-weight: 400;
@@ -3071,8 +3087,11 @@
             </div>
 
             <div class="project-card reveal reveal-delay-1">
-                <div class="app-icon">
-                    <span class="icon-placeholder">🔄</span>
+                <div class="app-icon converter-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5a4 4 0 0 0 4-4v-1"/>
+                        <path d="M16.5 3 21 7.5m0 0L16.5 12M21 7.5H7.5a4 4 0 0 0-4 4v1"/>
+                    </svg>
                 </div>
                 <h3>The Converter</h3>
                 <p class="project-tagline">Any file, any format. Free.</p>
@@ -3110,7 +3129,7 @@
 
             <div class="project-card reveal reveal-delay-2">
                 <div class="app-icon">
-                    <span class="icon-placeholder">🎨</span>
+                    <img src="dailycanvas-icon.png" alt="Daily Canvas App Icon">
                 </div>
                 <h3>Daily Canvas</h3>
                 <p class="project-tagline">Museum art, every day</p>
