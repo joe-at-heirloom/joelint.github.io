@@ -646,6 +646,29 @@
         }
         .support-card .app-link.muted svg { stroke: currentColor; fill: none; }
 
+        .faq-list {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border-top: 1px solid var(--border);
+            padding: 1.4rem 0;
+        }
+        .faq-item:last-child { border-bottom: 1px solid var(--border); }
+        .faq-item h3 {
+            font-size: 1.02rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .faq-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+        .faq-item p a { color: var(--accent); text-decoration: none; }
+        .faq-item p a:hover { text-decoration: underline; }
+
         .license-line {
             text-align: center;
             font-size: 0.85rem;
@@ -722,7 +745,7 @@
             <span class="dot-sep">&middot;</span>
             <span>Open source (GPL-3.0)</span>
             <span class="dot-sep">&middot;</span>
-            <span>macOS 14+ &middot; Apple Silicon</span>
+            <span>macOS 14+ &middot; Apple Silicon only</span>
         </div>
     </section>
 
@@ -859,7 +882,7 @@
             <div class="req-stats">
                 <div class="req-stat">
                     <div class="req-number">macOS 14+</div>
-                    <div class="req-label">Apple Silicon</div>
+                    <div class="req-label">Apple Silicon only</div>
                 </div>
                 <div class="req-stat">
                     <div class="req-number">~1.1 GB</div>
@@ -873,6 +896,7 @@
             <p class="req-note">
                 The download is large because it <strong>bundles a full office engine and media tools</strong> -
                 that's the trade for working completely offline, with nothing phoning home and nothing to install separately.
+                It runs on <strong>Apple Silicon Macs only (M1 or newer)</strong> - it will not open on older Intel Macs.
             </p>
             <div class="button-row">
                 <span class="btn btn-disabled" role="button" aria-disabled="true" title="Not available yet - v0.1 coming soon">
@@ -910,8 +934,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
                 <h3>Donations welcome</h3>
                 <p>The Converter is free and always will be. If it saved you some hassle, a tip helps keep it maintained.</p>
-                <!-- TODO: replace href="#" with the real donations link (GitHub Sponsors / Ko-fi / Stripe) -->
-                <a href="#" class="app-link muted">
+                <a href="https://github.com/sponsors/joe-at-heirloom" target="_blank" rel="noopener" class="app-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
                     Support the project
                 </a>
@@ -921,6 +944,40 @@
             In the spirit of <a href="https://theunarchiver.com" target="_blank" rel="noopener">The Unarchiver</a> -
             a genuinely free tool that just works.
         </p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FAQ -->
+    <section>
+        <p class="section-label reveal">Questions</p>
+        <h2 class="reveal">Good to know</h2>
+        <div class="faq-list reveal">
+            <div class="faq-item">
+                <h3>Is it really free? What's the catch?</h3>
+                <p>No catch. It's free and open source under the GPL-3.0 license, forever. If it saves you some hassle and you'd like to chip in, <a href="https://github.com/sponsors/joe-at-heirloom" target="_blank" rel="noopener">donations are welcome</a> — but they're never required and nothing is locked behind them.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Does anything leave my Mac?</h3>
+                <p>No. Every conversion runs entirely on your machine — no uploads, no accounts, no file-size limits, no analytics. The only time the app touches the internet is a quiet weekly check for a new version, which you can ignore.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Why is the download ~1.1 GB?</h3>
+                <p>It bundles everything it needs to work offline — the FFmpeg media tools and a full LibreOffice engine for faithful Word/Excel/PowerPoint conversions. Nothing to install separately, nothing to configure. That self-contained bundle is most of the size.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Why isn't it on the Mac App Store?</h3>
+                <p>It bundles FFmpeg, which is GPL-licensed and incompatible with the App Store's terms. A notarized direct download is the honest way to ship it — it's signed by Apple's notary service, so it opens cleanly with a normal double-click.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Will it run on my Mac?</h3>
+                <p>It needs macOS 14 (Sonoma) or later on an <strong>Apple Silicon Mac (M1 or newer)</strong>. It won't open on older Intel Macs — the bundled media and office tools are Apple-Silicon-only.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I uninstall it?</h3>
+                <p>Drag the app to the Trash. That's it — there's no background installer, login item, or system extension left behind. Everything lives inside the app itself.</p>
+            </div>
+        </div>
     </section>
 
     <!-- FOOTER -->
