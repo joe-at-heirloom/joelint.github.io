@@ -28,7 +28,6 @@
     <meta property="og:description" content="A free, open-source Mac app that converts images, video, audio, and documents. Everything happens on your Mac - no uploads, no accounts, no limits.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://joelint.com/apps/the-converter/">
-    <!-- TODO: create og.png (1200x630) social preview image at this path -->
     <meta property="og:image" content="https://joelint.com/apps/the-converter/og.png">
     <meta property="og:locale" content="en_US">
 
@@ -36,7 +35,6 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="The Converter - Free, native macOS file converter">
     <meta name="twitter:description" content="Convert images, video, audio, and documents on your Mac. No uploads, no accounts, no limits. Free and open-source.">
-    <!-- TODO: create og.png (1200x630) social preview image at this path -->
     <meta name="twitter:image" content="https://joelint.com/apps/the-converter/og.png">
 
     <!-- SEO -->
@@ -336,19 +334,36 @@
             background: var(--surface);
             transform: none;
         }
-        .btn-disabled .btn-main {
+        .btn-disabled .btn-main,
+        .btn-download .btn-main {
             display: inline-flex;
             align-items: center;
             gap: 0.6rem;
             font-weight: 500;
         }
-        .btn-disabled .btn-sub {
+        .btn-disabled .btn-sub,
+        .btn-download .btn-sub {
             font-size: 0.7rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--accent);
             padding-left: 1.6rem;
         }
+
+        /* Active two-line download button (accent, interactive) */
+        .btn-download {
+            background: var(--accent);
+            color: #fff;
+            flex-direction: column;
+            gap: 0.1rem;
+            padding: 0.7rem 1.6rem;
+            align-items: flex-start;
+        }
+        .btn-download:hover {
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+        .btn-download .btn-sub { color: rgba(255, 255, 255, 0.75); }
 
         .hero-meta {
             margin-top: 2rem;
@@ -569,6 +584,19 @@
         }
         .req-note strong { color: var(--text); font-weight: 600; }
 
+        .req-checksum {
+            margin-top: 1.25rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+        .req-checksum code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            word-break: break-all;
+            color: var(--text);
+        }
+
         /* ============ SUPPORT / OPEN SOURCE ============ */
         .support-grid {
             display: grid;
@@ -728,13 +756,13 @@
             <span class="highlight">Drop files in, pick a format, done</span> - and every file stays on your machine.
         </p>
         <div class="button-row reveal reveal-delay-3">
-            <span class="btn btn-disabled" role="button" aria-disabled="true" title="Not available yet - v0.1 coming soon">
-                <span class="btn-main">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
-                    Download for Mac
-                </span>
-                <span class="btn-sub">v0.1 coming soon</span>
-            </span>
+            <a class="btn btn-download" href="https://github.com/joe-at-heirloom/the-converter/releases/download/v0.1.0/TheConverter-0.1.0-AppleSilicon.dmg">
+                    <span class="btn-main">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                        Download for Mac
+                    </span>
+                    <span class="btn-sub">v0.1.0 · 417 MB · Apple Silicon</span>
+                </a>
             <a href="https://github.com/joe-at-heirloom/the-converter" target="_blank" rel="noopener" class="btn btn-secondary">
                 <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 View source on GitHub
@@ -899,18 +927,21 @@
                 It runs on <strong>Apple Silicon Macs only (M1 or newer)</strong> - it will not open on older Intel Macs.
             </p>
             <div class="button-row">
-                <span class="btn btn-disabled" role="button" aria-disabled="true" title="Not available yet - v0.1 coming soon">
+                <a class="btn btn-download" href="https://github.com/joe-at-heirloom/the-converter/releases/download/v0.1.0/TheConverter-0.1.0-AppleSilicon.dmg">
                     <span class="btn-main">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Download for Mac
                     </span>
-                    <span class="btn-sub">v0.1 coming soon</span>
-                </span>
+                    <span class="btn-sub">v0.1.0 · 417 MB · Apple Silicon</span>
+                </a>
                 <a href="https://github.com/joe-at-heirloom/the-converter" target="_blank" rel="noopener" class="btn btn-secondary">
                     <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     Follow along on GitHub
                 </a>
             </div>
+            <p class="req-checksum">
+                SHA-256: <code>27cba79dbcaa448e584ae432bf0d0b2d073d67c458238d3f0c245cabdcc4b2c3</code>
+            </p>
         </div>
     </section>
 
