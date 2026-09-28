@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detroit Air Survey - Detroit from the air, 1949 to today | Joe Lint</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8RKE8VQ4W6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8RKE8VQ4W6');
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Detroit Air Survey - Detroit from the air, 1949 to today">
+    <meta property="og:description" content="Aerial photographs of Detroit from 1949, 1956, 1961 and 1967, laid over the modern city. Drag a divider across the map and watch the city change underneath it.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://joelint.com/apps/detroit-air-survey/">
+    <meta property="og:image" content="https://joelint.com/apps/detroit-air-survey/og.png">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Detroit Air Survey - Detroit from the air, 1949 to today">
+    <meta name="twitter:description" content="Wipe between 1949, 1956, 1961, 1967 and today across West Detroit and downtown. Free, in your browser.">
+    <meta name="twitter:image" content="https://joelint.com/apps/detroit-air-survey/og.png">
+
+    <!-- SEO -->
+    <meta name="description" content="Detroit Air Survey lays historical aerial photographs of Detroit - 1949, 1956, 1961 and 1967 from the DTE Aerial Photo Collection - over the modern city at native resolution, so you can wipe between the years. Free, in your browser.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://joelint.com/apps/detroit-air-survey/">
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f5f7fa;
+            --surface-hover: #edf0f5;
+            --border: #e0e4ea;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            /* the survey's amber, darkened until it reads on white */
+            --accent: #9a6412;
+            --accent-dim: #7c4f0c;
+            --accent-glow: rgba(224, 169, 74, 0.16);
+            --amber: #E0A94A;
+            --ground: #0B0F12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Instrument Serif', serif;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: auto;
+            overflow-x: hidden;
+        }
+
+        /* ============ SCROLL ANIMATIONS ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* No-JS / reduced-motion fallback: never hide content */
+        .no-js .reveal { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+            opacity: 0.3;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        /* ============ NAV ============ */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 0 2rem;
+        }
+
+        nav .nav-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+
+        nav .logo {
+            font-size: 1.4rem;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            font-family: 'Instrument Serif', serif;
+            font-weight: 700;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        nav .logo:hover {
+            color: var(--accent);
+        }
+
+        nav .nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        nav .nav-back:hover {
+            color: var(--accent);
+        }
+
+        /* ============ SECTIONS ============ */
+        section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .lead {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+            margin-bottom: 2.25rem;
+            max-width: 660px;
+        }
+        .lead strong { color: var(--text); font-weight: 600; }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: calc(100vh - 56px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .app-icon-hero {
+            width: 120px;
+            height: 120px;
+            border-radius: 27px;
+            margin-bottom: 2rem;
+            background: var(--ground);
+            border: 1px solid #3A4852;
+            box-shadow: 0 12px 30px -8px rgba(224, 169, 74, 0.55),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-icon-hero svg {
+            width: 92px;
+            height: 92px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-family: 'DM Sans', sans-serif;
+            color: #16a34a;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.25rem;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #16a34a;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .status-dot { animation: none; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            font-style: normal;
+            max-width: 640px;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            margin-bottom: 2.25rem;
+            line-height: 1.7;
+        }
+
+        .hero .tagline .highlight {
+            color: var(--text);
+        }
+
+        /* ============ BUTTONS ============ */
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.6rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            text-decoration: none;
+            transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s;
+            border: 1px solid transparent;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--accent-dim);
+            color: var(--accent);
+        }
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Two-line primary button, as on the converter's download */
+        .btn-open {
+            background: var(--accent);
+            color: #fff;
+            flex-direction: column;
+            gap: 0.1rem;
+            padding: 0.7rem 1.6rem;
+            align-items: flex-start;
+        }
+        .btn-open:hover {
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+        .btn-open .btn-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 500;
+        }
+        .btn-open .btn-sub {
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 1.6rem;
+        }
+
+        .hero-meta {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.25rem;
+            justify-content: center;
+        }
+        .hero-meta .dot-sep { color: var(--border); }
+
+        /* ============ WIPE DEMO ============ */
+        .wipe {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--ground);
+            aspect-ratio: 3 / 2;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: pan-y;
+            --pos: 50%;
+        }
+        .wipe img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+        .wipe .wipe-then {
+            clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+        }
+        .wipe .wipe-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: var(--pos);
+            width: 3px;
+            margin-left: -1.5px;
+            background: var(--amber);
+            pointer-events: none;
+        }
+        .wipe .wipe-handle {
+            position: absolute;
+            top: 50%;
+            left: var(--pos);
+            width: 38px;
+            height: 38px;
+            margin: -19px 0 0 -19px;
+            border-radius: 50%;
+            background: var(--amber);
+            border: 3px solid var(--ground);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wipe .wipe-handle svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--ground);
+        }
+        .wipe .wipe-year {
+            position: absolute;
+            top: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #DCE6EB;
+            background: rgba(11, 15, 18, 0.78);
+            padding: 0.2rem 0.55rem;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+        .wipe .wipe-year.left { left: 0.75rem; }
+        .wipe .wipe-year.right { right: 0.75rem; }
+        /* the whole picture is the control; the range input carries the keyboard and screen reader */
+        .wipe input[type=range] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            opacity: 0;
+            cursor: ew-resize;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .wipe:focus-within {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .wipe-caption {
+            margin: 0.9rem 0 3rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .wipe-caption strong { color: var(--text); font-weight: 600; }
+        .wipe-caption:last-child { margin-bottom: 0; }
+
+        /* ============ CONTENT CARDS ============ */
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .format-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.75rem 1.5rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .format-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-4px);
+        }
+
+        .format-card .format-head {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .format-card .format-head svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .format-card h3 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .chip {
+            font-size: 0.72rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 2px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.01em;
+        }
+
+        .format-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============ HOW IT WAS MADE ============ */
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem 2rem;
+        }
+
+        .feature {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature .step {
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.15rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .feature h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ============ ACCURACY ============ */
+        .accuracy-section {
+            text-align: center;
+        }
+
+        .req-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem 2rem;
+            max-width: 660px;
+            margin: 0 auto;
+        }
+
+        .req-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .req-stat .req-number {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: var(--accent);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.2;
+        }
+
+        .req-stat .req-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .req-note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 520px;
+            margin: 0 auto 2rem;
+        }
+        .req-note strong { color: var(--text); font-weight: 600; }
+        .req-card .req-note:last-child { margin-bottom: 0; }
+
+        /* ============ FAQ ============ */
+        .faq-list {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border-top: 1px solid var(--border);
+            padding: 1.4rem 0;
+        }
+        .faq-item:last-child { border-bottom: 1px solid var(--border); }
+        .faq-item h3 {
+            font-size: 1.02rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .faq-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+        }
+        .faq-item p a { color: var(--accent); text-decoration: none; }
+        .faq-item p a:hover { text-decoration: underline; }
+
+        .license-line {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            line-height: 1.8;
+        }
+        .license-line a { color: var(--accent-dim); text-decoration: none; }
+        .license-line a:hover { text-decoration: underline; }
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 3rem 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        footer a { color: var(--accent-dim); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 640px) {
+            section { padding: 4rem 1.5rem; }
+            .hero h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+            .btn { width: 100%; justify-content: center; }
+            .btn-open { align-items: center; }
+            .btn-open .btn-sub { padding-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <a href="../../index.html" class="logo">Joe Lint</a>
+            <a href="../../index.html#projects" class="nav-back">&larr; Projects</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="app-icon-hero reveal">
+            <!-- the survey's mark: an aerial negative's frame and fiducials, the mile-road grid
+                 cut by a radial, and the viewer's amber wipe (source: logo.svg) -->
+            <svg viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" fill="#0B0F12"/><rect x="5" y="5" width="27" height="54" fill="#3A4852"/><g fill="none" stroke-linecap="square"><path d="M5 21H59M5 43H59M18 5V59M46 5V59" stroke="#7C8F9B" stroke-width="2"/><path d="M57 57L7 7" stroke="#DCE6EB" stroke-width="3"/><rect x="5" y="5" width="54" height="54" stroke="#DCE6EB" stroke-width="3"/><path d="M5 32H11M59 32H53" stroke="#DCE6EB" stroke-width="3"/><path d="M32 3V61" stroke="#E0A94A" stroke-width="3"/></g><circle cx="32" cy="32" r="5.5" fill="#E0A94A" stroke="#0B0F12" stroke-width="2"/></svg>
+        </div>
+        <div class="live-badge reveal reveal-delay-1">
+            <span class="status-dot"></span> Live &middot; free, in your browser
+        </div>
+        <h1 class="reveal reveal-delay-1">Detroit <span class="accent">Air Survey</span></h1>
+        <p class="tagline reveal reveal-delay-2">
+            Aerial photographs of Detroit from 1949, 1956, 1961 and 1967, laid over the modern city.
+            <span class="highlight">Drag a divider across the map</span> and watch neighborhoods, freeways and farmland change underneath it.
+        </p>
+        <div class="button-row reveal reveal-delay-3">
+            <a class="btn btn-open" href="https://joe-at-heirloom.github.io/detroit-aerial/" target="_blank" rel="noopener">
+                <span class="btn-main">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
+                    Open the survey
+                </span>
+                <span class="btn-sub">1949 &ndash; 2022 &middot; 18 layers</span>
+            </a>
+            <a href="https://github.com/joe-at-heirloom/detroit-aerial" target="_blank" rel="noopener" class="btn btn-secondary">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                View source on GitHub
+            </a>
+        </div>
+        <div class="hero-meta reveal reveal-delay-4">
+            <span>No sign-up</span>
+            <span class="dot-sep">&middot;</span>
+            <span>Native film resolution, 0.6 m per pixel</span>
+            <span class="dot-sep">&middot;</span>
+            <span>Best on a laptop or desktop</span>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- TRY IT -->
+    <section>
+        <p class="section-label reveal">Try it here</p>
+        <h2 class="reveal">Drag across the picture</h2>
+
+        <div class="wipe reveal" style="--pos: 50%">
+            <img class="wipe-now" src="hastings-1961.jpg" alt="Around Hastings Street, downtown Detroit, in 1961: blocks cleared, new curving streets" width="1200" height="800" loading="lazy">
+            <img class="wipe-then" src="hastings-1949.jpg" alt="The same ground in 1949: dense blocks of houses either side of Gratiot Avenue" width="1200" height="800" loading="lazy">
+            <div class="wipe-line"></div>
+            <div class="wipe-handle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4 12l5 5M15 7l5 5-5 5"/></svg></div>
+            <span class="wipe-year left">1949</span><span class="wipe-year right">1961</span>
+            <input type="range" min="0" max="100" value="50" step="0.5" aria-label="Wipe between 1949 and 1961 around Hastings Street">
+        </div>
+        <p class="wipe-caption reveal">
+            <strong>Hastings Street, downtown.</strong> In 1949 this is Black Bottom, one of the city's densest
+            neighborhoods, with Gratiot Avenue running through it. By 1961 most of these blocks are gone,
+            cleared for urban renewal and the Chrysler Freeway.
+        </p>
+
+        <div class="wipe reveal" style="--pos: 50%">
+            <img class="wipe-now" src="southfield-2022.jpg" alt="Ford Road at the Southfield Freeway in 2022: a cloverleaf interchange among car parks" width="1200" height="800" loading="lazy">
+            <img class="wipe-then" src="southfield-1949.jpg" alt="The same crossing in 1949: a two-lane crossroads between open fields" width="1200" height="800" loading="lazy">
+            <div class="wipe-line"></div>
+            <div class="wipe-handle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7 4 12l5 5M15 7l5 5-5 5"/></svg></div>
+            <span class="wipe-year left">1949</span><span class="wipe-year right">2022</span>
+            <input type="range" min="0" max="100" value="50" step="0.5" aria-label="Wipe between 1949 and 2022 at Ford Road and the Southfield Freeway">
+        </div>
+        <p class="wipe-caption reveal">
+            <strong>Ford Road at the Southfield Freeway.</strong> A crossroads between fields in 1949; the
+            north&ndash;south road is where the freeway will go. Today it is a cloverleaf.
+            In the survey you can do this <strong>anywhere across West Detroit and downtown</strong>, between any two years.
+        </p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- WHAT'S IN IT -->
+    <section>
+        <p class="section-label reveal">What's in it</p>
+        <h2 class="reveal">Seventy-five years, on one map</h2>
+        <div class="format-grid">
+            <div class="format-card reveal reveal-delay-1">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M8 16 16 8"/></svg>
+                    <h3>The film</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">1949</span><span class="chip">1956</span><span class="chip">1961</span><span class="chip">1967</span>
+                </div>
+                <p class="format-note">About 230 aerial negatives from the DTE Aerial Photo Collection at Wayne State University, joined into one continuous picture per year.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+                    <h3>The modern city</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">1998</span><span class="chip">2005</span><span class="chip">2010</span><span class="chip">2012&ndash;2022</span><span class="chip">Today</span>
+                </div>
+                <p class="format-note">The City of Detroit's orthophotos, USDA aerial imagery every two years, and today's view from Esri's World Imagery.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-1">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-6.75-6.2-6.75-11.25a6.75 6.75 0 0 1 13.5 0C18.75 14.8 12 21 12 21Z"/><circle cx="12" cy="9.75" r="2.25"/></svg>
+                    <h3>Places</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">29 researched pins</span><span class="chip">with lifespans</span>
+                </div>
+                <p class="format-note">Buildings and streets that came and went, each dated. Click any spot on the map to see it in every year at once.</p>
+            </div>
+            <div class="format-card reveal reveal-delay-2">
+                <div class="format-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 20h18"/><path d="M5 20V9h4v11M10 20V4h4v16M15 20v-8h4v8"/></svg>
+                    <h3>Downtown</h3>
+                </div>
+                <div class="chip-row">
+                    <span class="chip">1949</span><span class="chip">1956</span><span class="chip">1961</span><span class="chip">Today</span>
+                </div>
+                <p class="format-note">A separate scene of the core and the riverfront, from Black Bottom to Campus Martius.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- HOW IT WAS MADE -->
+    <section>
+        <p class="section-label reveal">How it was made</p>
+        <h2 class="reveal">From loose negatives to one map</h2>
+        <p class="lead reveal">
+            The photographs were never meant to line up with anything. Each negative is a separate
+            picture from a plane flying north&ndash;south lines over the city, and the only record of
+            where each one was taken is <strong>a catalog position that can be hundreds of meters out</strong>.
+        </p>
+        <div class="feature-list">
+            <div class="feature reveal reveal-delay-1">
+                <span class="step">1</span>
+                <div>
+                    <h3>Fetch the scans</h3>
+                    <p>Every negative, at full scan resolution, from Wayne State's digital collection.</p>
+                </div>
+            </div>
+            <div class="feature reveal reveal-delay-1">
+                <span class="step">2</span>
+                <div>
+                    <h3>Solve the block</h3>
+                    <p>COLMAP, a photogrammetry tool, ties each year's negatives together through thousands of matched features and works out every camera.</p>
+                </div>
+            </div>
+            <div class="feature reveal reveal-delay-2">
+                <span class="step">3</span>
+                <div>
+                    <h3>Place it on the map</h3>
+                    <p>One smooth correction per year against modern imagery, chosen only if it holds up on ground it was never fitted to.</p>
+                </div>
+            </div>
+            <div class="feature reveal reveal-delay-2">
+                <span class="step">4</span>
+                <div>
+                    <h3>Measure everything</h3>
+                    <p>Every layer is checked against every other layer, and the checking tool is itself tested with a known, planted error first.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ACCURACY -->
+    <section class="accuracy-section">
+        <p class="section-label reveal">How close</p>
+        <h2 class="reveal">Accurate to a few meters</h2>
+        <div class="req-card reveal">
+            <div class="req-stats">
+                <div class="req-stat">
+                    <div class="req-number">2.8 m</div>
+                    <div class="req-label">1961</div>
+                </div>
+                <div class="req-stat">
+                    <div class="req-number">3.3 m</div>
+                    <div class="req-label">1967</div>
+                </div>
+                <div class="req-stat">
+                    <div class="req-number">4.4 m</div>
+                    <div class="req-label">1949</div>
+                </div>
+                <div class="req-stat">
+                    <div class="req-number">7.2 m</div>
+                    <div class="req-label">1956</div>
+                </div>
+            </div>
+            <p class="req-note">
+                The typical distance between a street in the old photograph and the same street in modern
+                imagery that was <strong>never used to place it</strong>, measured across the whole area.
+                On a residential street that's about the width of a front yard.
+                1956's western and northern edges were farmland that is suburbs now, and can't be checked the same way.
+            </p>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FAQ -->
+    <section>
+        <p class="section-label reveal">Questions</p>
+        <h2 class="reveal">Good to know</h2>
+        <div class="faq-list reveal">
+            <div class="faq-item">
+                <h3>Where do the photographs come from?</h3>
+                <p>The 1949&ndash;1967 film is from the <a href="https://digital.library.wayne.edu/" target="_blank" rel="noopener">DTE Aerial Photo Collection at Wayne State University</a>. The modern layers are the City of Detroit's orthophotos, USDA's National Agriculture Imagery Program, and Esri's World Imagery for today.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Does it work on my phone?</h3>
+                <p>You can open it, but it's built for a bigger screen: the controls along the top want a laptop or desktop. A tablet in landscape works.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Why don't the downtown buildings line up?</h3>
+                <p>Tall buildings lean in aerial photographs, and differently in every photograph depending on where the plane was. The ground lines up to a few meters; the rooftops can't. Follow the streets, not the roofs.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Why does the picture shift a little when I wipe?</h3>
+                <p>Every layer is placed independently, the modern ones by their own publishers, so two years can disagree by a few meters. Between the film years it's typically 4&ndash;6 m. The survey's source code includes the measurements behind every figure on this page.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can I use the images?</h3>
+                <p>The historical photographs belong to the DTE Aerial Photo Collection; ask <a href="https://digital.library.wayne.edu/" target="_blank" rel="noopener">Wayne State University Libraries</a> about reuse. The code that places them on the map is <a href="https://github.com/joe-at-heirloom/detroit-aerial" target="_blank" rel="noopener">on GitHub</a>.</p>
+            </div>
+        </div>
+        <p class="license-line reveal">
+            Historical photographs: DTE Aerial Photo Collection, Wayne State University.
+            2022 imagery on this page: USDA NAIP.
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 <span style="font-family: 'Instrument Serif', serif; font-weight: 700; font-size: 1.1rem;">Joe Lint</span> &middot; <a href="../../index.html">joelint.com</a></p>
+    </footer>
+
+    <!-- ============ SCRIPTS ============ -->
+    <script>
+        // Flag JS on so reveal elements can animate (and stay visible without JS)
+        document.documentElement.classList.remove('no-js');
+
+        // Scroll reveal - mirrors the IntersectionObserver pattern used on the homepage
+        (function () {
+            var els = document.querySelectorAll('.reveal');
+            if (!('IntersectionObserver' in window)) {
+                els.forEach(function (el) { el.classList.add('visible'); });
+                return;
+            }
+            var obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            els.forEach(function (el) { obs.observe(el); });
+        })();
+
+        // Wipes: the range input sets the divider. Without JS each rests at the
+        // halfway line its inline style sets, which is still a sensible picture.
+        document.querySelectorAll('.wipe').forEach(function (w) {
+            var r = w.querySelector('input[type=range]');
+            function set() { w.style.setProperty('--pos', r.value + '%'); }
+            r.addEventListener('input', set);
+            set();
+        });
+    </script>
+</body>
+</html>
