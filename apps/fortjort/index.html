@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortjort - Stack gold, build a kingdom | Joe Lint</title>
+    <meta name="description" content="Fortjort is a one-thumb kingdom builder for iPhone and iPad. Stack the gold raiders drop, build a fort from logs to stone to iron, and march on their warcamps. The first two lands are free.">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta property="og:title" content="Fortjort - Stack gold, build a kingdom">
+    <meta property="og:description" content="A one-thumb kingdom builder for iPhone and iPad. Stack the gold, build your fort, burn the raiders' warcamps.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://joelint.com/apps/fortjort/">
+    <meta property="og:image" content="https://joelint.com/apps/fortjort/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://joelint.com/apps/fortjort/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sky: #4fb0ff;
+            --royal: #1a3696;
+            --navy: #16224a;
+            --gold: #ffe27a;
+            --text: #1c2340;
+            --muted: #5d6685;
+            --surface: #f3f6fc;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font: 17px/1.6 'DM Sans', system-ui, sans-serif; color: var(--text); background: #fff; }
+        a { color: #1a5fd0; }
+        .hero {
+            background: radial-gradient(circle at 50% 8%, #bfeaff 0%, var(--sky) 30%, var(--royal) 100%);
+            color: #fff; text-align: center; padding: 64px 20px 72px;
+        }
+        .hero img.icon { width: 148px; height: 148px; border-radius: 22.37%; box-shadow: 0 14px 40px rgba(8, 18, 70, 0.45); }
+        .title {
+            font-family: 'Lilita One', system-ui, sans-serif; font-weight: 400; letter-spacing: 0.5px;
+            font-size: clamp(48px, 9vw, 76px); margin: 22px 0 0; line-height: 1;
+            -webkit-text-stroke: 0; text-shadow: 0 4px 0 var(--navy), 0 8px 18px rgba(8, 18, 70, 0.45);
+        }
+        .tagline { font-family: 'Lilita One', system-ui, sans-serif; color: var(--gold); font-size: clamp(22px, 4vw, 30px); margin: 14px 0 0; text-shadow: 0 3px 0 var(--navy); }
+        .pitch { max-width: 600px; margin: 22px auto 0; font-size: 18px; opacity: 0.95; }
+        .ctas { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 30px; }
+        .btn { display: inline-block; padding: 14px 24px; border-radius: 999px; font-weight: 600; text-decoration: none; font-size: 16px; }
+        .btn.primary { background: #fff; color: var(--royal); box-shadow: 0 6px 18px rgba(8, 18, 70, 0.35); }
+        .btn.ghost { border: 2px solid rgba(255, 255, 255, 0.85); color: #fff; }
+        .soon { font-size: 14px; margin-top: 14px; opacity: 0.85; }
+        .shots { display: flex; gap: 18px; overflow-x: auto; padding: 36px 20px 12px; scroll-snap-type: x mandatory; justify-content: safe center; }
+        .shots img { width: 220px; height: auto; border-radius: 20px; flex: none; scroll-snap-align: center; box-shadow: 0 8px 26px rgba(16, 34, 74, 0.25); }
+        main { max-width: 760px; margin: 0 auto; padding: 20px 20px 40px; }
+        h2 { font-family: 'Lilita One', system-ui, sans-serif; font-weight: 400; font-size: 32px; color: var(--royal); margin: 40px 0 8px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .card { background: var(--surface); border-radius: 18px; padding: 18px 20px; }
+        .card h3 { margin: 0 0 6px; font-size: 18px; }
+        .card p { margin: 0; color: var(--muted); font-size: 16px; }
+        .price { background: linear-gradient(135deg, #fff7d6, #ffe9a8); border-radius: 18px; padding: 20px 22px; margin-top: 18px; }
+        footer { text-align: center; padding: 28px 20px 40px; color: var(--muted); font-size: 15px; }
+        footer a { margin: 0 8px; }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <img class="icon" src="icon.png" alt="Fortjort app icon: a crowned King with a tower of gold coins" width="148" height="148">
+        <h1 class="title">Fortjort</h1>
+        <p class="tagline">Stack gold. Build a kingdom.</p>
+        <p class="pitch">Raiders have overrun the kingdom. Steer with one thumb while your squad fights on its own, pile the gold they drop on your back, and build a fort that holds while you march on their warcamp.</p>
+        <div class="ctas">
+            <a class="btn primary" href="https://fortjort.me-622.workers.dev" target="_blank" rel="noopener">Play the first two lands in your browser</a>
+            <a class="btn ghost" href="support/">Support</a>
+        </div>
+        <p class="soon">Coming soon to the App Store for iPhone and iPad.</p>
+    </header>
+
+    <div class="shots" aria-label="Screenshots">
+        <img src="screen-1-stack.jpg" alt="Stack the gold: the King runs with a tower of coins on his back" loading="lazy">
+        <img src="screen-2-build.jpg" alt="Build your fort: coins pour into a new wall section" loading="lazy">
+        <img src="screen-3-raid.jpg" alt="Hold the walls: raiders strike the gate at dusk" loading="lazy">
+        <img src="screen-4-camp.jpg" alt="Burn their camp: the squad besieges the Raider King's warcamp" loading="lazy">
+        <img src="screen-5-frost.jpg" alt="Free the kingdom: the Frost Giant's ice in Frost Pass" loading="lazy">
+    </div>
+
+    <main>
+        <h2>What you do</h2>
+        <div class="grid">
+            <div class="card"><h3>Build</h3><p>Barracks, archer towers, catapults and treasuries, behind walls that grow from logs to stone to iron.</p></div>
+            <div class="card"><h3>Fight</h3><p>Raids hit at dusk: brutes, shield walls, siege rams and shamans. Six bosses, from the Warlord to the Raider King.</p></div>
+            <div class="card"><h3>Explore</h3><p>Six lands, from the Meadow to Frost Pass and Raider Keep. March on with your squad, your gold and your upgrades.</p></div>
+            <div class="card"><h3>Play your way</h3><p>Easy, Normal and Hard, plus Chris mode, where one blow brings down the Keep. Plays offline.</p></div>
+        </div>
+        <div class="price">
+            <strong>One price, no ads.</strong> The Meadow and Millbrook are free. One purchase unlocks the whole kingdom: four more lands and their bosses. No ads, no energy timers, no subscriptions.
+        </div>
+    </main>
+
+    <footer>
+        <a href="support/">Support</a> &middot; <a href="privacy/">Privacy Policy</a> &middot; <a href="../../">joelint.com</a>
+        <p>&copy; 2026 The Peninsular Company, LLC</p>
+    </footer>
+</body>
+</html>

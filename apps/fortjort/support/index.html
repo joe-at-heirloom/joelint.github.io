@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortjort Support | Joe Lint</title>
+    <meta name="description" content="Help with Fortjort: restoring your purchase, unlocking the whole kingdom, saves, and how to reach us.">
+    <link rel="icon" type="image/png" href="../icon.png">
+    <link rel="canonical" href="https://joelint.com/apps/fortjort/support/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --royal: #1a3696; --navy: #16224a; --text: #1c2340; --muted: #5d6685; --surface: #f3f6fc; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font: 17px/1.6 'DM Sans', system-ui, sans-serif; color: var(--text); background: #fff; }
+        a { color: #1a5fd0; }
+        .bar { background: radial-gradient(circle at 50% 0%, #bfeaff 0%, #4fb0ff 35%, var(--royal) 100%); padding: 28px 20px; text-align: center; }
+        .bar a { display: inline-flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; font-family: 'Lilita One', system-ui, sans-serif; font-size: 30px; text-shadow: 0 3px 0 var(--navy); }
+        .bar img { width: 52px; height: 52px; border-radius: 22.37%; }
+        main { max-width: 680px; margin: 0 auto; padding: 28px 20px 40px; }
+        h1 { font-family: 'Lilita One', system-ui, sans-serif; font-weight: 400; color: var(--royal); font-size: 38px; margin: 0 0 4px; }
+        h2 { font-size: 19px; margin: 26px 0 4px; }
+        .lead { color: var(--muted); margin: 0 0 8px; }
+        form { background: var(--surface); border-radius: 18px; padding: 20px; margin-top: 12px; display: grid; gap: 12px; }
+        label { font-weight: 600; font-size: 15px; display: grid; gap: 6px; }
+        input, textarea { font: inherit; padding: 11px 13px; border: 1px solid #d6dcea; border-radius: 12px; background: #fff; color: var(--text); }
+        textarea { min-height: 140px; resize: vertical; }
+        button { font: inherit; font-weight: 600; padding: 13px 20px; border: 0; border-radius: 999px; background: var(--royal); color: #fff; cursor: pointer; justify-self: start; }
+        footer { text-align: center; padding: 20px 20px 40px; color: var(--muted); font-size: 15px; }
+        footer a { margin: 0 8px; }
+    </style>
+</head>
+<body>
+    <div class="bar"><a href="../"><img src="../icon.png" alt="">Fortjort</a></div>
+    <main>
+        <h1>Support</h1>
+        <p class="lead">Stuck, found a bug, or lost your purchase? Here's how to sort it, and how to reach us.</p>
+
+        <h2>I bought the whole kingdom, but it's locked again</h2>
+        <p>Open <b>Settings</b> in the game and tap <b>Restore purchase</b>, signed in with the Apple Account you bought it with. It works on every device signed in to that account.</p>
+
+        <h2>How do I unlock the rest of the kingdom?</h2>
+        <p>The Meadow and Millbrook are free. On the title screen tap <b>Kingdom</b>, then <b>Unlock the whole kingdom</b>. It's a single purchase for four more lands and their bosses.</p>
+
+        <h2>Where is my progress saved?</h2>
+        <p>On your device. Deleting the app deletes your kingdom with it.</p>
+
+        <h2>Does it work offline?</h2>
+        <p>Yes. Only buying or restoring the whole kingdom needs a connection.</p>
+
+        <h2>Contact us</h2>
+        <p>Tell us your device and what happened, and we'll get back to you by email.</p>
+        <form action="https://formspree.io/f/mjgegwad" method="POST">
+            <input type="hidden" name="_subject" value="Fortjort support">
+            <label>Your email <input type="email" name="email" required autocomplete="email"></label>
+            <label>What happened? <textarea name="message" required></textarea></label>
+            <button type="submit">Send</button>
+        </form>
+    </main>
+    <footer>
+        <a href="../">Fortjort</a> &middot; <a href="../privacy/">Privacy Policy</a> &middot; <a href="../../../">joelint.com</a>
+    </footer>
+</body>
+</html>
