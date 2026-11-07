@@ -59,6 +59,9 @@
         .price { background: linear-gradient(135deg, #fff7d6, #ffe9a8); border-radius: 18px; padding: 20px 22px; margin-top: 18px; }
         footer { text-align: center; padding: 28px 20px 40px; color: var(--muted); font-size: 15px; }
         footer a { margin: 0 8px; }
+        footer .pc-logo { display: block; width: 160px; max-width: 100%; margin: 14px auto 6px; }
+        footer .pc-logo img { display: block; width: 100%; height: auto; }
+        @media (max-width: 480px) { footer .pc-logo { width: 140px; } }
     </style>
 </head>
 <body>
@@ -96,7 +99,8 @@
     </main>
 
     <footer>
-        <a href="support/">Support</a> &middot; <a href="privacy/">Privacy Policy</a> &middot; <a href="../../">joelint.com</a>
+        <a href="https://apps.apple.com/us/app/fortjort/id6829081540">App Store</a> &middot; <a href="support/">Support</a> &middot; <a href="privacy/">Privacy Policy</a> &middot; <a href="../../">joelint.com</a>
+        <a class="pc-logo" href="https://thepeninsularcompany.com" aria-label="The Peninsular Company"><img src="images/peninsular-logo.svg" alt="The Peninsular Company" width="160" height="36"></a>
         <p>&copy; 2026 The Peninsular Company, LLC</p>
     </footer>
 </body>
