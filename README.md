@@ -13,14 +13,18 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 - **Hero** - intro, availability status, and contact links
 - **Story** - background and career narrative with animated speech bubble
 - **Work** - detailed job history with interactive case studies, before/after comparisons, and animated stat counters
+  - The Peninsular Company (Founder, Sept 30, 2026-present): a Belle Isle lake strip with a blinking lighthouse and a passing freighter
+  - Lotus International (Business Development & Marketing Specialist, April 2026-present): a part drawing that drafts itself in
   - DuMouchelles (Technology & Marketing Manager, 2021-2025)
   - Proactive Technology Management (IT Engineer > Team Lead, 2017-2021)
-  - Clark Basement Waterproofing (Freelance Marketing & Web, Ongoing)
 - **Travel** - 8-month solo backpacking trip across 30 countries with interactive 3D globe (desktop) and SVG world map (mobile), photo gallery with lightbox, and pilgrimage credentials
-- **Projects** - three iOS apps in various stages
-  - [Heirloom](https://heirloomapp.io) - AI-powered art & antique valuation
-  - [The Ollin Tuner](https://ollintuner.com) - Aztec oracle with AI voice
-  - [Learn to Play Cards](http://learntoplaycardsapp.com) - interactive card game lessons
+- **Projects** - the personal, less buttoned-up apps (the company ventures live on [thepeninsularcompany.com](https://thepeninsularcompany.com#art))
+  - [Fortjort](https://joelint.com/apps/fortjort/) - one-thumb medieval kingdom builder
+  - [Learn to Play Cards](https://learntoplaycardsapp.com) - 21 card games in 130 lessons
+  - [The Ollin Tuner](https://ollintuner.com) - an Aztec oracle that is really a magic trick
+  - Shell RIDE - portfolio piece (Lotus International), the SR-5S scooter companion app
+  - [Detroit Air Survey](https://joelint.com/apps/detroit-air-survey/) - 1949-1967 aerial film over the modern city
+  - [The Converter](https://joelint.com/apps/the-converter/) - portfolio piece, open-source Mac file converter
 - **Skills** - terminal-style skill display with Google Digital Marketing & E-commerce certificate
 - **Now** - what I'm looking for next
 
@@ -33,7 +37,7 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 - Terminal-style typing effect in skills section
 - Photo lightbox with keyboard navigation
 - Collapsible case study sections
-- Contact form via Formspree
+- Contact form via Formspree, guarded by Cloudflare Turnstile (widget "Formspree contact forms", shared with thepeninsularcompany.com and the Fortjort support page; Formspree holds the secret key)
 
 ## Tech stack
 
@@ -64,13 +68,13 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 ├── heirloom-icon.png             # Heirloom app icon
 ├── ollintuner-icon.png           # Ollin Tuner app icon
 ├── learntoplaycards-icon.png     # Learn to Play Cards app icon
+├── fortjort-icon.png             # Fortjort app icon
+├── shellride-icon.png            # Shell RIDE app icon
 ├── dumoart.com_old.png           # DuMo before screenshot
 ├── dumoart.com_new.png           # DuMo after screenshot
 ├── dumouchelles-logo-new.svg     # DuMo logo (new)
 ├── dumouchelles-logo-old.svg     # DuMo logo (old)
 ├── proactive_logo.svg            # Proactive logo
-├── clark_basement_waterproofing_logo.svg
-├── clark-logo.png
 ├── dual_pilgrim.svg              # Dual Pilgrim badge
 ├── saint-james-way.svg           # Camino shell symbol
 ├── stamp-arrival-to-thailand.svg # passport stamp decoration
