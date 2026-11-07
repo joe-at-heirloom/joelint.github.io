@@ -13,8 +13,8 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 - **Hero** - intro, availability status, and contact links
 - **Story** - background and career narrative with animated speech bubble
 - **Work** - detailed job history with interactive case studies, before/after comparisons, and animated stat counters
-  - The Peninsular Company (Founder, Sept 30, 2026-present): a Belle Isle lake strip with a blinking lighthouse and a passing freighter
-  - Lotus International (Business Development & Marketing Specialist, April 2026-present): a part drawing that drafts itself in
+  - The Peninsular Company (Founder, Sept 30, 2026-present): the six App Store apps as a row of icons, over a Belle Isle lake strip with a blinking lighthouse and a passing freighter
+  - Lotus International (Business Development & Marketing Specialist, April 2026-present): a part drawing that drafts itself in, and the rebuilt licus.com
   - DuMouchelles (Technology & Marketing Manager, 2021-2025)
   - Proactive Technology Management (IT Engineer > Team Lead, 2017-2021)
 - **Travel** - 8-month solo backpacking trip across 30 countries with interactive 3D globe (desktop) and SVG world map (mobile), photo gallery with lightbox, and pilgrimage credentials

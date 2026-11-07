@@ -1168,9 +1168,35 @@
         @keyframes tpc-sail { from { transform: translateX(0); } to { transform: translateX(calc(-100vw - 140px)); } }
         .tpc-logo { background: #F1EEE6; border-color: rgba(35, 75, 64, 0.25); }
         .tpc-logo span { display: block; width: 66%; height: 66%; background: #234B40; }
-        .job-peninsular .job-highlight { border-radius: 0; border-color: rgba(35, 75, 64, 0.2); background: #F6F4EE; }
-        .job-peninsular .job-highlight .number { color: #234B40; font-variant-numeric: tabular-nums; }
         .job-peninsular .job-meta a { color: #234B40; }
+        /* The company's six App Store apps, one row */
+        .tpc-apps {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .tpc-apps a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            line-height: 1.3;
+            text-align: center;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+        .tpc-apps img {
+            width: 56px;
+            height: 56px;
+            border-radius: 22.5%;
+            box-shadow: 0 0 0 1px rgba(35, 75, 64, 0.14), 0 2px 6px rgba(26, 26, 46, 0.08);
+            transition: transform 0.2s ease;
+        }
+        .tpc-apps a:hover { color: #234B40; }
+        .tpc-apps a:hover img { transform: translateY(-2px); }
 
         /* --- Lotus International: a part drawing --- */
         .job-lotus {
@@ -1202,21 +1228,34 @@
         .job-lotus.visible .lotus-draft path[stroke-dasharray] { opacity: 1; }
         .lotus-dim { font: 500 7px 'JetBrains Mono', monospace; fill: #1E3F6E; text-anchor: middle; opacity: 0; transition: opacity 0.8s ease 2s; }
         .job-lotus.visible .lotus-dim { opacity: 1; }
-        .job-lotus .job-header, .job-lotus .job-story, .job-lotus .job-highlights { position: relative; z-index: 1; }
+        .job-lotus .job-header, .job-lotus .job-story, .job-lotus .lotus-shot { position: relative; z-index: 1; }
         .lotus-logo { border-color: rgba(30, 63, 110, 0.3); background: #fff; }
         .job-logo.lotus-logo img { filter: none; padding: 4px; }
-        .job-lotus .job-highlight {
+        .job-lotus .job-story a { color: var(--accent-dim); }
+        /* licus.com as it looks now, framed like a drafting sheet */
+        .lotus-shot {
+            margin-top: 1.5rem;
+            border: 1px solid rgba(30, 63, 110, 0.25);
             border-radius: 2px;
-            border-color: rgba(30, 63, 110, 0.25);
             background-color: #f4f8f9;
             background-image: linear-gradient(rgba(30, 63, 110, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 63, 110, 0.07) 1px, transparent 1px);
             background-size: 10px 10px;
+            padding: 0.6rem;
         }
-        .job-lotus .job-highlight .number { color: #1E3F6E; }
-        .job-lotus .job-story a { color: var(--accent-dim); }
+        .lotus-shot a { display: block; line-height: 0; }
+        .lotus-shot img { width: 100%; height: auto; border: 1px solid rgba(30, 63, 110, 0.18); }
+        .lotus-shot figcaption {
+            font: 500 0.7rem 'JetBrains Mono', monospace;
+            color: #1E3F6E;
+            letter-spacing: 0.04em;
+            padding-top: 0.55rem;
+        }
 
         @media (max-width: 760px) {
             .lotus-drawing { width: 180px; height: 123px; top: 7rem; opacity: 0.16; }
+        }
+        @media (max-width: 600px) {
+            .tpc-apps { grid-template-columns: repeat(3, 1fr); }
         }
         @media (prefers-reduced-motion: reduce) {
             .tpc-lamp, .tpc-lamp-glow, .tpc-freighter { animation: none; }
@@ -2656,26 +2695,16 @@
                 </div>
             </div>
             <p class="job-story">
-                My own company, named for Michigan's motto: <em>if you seek a pleasant peninsula, look about you</em>. Strategy, design, and technology for businesses, plus ventures of its own, led by a family of art apps. Its homepage draws Belle Isle's lighthouse under Detroit's real sky, stars and weather included.
+                My own company, named for Michigan's motto: <em>if you seek a pleasant peninsula, look about you</em>. Strategy, design, and technology for businesses, and six apps of its own on the App Store.
             </p>
-            <div class="job-highlights">
-                <div class="job-highlight reveal reveal-delay-1">
-                    <div class="number">09.30.26</div>
-                    <div class="label">Founded in Detroit</div>
-                </div>
-                <div class="job-highlight reveal reveal-delay-2">
-                    <div class="number"><span class="count-up" data-target="4">0</span></div>
-                    <div class="label">Art apps in one family</div>
-                </div>
-                <div class="job-highlight reveal reveal-delay-3">
-                    <div class="number"><span class="count-up" data-target="419">0</span></div>
-                    <div class="label">Real stars over Belle Isle</div>
-                </div>
-                <div class="job-highlight reveal reveal-delay-4">
-                    <div class="number">4s</div>
-                    <div class="label">Lighthouse blink, per the Coast Guard</div>
-                </div>
-            </div>
+            <ul class="tpc-apps reveal reveal-delay-1" aria-label="The company's apps on the App Store">
+                <li><a href="https://apps.apple.com/us/app/heirloom-know-what-you-own/id6754576251" target="_blank" rel="noopener"><img src="app-icons/heirloom.png" alt="" width="56" height="56" loading="lazy">Heirloom</a></li>
+                <li><a href="https://apps.apple.com/us/app/daily-canvas/id6792569506" target="_blank" rel="noopener"><img src="app-icons/dailycanvas.png" alt="" width="56" height="56" loading="lazy">Daily Canvas</a></li>
+                <li><a href="https://apps.apple.com/us/app/inkblotter/id6819932681" target="_blank" rel="noopener"><img src="app-icons/inkblotter.png" alt="" width="56" height="56" loading="lazy">Inkblotter</a></li>
+                <li><a href="https://apps.apple.com/us/app/fortjort/id6829081540" target="_blank" rel="noopener"><img src="app-icons/fortjort.png" alt="" width="56" height="56" loading="lazy">Fortjort</a></li>
+                <li><a href="https://apps.apple.com/us/app/learn-to-play-cards/id6759671819" target="_blank" rel="noopener"><img src="app-icons/learntoplaycards.png" alt="" width="56" height="56" loading="lazy">Learn to Play Cards</a></li>
+                <li><a href="https://apps.apple.com/us/app/the-ollin-tuner/id6759269358" target="_blank" rel="noopener"><img src="app-icons/ollintuner.png" alt="" width="56" height="56" loading="lazy">The Ollin Tuner</a></li>
+            </ul>
         </div>
 
         <div class="job job-lotus reveal">
@@ -2708,24 +2737,10 @@
             <p class="job-story">
                 A US contract manufacturer in Canton, Michigan, with 31 years of building, repairing, and shipping for other companies. I rebuilt the brand and <a href="https://licus.com" target="_blank" rel="noopener">licus.com</a> so buyers can see how it all fits together, and why to call.
             </p>
-            <div class="job-highlights">
-                <div class="job-highlight reveal reveal-delay-1">
-                    <div class="number"><span class="count-up" data-target="6">0</span></div>
-                    <div class="label">Capabilities, one program</div>
-                </div>
-                <div class="job-highlight reveal reveal-delay-2">
-                    <div class="number"><span class="count-up" data-target="9">0</span></div>
-                    <div class="label">Industries, each with its own way in</div>
-                </div>
-                <div class="job-highlight reveal reveal-delay-3">
-                    <div class="number"><span class="count-up" data-target="300" data-suffix="K">0K</span></div>
-                    <div class="label">Sq. ft. of plant to show off</div>
-                </div>
-                <div class="job-highlight reveal reveal-delay-4">
-                    <div class="number"><span class="count-up" data-target="5" data-suffix="M">0M</span></div>
-                    <div class="label">Rollers a year of capacity</div>
-                </div>
-            </div>
+            <figure class="lotus-shot reveal reveal-delay-1">
+                <a href="https://licus.com" target="_blank" rel="noopener"><img src="lotus-licus-website.jpg" srcset="lotus-licus-website-768.jpg 768w, lotus-licus-website.jpg 1280w" sizes="(max-width: 760px) 90vw, 680px" alt="The licus.com homepage: contract manufacturing, build-to-print and OEM assembly over a photo of the Canton plant." width="1280" height="860" loading="lazy"></a>
+                <figcaption>licus.com</figcaption>
+            </figure>
         </div>
 
         <div class="job job-dumo reveal">
