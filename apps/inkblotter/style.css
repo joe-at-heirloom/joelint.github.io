@@ -36,9 +36,7 @@ a:hover { text-decoration-color: currentColor; }
 a:focus-visible, video:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .caps {
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-size: 15px;
 }
 
 .todo {
@@ -206,7 +204,7 @@ h1, h2, h3 { font-variant-numeric: lining-nums; }
 .plates img { display: block; width: 100%; height: 100%; object-fit: contain; }
 
 .plates figcaption { display: grid; gap: 2px; font-size: 16px; line-height: 1.5; }
-.plates .numeral { color: var(--accent); font-weight: 700; letter-spacing: 0.12em; font-size: 13px; }
+.plates .numeral { color: var(--accent); font-weight: 700; font-size: 15px; }
 .plates strong { font-family: var(--display); font-weight: 500; font-size: 20px; }
 
 .plates.pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
@@ -236,7 +234,7 @@ dl {
   gap: 10px 24px;
 }
 
-dt { color: var(--ink-soft); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 4px; }
+dt { color: var(--ink-soft); font-size: 15px; padding-top: 4px; }
 dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 
 .contact { display: grid; gap: 14px; align-content: start; }
@@ -300,7 +298,7 @@ footer .maker img { display: block; width: 78px; max-width: 100%; height: auto; 
    the crease between them. The scans are on white, so they multiply onto the cream paper like ink. */
 
 .ten { gap: clamp(48px, 7vw, 88px); }
-.ten .numeral { color: var(--accent); font-weight: 700; letter-spacing: 0.16em; font-size: 13px; font-family: var(--text); }
+.ten .numeral { color: var(--accent); font-weight: 700; font-size: 15px; font-family: var(--text); }
 
 .intro { display: grid; gap: 18px; max-width: 46rem; }
 .intro p { margin: 0; font-size: clamp(18px, 2vw, 21px); }
@@ -325,7 +323,6 @@ footer .maker img { display: block; width: 78px; max-width: 100%; height: auto; 
 .card .plate img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; mix-blend-mode: multiply; }
 .card .notes { display: grid; gap: 14px; align-content: start; min-width: 0; }
 .card h2 { display: grid; gap: 8px; font-size: clamp(30px, 4vw, 44px); }
-.card h2 .numeral { letter-spacing: 0.2em; text-transform: uppercase; }
 .card .look { margin: 0; color: var(--ink-soft); font-style: italic; }
 .card dl { grid-template-columns: 1fr; gap: 2px; }
 .card dt { padding-top: 12px; }
