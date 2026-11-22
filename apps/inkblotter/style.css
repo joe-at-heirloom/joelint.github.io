@@ -1,6 +1,4 @@
-@font-face { font-family: "Bodoni Moda"; src: url("/apps/inkblotter/fonts/bodoni-moda.woff") format("woff"); font-weight: 400 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Bodoni Moda"; src: url("/apps/inkblotter/fonts/bodoni-moda-italic.woff") format("woff"); font-weight: 400 700; font-style: italic; font-display: swap; }
-/* The Blotter identity: blue-black ink on cream paper, azure beside it, Bodoni set light and large.
+/* The Blotter identity: blue-black ink on cream paper, azure beside it, an old-style book face set large.
    Layout: a plain blue-black notebook cover for the hero, like the app's cover, then the paper page:
    the fold in six plates, the ten plates, the story in three parts, the facts, the files. */
 :root {
@@ -16,9 +14,10 @@
   --accent: #4F5F80;
   --desk: #212B40;
   --todo: #F3DE9C;
-  /* Bodoni Moda comes from this site's own fonts/ folder; the device's Bodoni stands in until it arrives. */
-  --display: "Bodoni Moda", "Bodoni 72", Didot, "Bodoni MT", Georgia, serif;
-  --text: "Bodoni Moda", "Libre Bodoni", "Bodoni 72", "Bodoni MT", Georgia, serif;
+  /* Iowan Old Style, the app's face, comes with every Apple device; Palatino and Georgia stand in elsewhere.
+     Nothing is downloaded. (Bodoni was dropped on 2026-11-22: its hairlines were hard to read.) */
+  --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --text: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   color-scheme: light;
 }
 
@@ -176,11 +175,6 @@ h3 {
 
 /* Lining figures, so "1.0" does not read as "I.o" where the face's own figures are old-style. */
 h1, h2, h3 { font-variant-numeric: lining-nums; }
-
-/* Text is set from the sturdy end of Bodoni Moda's optical sizes, so its hairlines hold up on any screen;
-   titles take the cut for the size they are set at. */
-body { font-variation-settings: "opsz" 12; }
-h1, h2, h3, .tagline, .masthead .name { font-variation-settings: normal; }
 
 .lede { display: grid; gap: 20px; max-width: 46rem; }
 .lede p { margin: 0; font-size: clamp(19px, 2.2vw, 22px); }
