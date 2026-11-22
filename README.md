@@ -63,6 +63,7 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 ├── CNAME                         # custom domain config
 ├── sitemap.xml                   # SEO sitemap
 ├── robots.txt                    # points crawlers at the sitemap
+├── c20ad9aa84280c01140e28d270d605a0.txt # IndexNow key (Bing and others; Ahrefs submits changed pages with it)
 ├── og-image.jpg                  # social media preview image
 ├── favicon.png                   # site favicon
 ├── resume.pdf                    # downloadable resume
