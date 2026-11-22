@@ -243,7 +243,7 @@ dl {
 }
 
 dt { color: var(--ink-soft); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; padding-top: 4px; }
-dd { margin: 0; min-width: 0; }
+dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 
 .contact { display: grid; gap: 14px; align-content: start; }
 .contact p { margin: 0; }
@@ -301,3 +301,69 @@ footer .maker img { display: block; width: 78px; max-width: 100%; height: auto; 
 }
 
 .parts .caps { color: var(--accent); }
+
+/* The Ten Plates page: the ten 1921 plates as book spreads, plate on the left page and its notes on the right,
+   the crease between them. The scans are on white, so they multiply onto the cream paper like ink. */
+
+.ten { gap: clamp(48px, 7vw, 88px); }
+.ten .numeral { color: var(--accent); font-weight: 700; letter-spacing: 0.16em; font-size: 13px; font-family: var(--text); }
+
+.intro { display: grid; gap: 18px; max-width: 46rem; }
+.intro p { margin: 0; font-size: clamp(18px, 2vw, 21px); }
+.intro .caps { color: var(--accent); font-size: 13px; }
+.intro h1 { font-size: clamp(40px, 7vw, 76px); line-height: 1.04; text-wrap: balance; }
+
+.contents {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 0 28px;
+  font-size: 16px;
+}
+.contents a { display: flex; gap: 12px; align-items: baseline; padding-block: 8px; border-top: 1px solid var(--paper-deep); text-decoration: none; }
+.contents a:hover { text-decoration: underline; text-decoration-color: var(--print); }
+.contents .numeral { min-width: 2.6em; }
+
+.card { display: grid; gap: 24px; scroll-margin-top: 24px; }
+.card .plate { margin: 0; display: grid; place-items: center; }
+.card .plate img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; mix-blend-mode: multiply; }
+.card .notes { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.card h2 { display: grid; gap: 8px; font-size: clamp(30px, 4vw, 44px); }
+.card h2 .numeral { letter-spacing: 0.2em; text-transform: uppercase; }
+.card .look { margin: 0; color: var(--ink-soft); font-style: italic; }
+.card dl { grid-template-columns: 1fr; gap: 2px; }
+.card dt { padding-top: 12px; }
+.card dd { margin: 0; }
+
+@media (min-width: 860px) {
+  .card { grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); gap: 0 clamp(28px, 4vw, 56px); align-items: center; }
+  .card::before { content: ""; grid-column: 2; grid-row: 1; align-self: stretch; background: var(--paper-deep); }
+  .card .plate { grid-column: 1; grid-row: 1; }
+  .card .notes { grid-column: 3; grid-row: 1; }
+}
+
+.questions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 40px 48px; }
+.questions > div { display: grid; gap: 14px; align-content: start; }
+.questions h2 { font-size: clamp(26px, 3vw, 34px); }
+.questions p { margin: 0; }
+
+.sit {
+  border-radius: 6px;
+  padding: clamp(32px, 5vw, 56px) clamp(20px, 5vw, 56px);
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  text-align: center;
+  color: var(--stamp);
+}
+.sit h2 { font-size: clamp(30px, 4vw, 44px); }
+.sit p { margin: 0; max-width: 40rem; }
+.sit .caps { color: var(--print); }
+.sit a:not(.cta) { color: var(--stamp); }
+.sit a:focus-visible { outline-color: var(--stamp); }
+
+.sources h2 { font-family: var(--text); font-weight: 700; font-size: 13px; color: var(--accent); margin-bottom: 12px; }
+.sources ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--ink-soft); font-size: 15px; }
+.nobr { white-space: nowrap; }
