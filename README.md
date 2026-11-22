@@ -62,6 +62,7 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 ├── index.html                    # the whole site
 ├── CNAME                         # custom domain config
 ├── sitemap.xml                   # SEO sitemap
+├── robots.txt                    # points crawlers at the sitemap
 ├── og-image.jpg                  # social media preview image
 ├── favicon.png                   # site favicon
 ├── resume.pdf                    # downloadable resume
@@ -75,6 +76,7 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
 ├── shellride-icon.png            # Shell RIDE app icon
 ├── dumoart.com_old.png           # DuMo before screenshot
 ├── dumoart.com_new.png           # DuMo after screenshot
+├── *-icon.webp, dumoart.com_*.webp # 288px icons and 1200px screenshots the homepage actually loads
 ├── dumouchelles-logo-new.svg     # DuMo logo (new)
 ├── dumouchelles-logo-old.svg     # DuMo logo (old)
 ├── proactive_logo.svg            # Proactive logo
