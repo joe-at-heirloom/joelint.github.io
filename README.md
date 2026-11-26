@@ -23,7 +23,7 @@ Single-page portfolio built with vanilla HTML, CSS, and JavaScript. No framework
   - [Inkblotter](https://joelint.com/apps/inkblotter/) - the ink blot test you fold
   - [Learn to Play Cards](https://learntoplaycardsapp.com) - 21 card games in 130 lessons
   - [The Ollin Tuner](https://ollintuner.com) - an Aztec oracle that is really a magic trick
-  - [WorldSimulator](https://worldsimulator.joelint.com) - 5,000 years of history on one map (public beta)
+  - [WorldSimulator](https://world.thepeninsularcompany.com) - 5,000 years of history on one map (public beta)
   - Shell RIDE - portfolio piece (Lotus International), the SR-5S scooter companion app
   - [Detroit Air Survey](https://joelint.com/apps/detroit-air-survey/) - 1949-1967 aerial film over the modern city
   - [The Converter](https://joelint.com/apps/the-converter/) - portfolio piece, open-source Mac file converter
